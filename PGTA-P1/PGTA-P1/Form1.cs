@@ -10,6 +10,11 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
 
+using GMap.NET;
+using GMap.NET.MapProviders;
+using GMap.NET.WindowsForms;
+using GMap.NET.WindowsForms.Markers;
+
 namespace PGTA_P1
 {
     public partial class Form1 : Form
@@ -20,9 +25,24 @@ namespace PGTA_P1
         DataTable TargetTable = new DataTable();
         int numDTable = 0;
 
+        //Cats i sources
         string CatView = "All";
+        string[] SourceViewV = new string[2];
+        bool SMR = false;
+        bool MULT = false;
+        bool ADSB = false;
         string SourView = "All";
         string IdView = "All";
+
+        //GMaps
+        double BCNLat = 41.2972361111;
+        double BCNLon = 2.0783333333;
+
+        //Timer sets
+        TimeSpan interval = new TimeSpan(0,0,1);
+        string velocitat = "x 1";
+        bool Play = false;
+        TimeSpan Temps = new TimeSpan(8, 0, 0);
 
         //Moure ventana
         public const int WM_NCLBUTTONDOWN = 0xA1;
@@ -41,12 +61,76 @@ namespace PGTA_P1
 
             PGB1.Minimum = 1;
 
-            
+            SourceViewV[0] = "All";
+            SourceViewV[1] = "-";
+
+            //GMaps
+            Map.DragButton = MouseButtons.Left;
+            Map.CanDragMap = true;
+            Map.MapProvider = GMapProviders.GoogleMap;
+            Map.Position = new PointLatLng(BCNLat, BCNLon);
+            Map.MaxZoom = 24;
+            Map.MinZoom = 0;
+            Map.Zoom = 14;
+            Map.AutoScroll = true;
+
+            //TimerSets
+            Velo.Text = velocitat;
         }
 
         //Filtrar per categoria (te en compte la pagina DataTable)
         private DataView FiltrarCatSour()
         {
+            //DataTable Inicial = DataTable1000[numDTable];
+            //DataRow[] F = new DataRow[999];
+            //DataTable Filtrada = new DataTable();
+            //Filtrada.Columns.Add("Category");
+            //Filtrada.Columns.Add("Source");
+            //Filtrada.Columns.Add("Target ID");
+            //Filtrada.Columns.Add("Track Number");
+            //Filtrada.Columns.Add("Vehicle Fleet");
+            //Filtrada.Columns.Add("DataBlock Id");
+
+            //if ((CatView == "All") && (SourView == "All"))
+            //    Filtrada = Inicial;
+            //else if (CatView == "All") //Radar no es all
+            //{
+            //    F = Inicial.Select("Source = '" + SourView + "'");
+            //    int i = 0;
+            //    while (i < F.Count())
+            //    {
+            //        Filtrada.ImportRow(F[i]);
+            //        i++;
+            //    }
+            //}
+            //else if (SourView == "All") //Cat no es all
+            //{
+            //    F = Inicial.Select("Category = '" + CatView + "'");
+            //    int i = 0;
+            //    while (i < F.Count())
+            //    {
+            //        Filtrada.ImportRow(F[i]);
+            //        i++;
+            //    }
+            //}
+            //else //Cap es all
+            //{
+            //    F = Inicial.Select("Category = '" + CatView + "' AND Source = '" + SourView + "'");
+            //    int i = 0;
+            //    while (i < F.Count())
+            //    {
+            //        Filtrada.ImportRow(F[i]);
+            //        i++;
+            //    }
+            //}
+            //DataView ret = Filtrada.DefaultView;
+
+            //previousBTT.Visible = true;
+            //nextBTN.Visible = true;
+            //Max.Text = Convert.ToString(this.DataTable1000.Count());
+
+            //return ret;
+
             DataTable Inicial = DataTable1000[numDTable];
             DataRow[] F = new DataRow[999];
             DataTable Filtrada = new DataTable();
@@ -57,19 +141,29 @@ namespace PGTA_P1
             Filtrada.Columns.Add("Vehicle Fleet");
             Filtrada.Columns.Add("DataBlock Id");
 
-            if ((CatView == "All") && (SourView == "All"))
+            if ((CatView == "All") && (SourceViewV[0] == "All") && (SourceViewV[1] == "-"))
                 Filtrada = Inicial;
             else if (CatView == "All") //Radar no es all
             {
-                F = Inicial.Select("Source = '" + SourView + "'");
+                F = Inicial.Select("Source = '" + SourceViewV[0] + "'");
                 int i = 0;
                 while (i < F.Count())
                 {
                     Filtrada.ImportRow(F[i]);
                     i++;
                 }
+                if (SourceViewV[1] != "-")
+                {
+                    F = Inicial.Select("Source = '" + SourceViewV[1] + "'");
+                    i = 0;
+                    while (i < F.Count())
+                    {
+                        Filtrada.ImportRow(F[i]);
+                        i++;
+                    }
+                }
             }
-            else if (SourView == "All") //Cat no es all
+            else if ((SourceViewV[0] == "All") && (SourceViewV[1] == "-")) //Cat no es all
             {
                 F = Inicial.Select("Category = '" + CatView + "'");
                 int i = 0;
@@ -81,12 +175,22 @@ namespace PGTA_P1
             }
             else //Cap es all
             {
-                F = Inicial.Select("Category = '" + CatView + "' AND Source = '" + SourView + "'");
+                F = Inicial.Select("Category = '" + CatView + "' AND Source = '" + SourceViewV[0] + "'");
                 int i = 0;
                 while (i < F.Count())
                 {
                     Filtrada.ImportRow(F[i]);
                     i++;
+                }
+                if (SourceViewV[1] != "-")
+                {
+                    F = Inicial.Select("Category = '" + CatView + "' AND Source = '" + SourceViewV[1] + "'");
+                    i = 0;
+                    while (i < F.Count())
+                    {
+                        Filtrada.ImportRow(F[i]);
+                        i++;
+                    }
                 }
             }
             DataView ret = Filtrada.DefaultView;
@@ -132,7 +236,7 @@ namespace PGTA_P1
             numDTable = 0;
 
             DataView ret = Final.DefaultView;
-            ret.Sort = Sort;
+            //ret.Sort = Sort;
 
             Max.Text = "1";
             previousBTT.Visible = false;
@@ -563,6 +667,9 @@ namespace PGTA_P1
         {
             DataBlocksDGV_Act();
             TextVisorPanel.Visible = true;
+            PanelSources1.Visible = true;
+            MapVisorPanel.Visible = false;
+            TempsPanel.Visible = false;
             TextVisorBTN.BorderStyle = BorderStyle.FixedSingle;
             MapVisor.BorderStyle = BorderStyle.None;
         }
@@ -580,6 +687,11 @@ namespace PGTA_P1
         {
             TextVisorBTN.BorderStyle = BorderStyle.None;
             MapVisor.BorderStyle = BorderStyle.FixedSingle;
+            TextVisorPanel.Visible = false;
+            PanelSources1.Visible = true;
+            TempsPanel.Visible = true;
+            MapVisorPanel.Visible = true;
+            MapVisorPanel.BringToFront();
         }
         private void MapVisor_MouseHover(object sender, EventArgs e)
         {
@@ -685,11 +797,67 @@ namespace PGTA_P1
         //BTN Multi (S)
         private void MultiBTN_Click(object sender, EventArgs e)
         {
-            this.SourView = "Multi.";
-            MultiBTN.BorderStyle = BorderStyle.FixedSingle;
-            PSRBTN.BorderStyle = BorderStyle.None;
-            AdsBTN.BorderStyle = BorderStyle.None;
-            AllSBTN.BorderStyle = BorderStyle.None;
+            if ((!MULT) && (SMR) && (ADSB))
+            {
+                if ((MULT) && (SMR) && (CatView == "10"))
+                {
+                    CatView = "All";
+                }
+
+                MULT = false;
+                SMR = false;
+                ADSB = false;
+
+                SourceViewV[0] = "All";
+                SourceViewV[1] = "-";
+
+                MultiBTN.BorderStyle = BorderStyle.None;
+                PSRBTN.BorderStyle = BorderStyle.None;
+                AdsBTN.BorderStyle = BorderStyle.None;
+                AllSBTN.BorderStyle = BorderStyle.FixedSingle;
+            }
+            else if ((!MULT) && (!SMR))
+            {
+                if (SourceViewV[0] == "All")
+                {
+                    SourceViewV[0] = "Multi.";
+                }
+                else if (SourceViewV[0] != "Multi.")
+                {
+                    SourceViewV[1] = "Multi.";
+                }
+                MultiBTN.BorderStyle = BorderStyle.FixedSingle;
+                AllSBTN.BorderStyle = BorderStyle.None;
+                MULT = true;
+            }
+            else if (MULT)
+            {
+                if (SourceViewV[0] == "Multi.")
+                {
+                    SourceViewV[0] = "-";
+                }
+                else if (SourceViewV[1] == "Multi.")
+                {
+                    SourceViewV[1] = "-";
+                }
+                MultiBTN.BorderStyle = BorderStyle.None;
+                MULT = false;
+
+                if ((!SMR) && (!ADSB))
+                {
+                    SourceViewV[0] = "All";
+                    SourceViewV[1] = "-";
+                    AllSBTN.BorderStyle = BorderStyle.FixedSingle;
+                }
+            }
+            else if ((!MULT) && (SMR))
+            {
+                SourceViewV[0] = "All";
+                SourceViewV[1] = "-";
+                CatView = "10";
+                MultiBTN.BorderStyle = BorderStyle.None;
+                MULT = true;
+            }
 
             DataBlocksDGV_Act();
         }
@@ -706,11 +874,68 @@ namespace PGTA_P1
         //BTN Psr (S)
         private void PSRBTN_Click(object sender, EventArgs e)
         {
-            this.SourView = "SMR";
-            MultiBTN.BorderStyle = BorderStyle.None;
-            PSRBTN.BorderStyle = BorderStyle.FixedSingle;
-            AdsBTN.BorderStyle = BorderStyle.None;
-            AllSBTN.BorderStyle = BorderStyle.None;
+            if ((MULT) && (!SMR) && (ADSB))
+            {
+                if ((MULT) && (SMR) && (CatView == "10"))
+                {
+                    CatView = "All";
+                }
+
+                MULT = false;
+                SMR = false;
+                ADSB = false;
+
+                SourceViewV[0] = "All";
+                SourceViewV[1] = "-";
+
+                MultiBTN.BorderStyle = BorderStyle.None;
+                PSRBTN.BorderStyle = BorderStyle.None;
+                AdsBTN.BorderStyle = BorderStyle.None;
+                AllSBTN.BorderStyle = BorderStyle.FixedSingle;
+            }
+            
+            else if ((!MULT) && (!SMR))
+            {
+                if (SourceViewV[0] == "All")
+                {
+                    SourceViewV[0] = "SMR";
+                }
+                else if (SourceViewV[0] != "SMR")
+                {
+                    SourceViewV[1] = "SMR";
+                }
+                PSRBTN.BorderStyle = BorderStyle.FixedSingle;
+                AllSBTN.BorderStyle = BorderStyle.None;
+                SMR = true;
+            }
+            else if(SMR)
+            {
+                if (SourceViewV[0] == "SMR")
+                {
+                    SourceViewV[0] = "-";
+                }
+                else if (SourceViewV[1] == "SMR")
+                {
+                    SourceViewV[1] = "-";
+                }
+                PSRBTN.BorderStyle = BorderStyle.None;
+                SMR = false;
+
+                if ((!MULT) && (!ADSB))
+                {
+                    SourceViewV[0] = "All";
+                    SourceViewV[1] = "-";
+                    AllSBTN.BorderStyle = BorderStyle.FixedSingle;
+                    SMR = true;
+                }
+            }
+            else if ((MULT) && (!SMR))
+            {
+                SourceViewV[0] = "All";
+                SourceViewV[1] = "-";
+                CatView = "10";
+                PSRBTN.BorderStyle = BorderStyle.FixedSingle;
+            }
 
             DataBlocksDGV_Act();
         }
@@ -726,11 +951,65 @@ namespace PGTA_P1
         //BTN Ads (S)
         private void AdsBTN_Click(object sender, EventArgs e)
         {
-            this.SourView = "ADS-B";
-            MultiBTN.BorderStyle = BorderStyle.None;
-            PSRBTN.BorderStyle = BorderStyle.None;
-            AdsBTN.BorderStyle = BorderStyle.FixedSingle;
-            AllSBTN.BorderStyle = BorderStyle.None;
+            //this.SourView = "ADS-B";
+            //MultiBTN.BorderStyle = BorderStyle.None;
+            //PSRBTN.BorderStyle = BorderStyle.None;
+            //AdsBTN.BorderStyle = BorderStyle.FixedSingle;
+            //AllSBTN.BorderStyle = BorderStyle.None;
+
+            if ((MULT) && (SMR) && (!ADSB))
+            {
+                if ((MULT) && (SMR) && (CatView == "10"))
+                {
+                    CatView = "All";
+                }
+
+                MULT = false;
+                SMR = false;
+                ADSB = false;
+
+                SourceViewV[0] = "All";
+                SourceViewV[1] = "-";
+
+                MultiBTN.BorderStyle = BorderStyle.None;
+                PSRBTN.BorderStyle = BorderStyle.None;
+                AdsBTN.BorderStyle = BorderStyle.None;
+                AllSBTN.BorderStyle = BorderStyle.FixedSingle;
+            }
+            else if (!ADSB)
+            {
+                if (SourceViewV[0] == "All")
+                {
+                    SourceViewV[0] = "ADS-B";
+                }
+                else if (SourceViewV[0] != "ADS-B")
+                {
+                    SourceViewV[1] = "ADS-B";
+                }
+                AdsBTN.BorderStyle = BorderStyle.FixedSingle;
+                AllSBTN.BorderStyle = BorderStyle.None;
+                ADSB = true;
+            }
+            else if (ADSB)
+            {
+                if (SourceViewV[0] == "ADS-B")
+                {
+                    SourceViewV[0] = "-";
+                }
+                else if (SourceViewV[1] == "ADS-B")
+                {
+                    SourceViewV[1] = "-";
+                }
+                AdsBTN.BorderStyle = BorderStyle.None;
+                ADSB = false;
+
+                if ((!MULT) && (!SMR))
+                {
+                    SourceViewV[0] = "All";
+                    SourceViewV[1] = "-";
+                    AllSBTN.BorderStyle = BorderStyle.FixedSingle;
+                }
+            }
 
             DataBlocksDGV_Act();
         }
@@ -746,7 +1025,16 @@ namespace PGTA_P1
         //BTN All (S)
         private void AllSBTN_Click(object sender, EventArgs e)
         {
-            this.SourView = "All";
+            if ((MULT) && (SMR) && (CatView == "10"))
+            {
+                CatView = "All";
+            }
+
+            SourceViewV[0] = "All";
+            SourceViewV[1] = "-";
+            MULT = false;
+            SMR = false;
+            ADSB = false;
             MultiBTN.BorderStyle = BorderStyle.None;
             PSRBTN.BorderStyle = BorderStyle.None;
             AdsBTN.BorderStyle = BorderStyle.None;
@@ -768,18 +1056,21 @@ namespace PGTA_P1
         {
             DataBlocksAll.CurrentRow.Selected = true;
             this.Cursor = Cursors.WaitCursor;
-            string ID_I = DataBlocksAll.Rows[e.RowIndex].Cells["DataBlock Id"].FormattedValue.ToString();
-            int i = 0; bool en = false;
-            while ((i < DataBlockList.Count())&&(en == false))
+            if(e.RowIndex >= 0)
             {
-                if (DataBlockList[i].ID_Intern == ID_I)
+                string ID_I = DataBlocksAll.Rows[e.RowIndex].Cells["DataBlock Id"].FormattedValue.ToString();
+                int i = 0; bool en = false;
+                while ((i < DataBlockList.Count()) && (en == false))
                 {
-                    DataBlockViwerDGV_Act(DataBlockList[i]);
-                    en = true;
+                    if (DataBlockList[i].ID_Intern == ID_I)
+                    {
+                        DataBlockViwerDGV_Act(DataBlockList[i]);
+                        en = true;
+                    }
+                    i++;
                 }
-                i++;
+                this.Cursor = Cursors.Default;
             }
-            this.Cursor = Cursors.Default;
         }
 
         //BTN Buscar + TextBox Buscar
@@ -819,6 +1110,11 @@ namespace PGTA_P1
         //BTN target
         private void TargetBTN_Click(object sender, EventArgs e)
         {
+            this.IdView = "All";
+            DataBlocksDGV_Act();
+            TargetShow_Act();
+            Buscar.Text = "";
+
             if (TargetsShow.Visible == false)
             {
                 TargetBTN.BorderStyle = BorderStyle.FixedSingle;
@@ -845,14 +1141,6 @@ namespace PGTA_P1
                 Current.Visible = true;
             }
         }
-        private void TargetBTN_MouseHover(object sender, EventArgs e)
-        {
-            TargetBTN.BackColor = Color.FromArgb(0, 66, 108);
-        }
-        private void TargetBTN_MouseLeave(object sender, EventArgs e)
-        {
-            TargetBTN.BackColor = Color.FromArgb(209, 222, 230);
-        }
 
         private void Export_Click(object sender, EventArgs e)
         {
@@ -870,13 +1158,248 @@ namespace PGTA_P1
             if (Encontrado.Count() != 0)
             {
                 StreamWriter W = new StreamWriter("" + ID + ".txt");
-                int Max = Encontrado[0].Coordenades.Count();
-                W.WriteLine(Max);
-                foreach (Coordenada C in Encontrado[0].Coordenades)
+                int Max = Encontrado[0].CoordenadesADSB.Count();
+                if (Max != 0)
                 {
-                    W.WriteLine(string.Join("_", C.Retrun()));
+                    W.WriteLine(Max);
+                    foreach (Coordenada C in Encontrado[0].CoordenadesADSB)
+                    {
+                        W.WriteLine(string.Join("_", C.Retrun()));
+                    }
+                    W.Close();
                 }
-                W.Close();
+                else
+                {
+                    Max = Encontrado[0].CoordenadesMULTI.Count();
+                    if (Max != 0)
+                    {
+                        W.WriteLine(Max);
+                        foreach (Coordenada C in Encontrado[0].CoordenadesMULTI)
+                        {
+                            W.WriteLine(string.Join("_", C.Retrun()));
+                        }
+                        W.Close();
+                    }
+                    else
+                    {
+                        Max = Encontrado[0].CoordenadesSMR.Count();
+                        if (Max != 0)
+                        {
+                            W.WriteLine(Max);
+                            foreach (Coordenada C in Encontrado[0].CoordenadesSMR)
+                            {
+                                W.WriteLine(string.Join("_", C.Retrun()));
+                            }
+                            W.Close();
+                        }
+                    }
+                }
+                MessageBox.Show("Exported");
+            }
+        }
+
+        private void TargetsShow_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            this.Cursor = Cursors.WaitCursor;
+            DataInf.Text = "Loading...";
+            DataInf.ForeColor = Color.DarkGray;
+            DataInf.Refresh();
+            string ID = DataBlocksAll.Rows[e.RowIndex].Cells["Target ID"].FormattedValue.ToString();
+            if(ID == "-")
+                ID = DataBlocksAll.Rows[e.RowIndex].Cells["Track Number"].FormattedValue.ToString();
+            this.IdView = ID;
+            if (IdView == "")
+                this.IdView = "All";
+            DataBlocksDGV_Act();
+            TargetShow_Act();
+
+            Buscar.Text = ID;
+
+            TargetBTN.BorderStyle = BorderStyle.None;
+            TargetBTN.BackColor = Color.FromArgb(209, 222, 230);
+            TargetsShow.Visible = false;
+            DataBlocksAll.Visible = true;
+            nextBTN.Visible = true;
+            previousBTT.Visible = true;
+            label13.Visible = true;
+            Max.Visible = true;
+            Current.Visible = true;
+
+            this.Cursor = Cursors.Default;
+            DataInf.Text = "Data loaded";
+            DataInf.ForeColor = Color.Green;
+
+            Max.Text = "1";
+            previousBTT.Visible = false;
+            nextBTN.Visible = false;
+        }
+
+        //Mapa
+        //Marcador de la coordenada (TESTE MAPA1)
+        private void Map_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            double lat = Map.FromLocalToLatLng(e.X, e.Y).Lat;
+            double lon = Map.FromLocalToLatLng(e.X, e.Y).Lng;
+            GMapOverlay Overlay = new GMapOverlay();
+            GMarkerGoogle M = new GMarkerGoogle(new PointLatLng(0, 0), GMarkerGoogleType.green);
+            M.Position = new PointLatLng(lat, lon);
+            M.ToolTipMode = MarkerTooltipMode.Always;
+            M.ToolTipText = string.Format("LAT: " + lat + "; LNG: " + lon + "");
+            Overlay.Markers.Add(M);
+            Map.Overlays.Add(Overlay);
+        }
+
+        //Control de temps
+        
+
+        private void Timer_Tick(object sender, EventArgs e)
+        {
+            Temps = Temps.Add(interval);
+            TempsLBL.Text = Temps.ToString("c");
+            TempsLBL.Refresh();
+
+
+        }
+
+        private void PlayPause_Click(object sender, EventArgs e)
+        {
+            if (!Play)
+            {
+                Play = true;
+                PlayPause.Image = Image.FromFile("Pause(II).png");
+                PlayPause.Refresh();
+                Timer.Enabled = true;
+                Timer.Start();
+
+                TempsLBL.Text = Temps.ToString("c");
+                TempsLBL.Refresh();
+            }
+            else
+            {
+                Play = false;
+                PlayPause.Image = Image.FromFile("Play(II).png");
+                Timer.Stop();
+            }
+        }
+        private void PlayPause_MouseHover(object sender, EventArgs e)
+        {
+            if (!Play)
+                PlayPause.Image = Image.FromFile("Play(II).png");
+            else
+                PlayPause.Image = Image.FromFile("Pause(II).png");
+        }
+        private void PlayPause_MouseLeave(object sender, EventArgs e)
+        {
+            if (!Play)
+                PlayPause.Image = Image.FromFile("Play(I).png");
+            else
+                PlayPause.Image = Image.FromFile("Pause (I).png");
+        }
+
+        private void Refresh_Click(object sender, EventArgs e)
+        {
+            Temps = new TimeSpan(8, 0, 0);
+            TempsLBL.Text = Temps.ToString("c");
+            TempsLBL.Refresh();
+            Play = false;
+            PlayPause.Image = Image.FromFile("Play(I).png");
+            Timer.Stop();
+        }
+        private void Refresh_MouseHover(object sender, EventArgs e)
+        {
+            Refresh.Image = Image.FromFile("Refresh2(II).png");
+        }
+        private void Refresh_MouseLeave(object sender, EventArgs e)
+        {
+            Refresh.Image = Image.FromFile("Refresh2(1).png");
+        }
+
+        private void TempsLBL_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void MesV_MouseHover(object sender, EventArgs e)
+        {
+            MesV.Image = Image.FromFile("Mes(II).png");
+        }
+        private void MesV_MouseLeave(object sender, EventArgs e)
+        {
+            MesV.Image = Image.FromFile("Mes(I).png");
+        }
+        private void MesV_Click(object sender, EventArgs e)
+        {
+            if (velocitat == "x 1")
+            {
+                Timer.Interval = 750;
+                velocitat = "x 2";
+                Velo.Text = velocitat;
+            }
+            else if (velocitat == "x 2")
+            {
+                Timer.Interval = 500;
+                velocitat = "x 3";
+                Velo.Text = velocitat; ;
+            }
+            else if (velocitat == "x 3")
+            {
+                Timer.Interval = 250;
+                velocitat = "x 4";
+                Velo.Text = velocitat;
+            }
+            else if (velocitat == "x 4")
+            {
+                Timer.Interval = 100;
+                velocitat = "x 5";
+                Velo.Text = velocitat;
+            }
+            else if (velocitat == "x 5")
+            {
+                Timer.Interval = 10;
+                velocitat = "x 10";
+                Velo.Text = velocitat;
+            }
+        }
+
+        private void MenysV_MouseHover(object sender, EventArgs e)
+        {
+            MenysV.Image = Image.FromFile("Menus(II).png");
+        }
+        private void MenysV_MouseLeave(object sender, EventArgs e)
+        {
+            MenysV.Image = Image.FromFile("Menus(I).png");
+        }
+        private void MenysV_Click(object sender, EventArgs e)
+        {
+            if (velocitat == "x 2")
+            {
+                Timer.Interval = 1000;
+                velocitat = "x 1";
+                Velo.Text = velocitat;
+            }
+            else if (velocitat == "x 3")
+            {
+                Timer.Interval = 750;
+                velocitat = "x 2";
+                Velo.Text = velocitat;
+            }
+            else if (velocitat == "x 4")
+            {
+                Timer.Interval = 500;
+                velocitat = "x 3";
+                Velo.Text = velocitat;
+            }
+            else if (velocitat == "x 5")
+            {
+                Timer.Interval = 250;
+                velocitat = "x 4";
+                Velo.Text = velocitat;
+            }
+            else if (velocitat == "x 10")
+            {
+                Timer.Interval = 100;
+                velocitat = "x 5";
+                Velo.Text = velocitat;
             }
         }
     }

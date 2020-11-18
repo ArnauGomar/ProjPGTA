@@ -30,6 +30,7 @@ namespace PGTA_P1
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.PGB1 = new System.Windows.Forms.ProgressBar();
             this.button1 = new System.Windows.Forms.Button();
@@ -45,6 +46,8 @@ namespace PGTA_P1
             this.label3 = new System.Windows.Forms.Label();
             this.pictureBox3 = new System.Windows.Forms.PictureBox();
             this.TextVisorPanel = new System.Windows.Forms.Panel();
+            this.label15 = new System.Windows.Forms.Label();
+            this.Export = new System.Windows.Forms.Button();
             this.TargetsShow = new System.Windows.Forms.DataGridView();
             this.TargetBTN = new System.Windows.Forms.Panel();
             this.label14 = new System.Windows.Forms.Label();
@@ -84,7 +87,19 @@ namespace PGTA_P1
             this.label9 = new System.Windows.Forms.Label();
             this.pictureBox5 = new System.Windows.Forms.PictureBox();
             this.DataInf = new System.Windows.Forms.Label();
-            this.Export = new System.Windows.Forms.Button();
+            this.PanelSources1 = new System.Windows.Forms.Panel();
+            this.Map = new GMap.NET.WindowsForms.GMapControl();
+            this.MapVisorPanel = new System.Windows.Forms.Panel();
+            this.label16 = new System.Windows.Forms.Label();
+            this.CurrenTargets = new System.Windows.Forms.DataGridView();
+            this.Timer = new System.Windows.Forms.Timer(this.components);
+            this.PlayPause = new System.Windows.Forms.PictureBox();
+            this.TempsLBL = new System.Windows.Forms.Label();
+            this.TempsPanel = new System.Windows.Forms.Panel();
+            this.MesV = new System.Windows.Forms.PictureBox();
+            this.MenysV = new System.Windows.Forms.PictureBox();
+            this.Refresh = new System.Windows.Forms.PictureBox();
+            this.Velo = new System.Windows.Forms.Label();
             this.BarraSuperior.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox8)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -115,6 +130,14 @@ namespace PGTA_P1
             this.AllSBTN.SuspendLayout();
             this.AdsBTN.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).BeginInit();
+            this.PanelSources1.SuspendLayout();
+            this.MapVisorPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.CurrenTargets)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.PlayPause)).BeginInit();
+            this.TempsPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.MesV)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.MenysV)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Refresh)).BeginInit();
             this.SuspendLayout();
             // 
             // PGB1
@@ -268,6 +291,7 @@ namespace PGTA_P1
             // 
             // TextVisorPanel
             // 
+            this.TextVisorPanel.Controls.Add(this.label15);
             this.TextVisorPanel.Controls.Add(this.Export);
             this.TextVisorPanel.Controls.Add(this.TargetsShow);
             this.TextVisorPanel.Controls.Add(this.TargetBTN);
@@ -280,21 +304,43 @@ namespace PGTA_P1
             this.TextVisorPanel.Controls.Add(this.previousBTT);
             this.TextVisorPanel.Controls.Add(this.DataBlocViwer);
             this.TextVisorPanel.Controls.Add(this.DataBlocksAll);
-            this.TextVisorPanel.Location = new System.Drawing.Point(13, 63);
+            this.TextVisorPanel.Location = new System.Drawing.Point(12, 63);
             this.TextVisorPanel.Name = "TextVisorPanel";
-            this.TextVisorPanel.Size = new System.Drawing.Size(1259, 536);
+            this.TextVisorPanel.Size = new System.Drawing.Size(1272, 536);
             this.TextVisorPanel.TabIndex = 6;
             this.TextVisorPanel.Visible = false;
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label15.Location = new System.Drawing.Point(3, 515);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(110, 13);
+            this.label15.TabIndex = 16;
+            this.label15.Text = "Search DataBlock";
+            // 
+            // Export
+            // 
+            this.Export.Location = new System.Drawing.Point(1162, 509);
+            this.Export.Name = "Export";
+            this.Export.Size = new System.Drawing.Size(94, 23);
+            this.Export.TabIndex = 15;
+            this.Export.Text = "Export Target";
+            this.Export.UseVisualStyleBackColor = true;
+            this.Export.Click += new System.EventHandler(this.Export_Click);
             // 
             // TargetsShow
             // 
             this.TargetsShow.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.TargetsShow.Location = new System.Drawing.Point(3, 3);
             this.TargetsShow.Name = "TargetsShow";
+            this.TargetsShow.ReadOnly = true;
             this.TargetsShow.Size = new System.Drawing.Size(627, 502);
             this.TargetsShow.TabIndex = 14;
             this.TargetsShow.VirtualMode = true;
             this.TargetsShow.Visible = false;
+            this.TargetsShow.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.TargetsShow_CellClick);
             // 
             // TargetBTN
             // 
@@ -302,13 +348,11 @@ namespace PGTA_P1
             this.TargetBTN.Controls.Add(this.label14);
             this.TargetBTN.Controls.Add(this.pictureBox10);
             this.TargetBTN.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.TargetBTN.Location = new System.Drawing.Point(202, 508);
+            this.TargetBTN.Location = new System.Drawing.Point(298, 508);
             this.TargetBTN.Name = "TargetBTN";
             this.TargetBTN.Size = new System.Drawing.Size(80, 25);
             this.TargetBTN.TabIndex = 13;
             this.TargetBTN.Click += new System.EventHandler(this.TargetBTN_Click);
-            this.TargetBTN.MouseLeave += new System.EventHandler(this.TargetBTN_MouseLeave);
-            this.TargetBTN.MouseHover += new System.EventHandler(this.TargetBTN_MouseHover);
             // 
             // label14
             // 
@@ -319,8 +363,6 @@ namespace PGTA_P1
             this.label14.TabIndex = 5;
             this.label14.Text = "Targets";
             this.label14.Click += new System.EventHandler(this.TargetBTN_Click);
-            this.label14.MouseLeave += new System.EventHandler(this.TargetBTN_MouseLeave);
-            this.label14.MouseHover += new System.EventHandler(this.TargetBTN_MouseHover);
             // 
             // pictureBox10
             // 
@@ -332,8 +374,6 @@ namespace PGTA_P1
             this.pictureBox10.TabIndex = 4;
             this.pictureBox10.TabStop = false;
             this.pictureBox10.Click += new System.EventHandler(this.TargetBTN_Click);
-            this.pictureBox10.MouseLeave += new System.EventHandler(this.TargetBTN_MouseLeave);
-            this.pictureBox10.MouseHover += new System.EventHandler(this.TargetBTN_MouseHover);
             // 
             // BuscarBTN
             // 
@@ -341,7 +381,7 @@ namespace PGTA_P1
             this.BuscarBTN.Controls.Add(this.label2);
             this.BuscarBTN.Controls.Add(this.pictureBox9);
             this.BuscarBTN.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.BuscarBTN.Location = new System.Drawing.Point(116, 508);
+            this.BuscarBTN.Location = new System.Drawing.Point(212, 508);
             this.BuscarBTN.Name = "BuscarBTN";
             this.BuscarBTN.Size = new System.Drawing.Size(80, 25);
             this.BuscarBTN.TabIndex = 12;
@@ -376,9 +416,9 @@ namespace PGTA_P1
             // 
             // Buscar
             // 
-            this.Buscar.Location = new System.Drawing.Point(7, 511);
+            this.Buscar.Location = new System.Drawing.Point(116, 511);
             this.Buscar.Name = "Buscar";
-            this.Buscar.Size = new System.Drawing.Size(100, 20);
+            this.Buscar.Size = new System.Drawing.Size(87, 20);
             this.Buscar.TabIndex = 11;
             this.Buscar.TextChanged += new System.EventHandler(this.Buscar_TextChanged);
             // 
@@ -489,6 +529,7 @@ namespace PGTA_P1
             this.DataBlocViwer.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.DataBlocViwer.Location = new System.Drawing.Point(636, 3);
             this.DataBlocViwer.Name = "DataBlocViwer";
+            this.DataBlocViwer.ReadOnly = true;
             this.DataBlocViwer.Size = new System.Drawing.Size(620, 502);
             this.DataBlocViwer.TabIndex = 1;
             // 
@@ -497,6 +538,7 @@ namespace PGTA_P1
             this.DataBlocksAll.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.DataBlocksAll.Location = new System.Drawing.Point(3, 3);
             this.DataBlocksAll.Name = "DataBlocksAll";
+            this.DataBlocksAll.ReadOnly = true;
             this.DataBlocksAll.Size = new System.Drawing.Size(627, 502);
             this.DataBlocksAll.TabIndex = 0;
             this.DataBlocksAll.VirtualMode = true;
@@ -546,7 +588,7 @@ namespace PGTA_P1
             this.Cat010BTN.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(209)))), ((int)(((byte)(222)))), ((int)(((byte)(230)))));
             this.Cat010BTN.Controls.Add(this.label5);
             this.Cat010BTN.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.Cat010BTN.Location = new System.Drawing.Point(378, 0);
+            this.Cat010BTN.Location = new System.Drawing.Point(222, 0);
             this.Cat010BTN.Name = "Cat010BTN";
             this.Cat010BTN.Size = new System.Drawing.Size(60, 25);
             this.Cat010BTN.TabIndex = 8;
@@ -572,7 +614,7 @@ namespace PGTA_P1
             this.Cat021BTN.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(209)))), ((int)(((byte)(222)))), ((int)(((byte)(230)))));
             this.Cat021BTN.Controls.Add(this.label6);
             this.Cat021BTN.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.Cat021BTN.Location = new System.Drawing.Point(444, 0);
+            this.Cat021BTN.Location = new System.Drawing.Point(288, 0);
             this.Cat021BTN.Name = "Cat021BTN";
             this.Cat021BTN.Size = new System.Drawing.Size(60, 25);
             this.Cat021BTN.TabIndex = 9;
@@ -599,7 +641,7 @@ namespace PGTA_P1
             this.AllCatBTN.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.AllCatBTN.Controls.Add(this.label7);
             this.AllCatBTN.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.AllCatBTN.Location = new System.Drawing.Point(510, 0);
+            this.AllCatBTN.Location = new System.Drawing.Point(354, 0);
             this.AllCatBTN.Name = "AllCatBTN";
             this.AllCatBTN.Size = new System.Drawing.Size(60, 25);
             this.AllCatBTN.TabIndex = 10;
@@ -611,7 +653,7 @@ namespace PGTA_P1
             // 
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.Location = new System.Drawing.Point(3, 6);
+            this.label7.Location = new System.Drawing.Point(3, 5);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(50, 13);
             this.label7.TabIndex = 5;
@@ -622,10 +664,6 @@ namespace PGTA_P1
             // 
             // PanelControlSuperior
             // 
-            this.PanelControlSuperior.Controls.Add(this.MultiBTN);
-            this.PanelControlSuperior.Controls.Add(this.PSRBTN);
-            this.PanelControlSuperior.Controls.Add(this.AllSBTN);
-            this.PanelControlSuperior.Controls.Add(this.AdsBTN);
             this.PanelControlSuperior.Controls.Add(this.MapVisor);
             this.PanelControlSuperior.Controls.Add(this.AllCatBTN);
             this.PanelControlSuperior.Controls.Add(this.TextVisorBTN);
@@ -633,7 +671,7 @@ namespace PGTA_P1
             this.PanelControlSuperior.Controls.Add(this.Cat021BTN);
             this.PanelControlSuperior.Location = new System.Drawing.Point(78, 31);
             this.PanelControlSuperior.Name = "PanelControlSuperior";
-            this.PanelControlSuperior.Size = new System.Drawing.Size(1017, 25);
+            this.PanelControlSuperior.Size = new System.Drawing.Size(421, 25);
             this.PanelControlSuperior.TabIndex = 0;
             this.PanelControlSuperior.Visible = false;
             // 
@@ -642,7 +680,7 @@ namespace PGTA_P1
             this.MultiBTN.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(209)))), ((int)(((byte)(222)))), ((int)(((byte)(230)))));
             this.MultiBTN.Controls.Add(this.MultiBTNl);
             this.MultiBTN.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.MultiBTN.Location = new System.Drawing.Point(735, 0);
+            this.MultiBTN.Location = new System.Drawing.Point(3, 0);
             this.MultiBTN.Name = "MultiBTN";
             this.MultiBTN.Size = new System.Drawing.Size(60, 25);
             this.MultiBTN.TabIndex = 13;
@@ -668,7 +706,7 @@ namespace PGTA_P1
             this.PSRBTN.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(209)))), ((int)(((byte)(222)))), ((int)(((byte)(230)))));
             this.PSRBTN.Controls.Add(this.label8);
             this.PSRBTN.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.PSRBTN.Location = new System.Drawing.Point(803, 0);
+            this.PSRBTN.Location = new System.Drawing.Point(69, 0);
             this.PSRBTN.Name = "PSRBTN";
             this.PSRBTN.Size = new System.Drawing.Size(60, 25);
             this.PSRBTN.TabIndex = 14;
@@ -695,7 +733,7 @@ namespace PGTA_P1
             this.AllSBTN.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.AllSBTN.Controls.Add(this.label10);
             this.AllSBTN.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.AllSBTN.Location = new System.Drawing.Point(939, 0);
+            this.AllSBTN.Location = new System.Drawing.Point(201, 0);
             this.AllSBTN.Name = "AllSBTN";
             this.AllSBTN.Size = new System.Drawing.Size(60, 25);
             this.AllSBTN.TabIndex = 16;
@@ -721,7 +759,7 @@ namespace PGTA_P1
             this.AdsBTN.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(209)))), ((int)(((byte)(222)))), ((int)(((byte)(230)))));
             this.AdsBTN.Controls.Add(this.label9);
             this.AdsBTN.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.AdsBTN.Location = new System.Drawing.Point(871, 0);
+            this.AdsBTN.Location = new System.Drawing.Point(135, 0);
             this.AdsBTN.Name = "AdsBTN";
             this.AdsBTN.Size = new System.Drawing.Size(60, 25);
             this.AdsBTN.TabIndex = 15;
@@ -763,15 +801,179 @@ namespace PGTA_P1
             this.DataInf.TabIndex = 8;
             this.DataInf.Text = "No data loaded";
             // 
-            // Export
+            // PanelSources1
             // 
-            this.Export.Location = new System.Drawing.Point(1162, 509);
-            this.Export.Name = "Export";
-            this.Export.Size = new System.Drawing.Size(94, 23);
-            this.Export.TabIndex = 15;
-            this.Export.Text = "Export Target";
-            this.Export.UseVisualStyleBackColor = true;
-            this.Export.Click += new System.EventHandler(this.Export_Click);
+            this.PanelSources1.Controls.Add(this.PSRBTN);
+            this.PanelSources1.Controls.Add(this.AllSBTN);
+            this.PanelSources1.Controls.Add(this.AdsBTN);
+            this.PanelSources1.Controls.Add(this.MultiBTN);
+            this.PanelSources1.Location = new System.Drawing.Point(518, 31);
+            this.PanelSources1.Name = "PanelSources1";
+            this.PanelSources1.Size = new System.Drawing.Size(263, 25);
+            this.PanelSources1.TabIndex = 17;
+            this.PanelSources1.Visible = false;
+            // 
+            // Map
+            // 
+            this.Map.Bearing = 0F;
+            this.Map.CanDragMap = true;
+            this.Map.EmptyTileColor = System.Drawing.Color.Navy;
+            this.Map.GrayScaleMode = false;
+            this.Map.HelperLineOption = GMap.NET.WindowsForms.HelperLineOptions.DontShow;
+            this.Map.LevelsKeepInMemmory = 5;
+            this.Map.Location = new System.Drawing.Point(184, 46);
+            this.Map.MarkersEnabled = true;
+            this.Map.MaxZoom = 2;
+            this.Map.MinZoom = 2;
+            this.Map.MouseWheelZoomEnabled = true;
+            this.Map.MouseWheelZoomType = GMap.NET.MouseWheelZoomType.MousePositionAndCenter;
+            this.Map.Name = "Map";
+            this.Map.NegativeMode = false;
+            this.Map.PolygonsEnabled = true;
+            this.Map.RetryLoadTile = 0;
+            this.Map.RoutesEnabled = true;
+            this.Map.ScaleMode = GMap.NET.WindowsForms.ScaleModes.Integer;
+            this.Map.SelectedAreaFillColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(65)))), ((int)(((byte)(105)))), ((int)(((byte)(225)))));
+            this.Map.ShowTileGridLines = false;
+            this.Map.Size = new System.Drawing.Size(1070, 530);
+            this.Map.TabIndex = 0;
+            this.Map.Zoom = 0D;
+            this.Map.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.Map_MouseDoubleClick);
+            // 
+            // MapVisorPanel
+            // 
+            this.MapVisorPanel.Controls.Add(this.label16);
+            this.MapVisorPanel.Controls.Add(this.CurrenTargets);
+            this.MapVisorPanel.Controls.Add(this.Map);
+            this.MapVisorPanel.Location = new System.Drawing.Point(11, 63);
+            this.MapVisorPanel.Name = "MapVisorPanel";
+            this.MapVisorPanel.Size = new System.Drawing.Size(1259, 536);
+            this.MapVisorPanel.TabIndex = 18;
+            this.MapVisorPanel.Visible = false;
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label16.Location = new System.Drawing.Point(4, 53);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(95, 13);
+            this.label16.TabIndex = 6;
+            this.label16.Text = "Current Targets";
+            // 
+            // CurrenTargets
+            // 
+            this.CurrenTargets.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.CurrenTargets.Location = new System.Drawing.Point(3, 70);
+            this.CurrenTargets.Name = "CurrenTargets";
+            this.CurrenTargets.Size = new System.Drawing.Size(178, 244);
+            this.CurrenTargets.TabIndex = 1;
+            // 
+            // Timer
+            // 
+            this.Timer.Interval = 1000;
+            this.Timer.Tick += new System.EventHandler(this.Timer_Tick);
+            // 
+            // PlayPause
+            // 
+            this.PlayPause.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("PlayPause.BackgroundImage")));
+            this.PlayPause.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.PlayPause.Image = ((System.Drawing.Image)(resources.GetObject("PlayPause.Image")));
+            this.PlayPause.InitialImage = ((System.Drawing.Image)(resources.GetObject("PlayPause.InitialImage")));
+            this.PlayPause.Location = new System.Drawing.Point(116, 1);
+            this.PlayPause.Name = "PlayPause";
+            this.PlayPause.Size = new System.Drawing.Size(25, 24);
+            this.PlayPause.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.PlayPause.TabIndex = 19;
+            this.PlayPause.TabStop = false;
+            this.PlayPause.Click += new System.EventHandler(this.PlayPause_Click);
+            this.PlayPause.MouseLeave += new System.EventHandler(this.PlayPause_MouseLeave);
+            this.PlayPause.MouseHover += new System.EventHandler(this.PlayPause_MouseHover);
+            // 
+            // TempsLBL
+            // 
+            this.TempsLBL.AutoSize = true;
+            this.TempsLBL.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.TempsLBL.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.TempsLBL.Location = new System.Drawing.Point(4, 4);
+            this.TempsLBL.Name = "TempsLBL";
+            this.TempsLBL.Size = new System.Drawing.Size(72, 18);
+            this.TempsLBL.TabIndex = 20;
+            this.TempsLBL.Text = "00:00:00";
+            this.TempsLBL.Click += new System.EventHandler(this.TempsLBL_Click);
+            // 
+            // TempsPanel
+            // 
+            this.TempsPanel.Controls.Add(this.Velo);
+            this.TempsPanel.Controls.Add(this.MesV);
+            this.TempsPanel.Controls.Add(this.MenysV);
+            this.TempsPanel.Controls.Add(this.Refresh);
+            this.TempsPanel.Controls.Add(this.TempsLBL);
+            this.TempsPanel.Controls.Add(this.PlayPause);
+            this.TempsPanel.Location = new System.Drawing.Point(828, 31);
+            this.TempsPanel.Name = "TempsPanel";
+            this.TempsPanel.Size = new System.Drawing.Size(248, 25);
+            this.TempsPanel.TabIndex = 7;
+            this.TempsPanel.Visible = false;
+            // 
+            // MesV
+            // 
+            this.MesV.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("MesV.BackgroundImage")));
+            this.MesV.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.MesV.Image = ((System.Drawing.Image)(resources.GetObject("MesV.Image")));
+            this.MesV.InitialImage = ((System.Drawing.Image)(resources.GetObject("MesV.InitialImage")));
+            this.MesV.Location = new System.Drawing.Point(221, 1);
+            this.MesV.Name = "MesV";
+            this.MesV.Size = new System.Drawing.Size(25, 24);
+            this.MesV.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.MesV.TabIndex = 23;
+            this.MesV.TabStop = false;
+            this.MesV.Click += new System.EventHandler(this.MesV_Click);
+            this.MesV.MouseLeave += new System.EventHandler(this.MesV_MouseLeave);
+            this.MesV.MouseHover += new System.EventHandler(this.MesV_MouseHover);
+            // 
+            // MenysV
+            // 
+            this.MenysV.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("MenysV.BackgroundImage")));
+            this.MenysV.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.MenysV.Image = ((System.Drawing.Image)(resources.GetObject("MenysV.Image")));
+            this.MenysV.InitialImage = ((System.Drawing.Image)(resources.GetObject("MenysV.InitialImage")));
+            this.MenysV.Location = new System.Drawing.Point(148, 1);
+            this.MenysV.Name = "MenysV";
+            this.MenysV.Size = new System.Drawing.Size(25, 24);
+            this.MenysV.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.MenysV.TabIndex = 22;
+            this.MenysV.TabStop = false;
+            this.MenysV.Click += new System.EventHandler(this.MenysV_Click);
+            this.MenysV.MouseLeave += new System.EventHandler(this.MenysV_MouseLeave);
+            this.MenysV.MouseHover += new System.EventHandler(this.MenysV_MouseHover);
+            // 
+            // Refresh
+            // 
+            this.Refresh.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("Refresh.BackgroundImage")));
+            this.Refresh.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.Refresh.Image = ((System.Drawing.Image)(resources.GetObject("Refresh.Image")));
+            this.Refresh.InitialImage = ((System.Drawing.Image)(resources.GetObject("Refresh.InitialImage")));
+            this.Refresh.Location = new System.Drawing.Point(85, 1);
+            this.Refresh.Name = "Refresh";
+            this.Refresh.Size = new System.Drawing.Size(25, 24);
+            this.Refresh.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.Refresh.TabIndex = 21;
+            this.Refresh.TabStop = false;
+            this.Refresh.Click += new System.EventHandler(this.Refresh_Click);
+            this.Refresh.MouseLeave += new System.EventHandler(this.Refresh_MouseLeave);
+            this.Refresh.MouseHover += new System.EventHandler(this.Refresh_MouseHover);
+            // 
+            // Velo
+            // 
+            this.Velo.AutoSize = true;
+            this.Velo.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.Velo.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Velo.Location = new System.Drawing.Point(179, 4);
+            this.Velo.Name = "Velo";
+            this.Velo.Size = new System.Drawing.Size(40, 18);
+            this.Velo.TabIndex = 24;
+            this.Velo.Text = "30 s";
             // 
             // Form1
             // 
@@ -779,7 +981,10 @@ namespace PGTA_P1
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.ClientSize = new System.Drawing.Size(1284, 611);
+            this.Controls.Add(this.TempsPanel);
+            this.Controls.Add(this.MapVisorPanel);
             this.Controls.Add(this.DataInf);
+            this.Controls.Add(this.PanelSources1);
             this.Controls.Add(this.PanelControlSuperior);
             this.Controls.Add(this.TextVisorPanel);
             this.Controls.Add(this.LoadBTN);
@@ -838,6 +1043,16 @@ namespace PGTA_P1
             this.AdsBTN.ResumeLayout(false);
             this.AdsBTN.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).EndInit();
+            this.PanelSources1.ResumeLayout(false);
+            this.MapVisorPanel.ResumeLayout(false);
+            this.MapVisorPanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.CurrenTargets)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.PlayPause)).EndInit();
+            this.TempsPanel.ResumeLayout(false);
+            this.TempsPanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.MesV)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.MenysV)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Refresh)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -899,6 +1114,20 @@ namespace PGTA_P1
         private System.Windows.Forms.PictureBox pictureBox10;
         private System.Windows.Forms.DataGridView TargetsShow;
         private System.Windows.Forms.Button Export;
+        private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.Panel PanelSources1;
+        private GMap.NET.WindowsForms.GMapControl Map;
+        private System.Windows.Forms.Panel MapVisorPanel;
+        private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.DataGridView CurrenTargets;
+        private System.Windows.Forms.Timer Timer;
+        private System.Windows.Forms.PictureBox PlayPause;
+        private System.Windows.Forms.Label TempsLBL;
+        private System.Windows.Forms.Panel TempsPanel;
+        private System.Windows.Forms.PictureBox Refresh;
+        private System.Windows.Forms.PictureBox MesV;
+        private System.Windows.Forms.PictureBox MenysV;
+        private System.Windows.Forms.Label Velo;
     }
 }
 

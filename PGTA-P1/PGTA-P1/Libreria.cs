@@ -721,6 +721,8 @@ namespace PGTA_P1
                     double FlFin = FL * 1 / 4;
                     DeCode.Add(Convert.ToString(FlFin));
 
+                    this.Info.units.Add("-");
+                    this.Info.units.Add("-");
                     this.Info.units.Add("FL");
                 }
                 else if (Info.DataItemID[1] == "091")
@@ -3053,7 +3055,10 @@ namespace PGTA_P1
         public string V = "-";
         public string From;
 
-        public List<Coordenada> Coordenades = new List<Coordenada>();
+        public List<Coordenada> CoordenadesADSB = new List<Coordenada>();
+        public List<Coordenada> CoordenadesMULTI = new List<Coordenada>();
+        public List<Coordenada> CoordenadesSMR = new List<Coordenada>();
+
         public Target(List<DataBlock> DataBlocksList)
         {
             DataBlocks = DataBlocksList;
@@ -3066,18 +3071,6 @@ namespace PGTA_P1
                 Bucle_From();
                 GetCoordenades();
             }
-
-            //string[] Info = DataBlocks[0].StringLin();
-            //ID = Info[2];
-            ////TargetID = DataBlocks[0].TargetID;
-            //V = Info[3];
-            //int i = 1; 
-            //while((V == "No Data")&&(i<DataBlocks.Count()))
-            //{
-            //    V = DataBlocks[0].StringLin()[3];
-            //    i++;
-            //}
-
         }
 
         private void Bucle_TID()
@@ -3168,6 +3161,9 @@ namespace PGTA_P1
 
         public void GetCoordenades()
         {
+            string a = "";
+            string b = "";
+            string h = "";
             foreach (DataBlock DB in DataBlocks)
             {
                 if (DB.From == "ADS-B")
@@ -3176,8 +3172,29 @@ namespace PGTA_P1
                     List<DataField> Encontrado = DB.DataFields.Where(x => x.Info.DataItemID[1] == "131").ToList();
                     if (Encontrado.Count() != 0)
                     {
-                        Coordenades.Add(new Coordenada(Encontrado[0].DeCode[0], Encontrado[0].DeCode[2], "WGS", f));
+                        a = Encontrado[0].DeCode[0];
+                        b = Encontrado[0].DeCode[2];
                     }
+                    Encontrado = DB.DataFields.Where(x => x.Info.DataItemID[1] == "140").ToList();
+                    if (Encontrado.Count() != 0)
+                    {
+                        double New = Convert.ToDouble(Encontrado[0].DeCode[0]) / 3.281;
+                        h = New.ToString();
+                    }
+                    else
+                    {
+                        Encontrado = DB.DataFields.Where(x => x.Info.DataItemID[1] == "145").ToList();
+                        if (Encontrado.Count() != 0)
+                        {
+                            double New = Convert.ToDouble(Encontrado[0].DeCode[0]) * 100 / 3.281;
+                            h = New.ToString();
+                        }
+                        else
+                        {
+                            h = "4";
+                        }
+                    }
+                    CoordenadesADSB.Add(new Coordenada(a, b, h, "WGS", f));
                 }
                 else if (DB.From == "Multi.")
                 {
@@ -3185,8 +3202,20 @@ namespace PGTA_P1
                     List<DataField> Encontrado = DB.DataFields.Where(x => x.Info.DataItemID[1] == "042").ToList();
                     if (Encontrado.Count() != 0)
                     {
-                        Coordenades.Add(new Coordenada(Encontrado[0].DeCode[0], Encontrado[0].DeCode[1], "X-Y", f));
+                        a = Encontrado[0].DeCode[0];
+                        b = Encontrado[0].DeCode[1];
                     }
+                    Encontrado = DB.DataFields.Where(x => x.Info.DataItemID[1] == "090").ToList();
+                    if (Encontrado.Count() != 0)
+                    {
+                        double New = Convert.ToDouble(Encontrado[0].DeCode[2]) * 100 / 3.281;
+                        h = New.ToString();
+                    }
+                    else
+                    {
+                        h = "4";
+                    }
+                    CoordenadesMULTI.Add(new Coordenada(a, b, h, "X-Y", f));
                 }
                 else if (DB.From == "SMR")
                 {
@@ -3194,14 +3223,14 @@ namespace PGTA_P1
                     List<DataField> Encontrado = DB.DataFields.Where(x => x.Info.DataItemID[1] == "042").ToList();
                     if (Encontrado.Count() != 0)
                     {
-                        Coordenades.Add(new Coordenada(Encontrado[0].DeCode[0], Encontrado[0].DeCode[1], "X-Y", f));
+                        CoordenadesSMR.Add(new Coordenada(Encontrado[0].DeCode[0], Encontrado[0].DeCode[1],"4", "X-Y", f));
                     }
                     else
                     {
                         Encontrado = DB.DataFields.Where(x => x.Info.DataItemID[1] == "040").ToList();
                         if (Encontrado.Count() != 0)
                         {
-                            Coordenades.Add(new Coordenada(Encontrado[0].DeCode[0], Encontrado[0].DeCode[1], "POL", f));
+                            CoordenadesSMR.Add(new Coordenada(Encontrado[0].DeCode[0], Encontrado[0].DeCode[1], "4", "POL", f));
                         }
                     }
                 }
@@ -3220,10 +3249,11 @@ namespace PGTA_P1
         string r;
         string alpha;
 
+        string h;
         string type;
         string from;
 
-        public Coordenada(string a, string b, string t, string f)
+        public Coordenada(string a, string b, string c, string t, string f)
         {
             if (t == "WGS")
             {
@@ -3246,31 +3276,35 @@ namespace PGTA_P1
                 type = t;
                 from = f;
             }
+            h = c;
         }
 
         public string[] Retrun()
         {
-            string[] v = new string[4];
+            string[] v = new string[5];
             if (type == "WGS")
             {
                 v[0] = Lon;
                 v[1] = Lat;
-                v[2] = type;
-                v[3] = from;
+                v[2] = h;
+                v[3] = type;
+                v[4] = from;
             }
             else if (type == "X-Y")
             {
                 v[0] = x;
                 v[1] = y;
-                v[2] = type;
-                v[3] = from;
+                v[2] = h;
+                v[3] = type;
+                v[4] = from;
             }
             else 
             {
                 v[0] = r;
                 v[1] = alpha;
-                v[2] = type;
-                v[3] = from;
+                v[2] = h;
+                v[3] = type;
+                v[4] = from;
             }
 
             return v;
