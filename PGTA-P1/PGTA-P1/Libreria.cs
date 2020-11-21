@@ -1,20 +1,10 @@
 ﻿using Microsoft.VisualBasic;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Diagnostics.PerformanceData;
-using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Globalization;
 using System.IO;
-using System.IO.Ports;
 using System.Linq;
-using System.Net.Http;
-using System.Runtime.Remoting.Metadata.W3cXsd2001;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+using MultiCAT6.Utils;
 
 namespace PGTA_P1
 {
@@ -758,11 +748,7 @@ namespace PGTA_P1
                     double Time_S = Convert.ToDouble(Time_Dec) / 128;
 
                     TimeSpan t = TimeSpan.FromSeconds(Time_S);
-                    string answer = string.Format("{0:D2}h:{1:D2}m:{2:D2}s:{3:D3}ms",
-                                    t.Hours,
-                                    t.Minutes,
-                                    t.Seconds,
-                                    t.Milliseconds);
+                    string answer = t.ToString("c");
                     DeCode.Add(answer);
 
                     this.Info.units.Add("UTC, form midnight");
@@ -1594,11 +1580,7 @@ namespace PGTA_P1
                     int TAP_Dec = BitConverter.ToInt32(TAP, 0);
                     double TAP_Dou = Convert.ToDouble(TAP_Dec) / 128;
                     TimeSpan t = TimeSpan.FromSeconds(TAP_Dou);
-                    string answer = string.Format("{0:D2}h:{1:D2}m:{2:D2}s:{3:D3}ms",
-                                    t.Hours,
-                                    t.Minutes,
-                                    t.Seconds,
-                                    t.Milliseconds);
+                    string answer = t.ToString("c");
                     DeCode.Add(answer);
 
                     this.Info.units.Add("UTC");
@@ -1628,11 +1610,7 @@ namespace PGTA_P1
                     double TMRP_Dou = Convert.ToDouble(TMRP_Dec) / 128;
 
                     TimeSpan t = TimeSpan.FromSeconds(TMRP_Dou);
-                    string answer = string.Format("{0:D2}h:{1:D2}m:{2:D2}s:{3:D3}ms",
-                                    t.Hours,
-                                    t.Minutes,
-                                    t.Seconds,
-                                    t.Milliseconds);
+                    string answer = t.ToString("c");
                     DeCode.Add(answer);
 
                     this.Info.units.Add("UTC");
@@ -1687,11 +1665,7 @@ namespace PGTA_P1
 
                     double TMRV_Dec = (BitConverter.ToInt32(TMRV, 0)) / 128;
                     TimeSpan t = TimeSpan.FromSeconds(TMRV_Dec);
-                    string answer = string.Format("{0:D2}h:{1:D2}m:{2:D2}s:{3:D3}ms",
-                                    t.Hours,
-                                    t.Minutes,
-                                    t.Seconds,
-                                    t.Milliseconds);
+                    string answer = t.ToString("c");
                     DeCode.Add(answer);
 
                     this.Info.units.Add("UTC");
@@ -3059,6 +3033,9 @@ namespace PGTA_P1
         public List<Coordenada> CoordenadesMULTI = new List<Coordenada>();
         public List<Coordenada> CoordenadesSMR = new List<Coordenada>();
 
+        TimeSpan Inici; //Temps d'acció de la primera coordenada   
+        TimeSpan Final; //Temps d'acció de la última coordenada
+
         public Target(List<DataBlock> DataBlocksList)
         {
             DataBlocks = DataBlocksList;
@@ -3164,6 +3141,7 @@ namespace PGTA_P1
             string a = "";
             string b = "";
             string h = "";
+            TimeSpan M = new TimeSpan(0);
             foreach (DataBlock DB in DataBlocks)
             {
                 if (DB.From == "ADS-B")
@@ -3194,7 +3172,13 @@ namespace PGTA_P1
                             h = "4";
                         }
                     }
-                    CoordenadesADSB.Add(new Coordenada(a, b, h, "WGS", f));
+                    Encontrado = DB.DataFields.Where(x => x.Info.DataItemID[1] == "073").ToList();
+                    if (Encontrado.Count() != 0)
+                    {
+                        M = TimeSpan.Parse(Encontrado[0].DeCode[0]);
+                    }
+                    if ((a != "") && (b != "") && (M != new TimeSpan(0)))
+                        CoordenadesADSB.Add(new Coordenada(a, b, h, "WGS", f, M));
                 }
                 else if (DB.From == "Multi.")
                 {
@@ -3215,23 +3199,37 @@ namespace PGTA_P1
                     {
                         h = "4";
                     }
-                    CoordenadesMULTI.Add(new Coordenada(a, b, h, "X-Y", f));
+                    Encontrado = DB.DataFields.Where(x => x.Info.DataItemID[1] == "140").ToList();
+                    if (Encontrado.Count() != 0)
+                    {
+                        M = TimeSpan.Parse(Encontrado[0].DeCode[0]);
+                    }
+                    if((a!="")&&(b!="")&&(M!=new TimeSpan(0)))
+                        CoordenadesMULTI.Add(new Coordenada(a, b, h, "X-Y", f, M));
                 }
                 else if (DB.From == "SMR")
                 {
                     string f = "SMR";
                     List<DataField> Encontrado = DB.DataFields.Where(x => x.Info.DataItemID[1] == "042").ToList();
+                    Coordenada A = new Coordenada();
                     if (Encontrado.Count() != 0)
                     {
-                        CoordenadesSMR.Add(new Coordenada(Encontrado[0].DeCode[0], Encontrado[0].DeCode[1],"4", "X-Y", f));
+                        A = new Coordenada(Encontrado[0].DeCode[0], Encontrado[0].DeCode[1],"4", "X-Y", f, M);
+                    }
+                    Encontrado = DB.DataFields.Where(x => x.Info.DataItemID[1] == "140").ToList();
+                    if (Encontrado.Count() != 0)
+                    {
+                        M = TimeSpan.Parse(Encontrado[0].DeCode[0]);
+                        A.Moment = M;
+                        CoordenadesSMR.Add(A);
                     }
                     else
                     {
-                        Encontrado = DB.DataFields.Where(x => x.Info.DataItemID[1] == "040").ToList();
-                        if (Encontrado.Count() != 0)
-                        {
-                            CoordenadesSMR.Add(new Coordenada(Encontrado[0].DeCode[0], Encontrado[0].DeCode[1], "4", "POL", f));
-                        }
+                        //Encontrado = DB.DataFields.Where(x => x.Info.DataItemID[1] == "040").ToList();
+                        //if (Encontrado.Count() != 0)
+                        //{
+                        //    CoordenadesSMR.Add(new Coordenada(Encontrado[0].DeCode[0], Encontrado[0].DeCode[1], "4", "POL", f));
+                        //}
                     }
                 }
             }
@@ -3240,78 +3238,148 @@ namespace PGTA_P1
 
     public class Coordenada
     {
-        string Lon;
-        string Lat;
+        GeoUtils utils = new GeoUtils();
+        // For WGS 
+        string Lon { get; set; } // We use it in degrees, gmap uses degrees also but GeoUtils uses Radian 
+        string Lat { get; set; } // We use it in degrees, gmap uses degrees also but GeoUtils uses Radian 
+        public string h { get; set; }
+        // For radar cartesian
+        public string x_r { get; set; }
+        public string y_r { get; set; }
+        public string z_r { get; set; }
+        // For system cartesian
+        public string x { get; set; }
+        public string y { get; set; }
+        public string z { get; set; }
 
-        string x;
-        string y;
+        // Temps d'actuació
+        public TimeSpan Moment;
 
-        string r;
-        string alpha;
-
-        string h;
         string type;
         string from;
 
-        public Coordenada(string a, string b, string c, string t, string f)
+        public CoordinatesWGS84 coorRadar; // Radar ubication (in radians), podemos eliminarlo, es por si se necesita aen alguna prueba 
+
+        public Coordenada()
+        { }
+
+        public Coordenada(string a, string b, string c, string type, string from, TimeSpan M)
         {
-            if (t == "WGS")
+            if (type == "WGS")
             {
                 Lon = a;
                 Lat = b;
-                type = t;
-                from = f;
-            }
-            else if (t == "X-Y")
-            {
-                x = a;
-                y = b;
-                type = t;
-                from = f;
+                h = c;
             }
             else
             {
-                r = a;
-                alpha = b;
-                type = t;
-                from = f;
+                x_r = a;
+                y_r = b;
+                z_r = c;
             }
-            h = c;
+
+            this.Moment = M;
+            this.type = type;
+            this.from = from;
+            To_Geoodesic_and_SystCartesian();
         }
 
-        public string[] Retrun()
+        public string[] RetrunGeo()
         {
             string[] v = new string[5];
-            if (type == "WGS")
-            {
-                v[0] = Lon;
-                v[1] = Lat;
-                v[2] = h;
-                v[3] = type;
-                v[4] = from;
-            }
-            else if (type == "X-Y")
-            {
-                v[0] = x;
-                v[1] = y;
-                v[2] = h;
-                v[3] = type;
-                v[4] = from;
-            }
-            else 
-            {
-                v[0] = r;
-                v[1] = alpha;
-                v[2] = h;
-                v[3] = type;
-                v[4] = from;
-            }
-
+            v[0] = Lon;
+            v[1] = Lat;
+            v[2] = h;
+            v[3] = type;
+            v[4] = from;
             return v;
-         }
+        }
+        public string[] RetrunSysCart()
+        {
+            string[] v = new string[5];
+            v[0] = x;
+            v[1] = y;
+            v[2] = h;
+            v[3] = type;
+            v[4] = from;
+            return v;
+        }
+        public string[] RetrunRadarCart()
+        {
+            string[] v = new string[5];
+            v[0] = x_r;
+            v[1] = y_r;
+            v[2] = z_r;
+            v[3] = type;
+            v[4] = from;
+            return v;
+        }
+
+        private void To_Geoodesic_and_SystCartesian()
+        {
+            if (this.from == "SMR" || this.from == "Multi.")
+            {
+                double x_r = Convert.ToDouble(this.x_r);
+                double y_r = Convert.ToDouble(this.y_r);
+                double z_r = Convert.ToDouble(this.z_r);
+
+                if (this.from == "SMR")
+                {
+                    double lat = LatLonToDegrees(41, 17, 44, 226, 0);
+                    double lon = LatLonToDegrees(2, 5, 42, 411, 0);
+                    coorRadar = new CoordinatesWGS84(lat, lon);
+                    utils.setCenterProjection(new CoordinatesWGS84(lat * Math.PI / 180, lon * Math.PI / 180));
+                }
+                else
+                {
+                    double lat = LatLonToDegrees(41, 17, 49, 426, 0);
+                    double lon = LatLonToDegrees(2, 4, 42, 410, 0);
+                    coorRadar = new CoordinatesWGS84(lat * Math.PI / 180, lon * Math.PI / 180);
+                    utils.setCenterProjection(coorRadar);
+                }
+                CoordinatesXYZ coorRadarXYZ = new CoordinatesXYZ { X = x_r, Y = y_r, Z = z_r };
+
+                // SMR    41 17 44 226 N 002 05 42 411 E
+                // Multi  41 17 49 426 N 002 04 42 410 E_____41,2989166666667 ___2,08023148148148
+
+                // Geodesic from radar cartesian 
+                CoordinatesXYZ coorGeocentric = utils.change_radar_cartesian2geocentric(coorRadar, coorRadarXYZ);
+                CoordinatesWGS84 coorGeodesic = utils.change_geocentric2geodesic(coorGeocentric);
+
+                this.Lat = (coorGeodesic.Lat * 180 / Math.PI).ToString();
+                this.Lon = (coorGeodesic.Lon * 180 / Math.PI).ToString();
+                this.h = coorGeodesic.Height.ToString();
+                this.type = "WGS";
+
+                // Cartesian from radar cartesian
+                CoordinatesXYZ coorSysCart = utils.change_radar_cartesian2system_cartesian(coorRadar, coorRadarXYZ);
+                this.x = coorSysCart.X.ToString();
+                this.y = coorSysCart.Y.ToString();
+                this.z = coorSysCart.Z.ToString();
+                this.type = "SysCart";
+
+            }
+            else
+            {
+                //CoordinatesWGS84 coorGeodesic = new CoordinatesWGS84(Convert.ToDouble(this.Lat) * Math.PI / 180, Convert.ToDouble(this.Lon) * Math.PI / 180, Convert.ToDouble(this.h));
+                //CoordinatesXYZ coorGeocentric = utils.change_geodesic2geocentric(coorGeodesic);
+                //CoordinatesXYZ coorSysCart = utils.change_geocentric2system_cartesian(coorGeocentric);
+                //this.x = coorSysCart.X.ToString();
+                //this.y = coorSysCart.Y.ToString();
+                //this.h = coorSysCart.Z.ToString();
+                //this.type = "SysCart";
+            }
+        }
+        private double LatLonToDegrees(double d1, double d2, double d3, double d4, int ns)
+        {
+            // ns == 0, means North emis  
+            double d = d1 + (d2 / 60.0) + (d3 / 3600.0) + d4 / (3600.0 * 60);
+            if (ns == 1)
+                d *= -1.0;
+            return d;
+        }
     }
 
-    //A la espera de ser obsolet
     public class Hertz_Hülsmeyer
     {
         public static CatLib[] CarregarCategories()
@@ -3454,4 +3522,77 @@ namespace PGTA_P1
             }
         }
     }
+
+    //public class Coordenada
+    //{
+    //    string Lon;
+    //    string Lat;
+
+    //    string x;
+    //    string y;
+
+    //    string r;
+    //    string alpha;
+
+    //    string h;
+    //    string type;
+    //    string from;
+
+    //    public Coordenada(string a, string b, string c, string t, string f)
+    //    {
+    //        if (t == "WGS")
+    //        {
+    //            Lon = a;
+    //            Lat = b;
+    //            type = t;
+    //        }
+    //        else if (t == "X-Y")
+    //        {
+    //            x = a;
+    //            y = b;
+    //            type = t;
+    //        }
+    //        else
+    //        {
+    //            r = a;
+    //            alpha = b;
+    //            type = t;
+    //        }
+    //        from = f;
+    //        h = c;
+    //    }
+
+    //    public string[] Retrun()
+    //    {
+    //        string[] v = new string[5];
+    //        if (type == "WGS")
+    //        {
+    //            v[0] = Lon;
+    //            v[1] = Lat;
+    //            v[2] = h;
+    //            v[3] = type;
+    //            v[4] = from;
+    //        }
+    //        else if (type == "X-Y")
+    //        {
+    //            v[0] = x;
+    //            v[1] = y;
+    //            v[2] = h;
+    //            v[3] = type;
+    //            v[4] = from;
+    //        }
+    //        else 
+    //        {
+    //            v[0] = r;
+    //            v[1] = alpha;
+    //            v[2] = h;
+    //            v[3] = type;
+    //            v[4] = from;
+    //        }
+
+    //        return v;
+    //     }
+    //}
+
+    //A la espera de ser obsolet
 }

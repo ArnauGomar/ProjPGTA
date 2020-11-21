@@ -50,7 +50,7 @@ namespace PGTA_P1
             this.Export = new System.Windows.Forms.Button();
             this.TargetsShow = new System.Windows.Forms.DataGridView();
             this.TargetBTN = new System.Windows.Forms.Panel();
-            this.label14 = new System.Windows.Forms.Label();
+            this.NamT = new System.Windows.Forms.Label();
             this.pictureBox10 = new System.Windows.Forms.PictureBox();
             this.BuscarBTN = new System.Windows.Forms.Panel();
             this.label2 = new System.Windows.Forms.Label();
@@ -96,10 +96,10 @@ namespace PGTA_P1
             this.PlayPause = new System.Windows.Forms.PictureBox();
             this.TempsLBL = new System.Windows.Forms.Label();
             this.TempsPanel = new System.Windows.Forms.Panel();
+            this.Velo = new System.Windows.Forms.Label();
             this.MesV = new System.Windows.Forms.PictureBox();
             this.MenysV = new System.Windows.Forms.PictureBox();
             this.Refresh = new System.Windows.Forms.PictureBox();
-            this.Velo = new System.Windows.Forms.Label();
             this.BarraSuperior.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox8)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -328,7 +328,6 @@ namespace PGTA_P1
             this.Export.TabIndex = 15;
             this.Export.Text = "Export Target";
             this.Export.UseVisualStyleBackColor = true;
-            this.Export.Click += new System.EventHandler(this.Export_Click);
             // 
             // TargetsShow
             // 
@@ -345,7 +344,7 @@ namespace PGTA_P1
             // TargetBTN
             // 
             this.TargetBTN.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(209)))), ((int)(((byte)(222)))), ((int)(((byte)(230)))));
-            this.TargetBTN.Controls.Add(this.label14);
+            this.TargetBTN.Controls.Add(this.NamT);
             this.TargetBTN.Controls.Add(this.pictureBox10);
             this.TargetBTN.Cursor = System.Windows.Forms.Cursors.Hand;
             this.TargetBTN.Location = new System.Drawing.Point(298, 508);
@@ -354,15 +353,15 @@ namespace PGTA_P1
             this.TargetBTN.TabIndex = 13;
             this.TargetBTN.Click += new System.EventHandler(this.TargetBTN_Click);
             // 
-            // label14
+            // NamT
             // 
-            this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(8, 6);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(43, 13);
-            this.label14.TabIndex = 5;
-            this.label14.Text = "Targets";
-            this.label14.Click += new System.EventHandler(this.TargetBTN_Click);
+            this.NamT.AutoSize = true;
+            this.NamT.Location = new System.Drawing.Point(8, 6);
+            this.NamT.Name = "NamT";
+            this.NamT.Size = new System.Drawing.Size(43, 13);
+            this.NamT.TabIndex = 5;
+            this.NamT.Text = "Targets";
+            this.NamT.Click += new System.EventHandler(this.TargetBTN_Click);
             // 
             // pictureBox10
             // 
@@ -588,7 +587,7 @@ namespace PGTA_P1
             this.Cat010BTN.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(209)))), ((int)(((byte)(222)))), ((int)(((byte)(230)))));
             this.Cat010BTN.Controls.Add(this.label5);
             this.Cat010BTN.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.Cat010BTN.Location = new System.Drawing.Point(222, 0);
+            this.Cat010BTN.Location = new System.Drawing.Point(4, 0);
             this.Cat010BTN.Name = "Cat010BTN";
             this.Cat010BTN.Size = new System.Drawing.Size(60, 25);
             this.Cat010BTN.TabIndex = 8;
@@ -614,7 +613,7 @@ namespace PGTA_P1
             this.Cat021BTN.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(209)))), ((int)(((byte)(222)))), ((int)(((byte)(230)))));
             this.Cat021BTN.Controls.Add(this.label6);
             this.Cat021BTN.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.Cat021BTN.Location = new System.Drawing.Point(288, 0);
+            this.Cat021BTN.Location = new System.Drawing.Point(70, 0);
             this.Cat021BTN.Name = "Cat021BTN";
             this.Cat021BTN.Size = new System.Drawing.Size(60, 25);
             this.Cat021BTN.TabIndex = 9;
@@ -641,7 +640,7 @@ namespace PGTA_P1
             this.AllCatBTN.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.AllCatBTN.Controls.Add(this.label7);
             this.AllCatBTN.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.AllCatBTN.Location = new System.Drawing.Point(354, 0);
+            this.AllCatBTN.Location = new System.Drawing.Point(136, 0);
             this.AllCatBTN.Name = "AllCatBTN";
             this.AllCatBTN.Size = new System.Drawing.Size(60, 25);
             this.AllCatBTN.TabIndex = 10;
@@ -665,13 +664,10 @@ namespace PGTA_P1
             // PanelControlSuperior
             // 
             this.PanelControlSuperior.Controls.Add(this.MapVisor);
-            this.PanelControlSuperior.Controls.Add(this.AllCatBTN);
             this.PanelControlSuperior.Controls.Add(this.TextVisorBTN);
-            this.PanelControlSuperior.Controls.Add(this.Cat010BTN);
-            this.PanelControlSuperior.Controls.Add(this.Cat021BTN);
             this.PanelControlSuperior.Location = new System.Drawing.Point(78, 31);
             this.PanelControlSuperior.Name = "PanelControlSuperior";
-            this.PanelControlSuperior.Size = new System.Drawing.Size(421, 25);
+            this.PanelControlSuperior.Size = new System.Drawing.Size(173, 25);
             this.PanelControlSuperior.TabIndex = 0;
             this.PanelControlSuperior.Visible = false;
             // 
@@ -680,7 +676,7 @@ namespace PGTA_P1
             this.MultiBTN.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(209)))), ((int)(((byte)(222)))), ((int)(((byte)(230)))));
             this.MultiBTN.Controls.Add(this.MultiBTNl);
             this.MultiBTN.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.MultiBTN.Location = new System.Drawing.Point(3, 0);
+            this.MultiBTN.Location = new System.Drawing.Point(217, 0);
             this.MultiBTN.Name = "MultiBTN";
             this.MultiBTN.Size = new System.Drawing.Size(60, 25);
             this.MultiBTN.TabIndex = 13;
@@ -706,7 +702,7 @@ namespace PGTA_P1
             this.PSRBTN.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(209)))), ((int)(((byte)(222)))), ((int)(((byte)(230)))));
             this.PSRBTN.Controls.Add(this.label8);
             this.PSRBTN.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.PSRBTN.Location = new System.Drawing.Point(69, 0);
+            this.PSRBTN.Location = new System.Drawing.Point(283, 0);
             this.PSRBTN.Name = "PSRBTN";
             this.PSRBTN.Size = new System.Drawing.Size(60, 25);
             this.PSRBTN.TabIndex = 14;
@@ -733,7 +729,7 @@ namespace PGTA_P1
             this.AllSBTN.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.AllSBTN.Controls.Add(this.label10);
             this.AllSBTN.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.AllSBTN.Location = new System.Drawing.Point(201, 0);
+            this.AllSBTN.Location = new System.Drawing.Point(415, 0);
             this.AllSBTN.Name = "AllSBTN";
             this.AllSBTN.Size = new System.Drawing.Size(60, 25);
             this.AllSBTN.TabIndex = 16;
@@ -759,7 +755,7 @@ namespace PGTA_P1
             this.AdsBTN.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(209)))), ((int)(((byte)(222)))), ((int)(((byte)(230)))));
             this.AdsBTN.Controls.Add(this.label9);
             this.AdsBTN.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.AdsBTN.Location = new System.Drawing.Point(135, 0);
+            this.AdsBTN.Location = new System.Drawing.Point(349, 0);
             this.AdsBTN.Name = "AdsBTN";
             this.AdsBTN.Size = new System.Drawing.Size(60, 25);
             this.AdsBTN.TabIndex = 15;
@@ -804,12 +800,15 @@ namespace PGTA_P1
             // PanelSources1
             // 
             this.PanelSources1.Controls.Add(this.PSRBTN);
+            this.PanelSources1.Controls.Add(this.AllCatBTN);
             this.PanelSources1.Controls.Add(this.AllSBTN);
+            this.PanelSources1.Controls.Add(this.Cat010BTN);
+            this.PanelSources1.Controls.Add(this.Cat021BTN);
             this.PanelSources1.Controls.Add(this.AdsBTN);
             this.PanelSources1.Controls.Add(this.MultiBTN);
-            this.PanelSources1.Location = new System.Drawing.Point(518, 31);
+            this.PanelSources1.Location = new System.Drawing.Point(257, 31);
             this.PanelSources1.Name = "PanelSources1";
-            this.PanelSources1.Size = new System.Drawing.Size(263, 25);
+            this.PanelSources1.Size = new System.Drawing.Size(482, 25);
             this.PanelSources1.TabIndex = 17;
             this.PanelSources1.Visible = false;
             // 
@@ -821,7 +820,7 @@ namespace PGTA_P1
             this.Map.GrayScaleMode = false;
             this.Map.HelperLineOption = GMap.NET.WindowsForms.HelperLineOptions.DontShow;
             this.Map.LevelsKeepInMemmory = 5;
-            this.Map.Location = new System.Drawing.Point(184, 46);
+            this.Map.Location = new System.Drawing.Point(184, 3);
             this.Map.MarkersEnabled = true;
             this.Map.MaxZoom = 2;
             this.Map.MinZoom = 2;
@@ -835,7 +834,7 @@ namespace PGTA_P1
             this.Map.ScaleMode = GMap.NET.WindowsForms.ScaleModes.Integer;
             this.Map.SelectedAreaFillColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(65)))), ((int)(((byte)(105)))), ((int)(((byte)(225)))));
             this.Map.ShowTileGridLines = false;
-            this.Map.Size = new System.Drawing.Size(1070, 530);
+            this.Map.Size = new System.Drawing.Size(1070, 573);
             this.Map.TabIndex = 0;
             this.Map.Zoom = 0D;
             this.Map.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.Map_MouseDoubleClick);
@@ -916,6 +915,17 @@ namespace PGTA_P1
             this.TempsPanel.TabIndex = 7;
             this.TempsPanel.Visible = false;
             // 
+            // Velo
+            // 
+            this.Velo.AutoSize = true;
+            this.Velo.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.Velo.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Velo.Location = new System.Drawing.Point(179, 4);
+            this.Velo.Name = "Velo";
+            this.Velo.Size = new System.Drawing.Size(40, 18);
+            this.Velo.TabIndex = 24;
+            this.Velo.Text = "30 s";
+            // 
             // MesV
             // 
             this.MesV.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("MesV.BackgroundImage")));
@@ -964,29 +974,18 @@ namespace PGTA_P1
             this.Refresh.MouseLeave += new System.EventHandler(this.Refresh_MouseLeave);
             this.Refresh.MouseHover += new System.EventHandler(this.Refresh_MouseHover);
             // 
-            // Velo
-            // 
-            this.Velo.AutoSize = true;
-            this.Velo.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.Velo.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Velo.Location = new System.Drawing.Point(179, 4);
-            this.Velo.Name = "Velo";
-            this.Velo.Size = new System.Drawing.Size(40, 18);
-            this.Velo.TabIndex = 24;
-            this.Velo.Text = "30 s";
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.ClientSize = new System.Drawing.Size(1284, 611);
+            this.Controls.Add(this.TextVisorPanel);
             this.Controls.Add(this.TempsPanel);
             this.Controls.Add(this.MapVisorPanel);
             this.Controls.Add(this.DataInf);
             this.Controls.Add(this.PanelSources1);
             this.Controls.Add(this.PanelControlSuperior);
-            this.Controls.Add(this.TextVisorPanel);
             this.Controls.Add(this.LoadBTN);
             this.Controls.Add(this.BarraSuperior);
             this.Controls.Add(this.button1);
@@ -1110,7 +1109,7 @@ namespace PGTA_P1
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.PictureBox pictureBox9;
         private System.Windows.Forms.Panel TargetBTN;
-        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.Label NamT;
         private System.Windows.Forms.PictureBox pictureBox10;
         private System.Windows.Forms.DataGridView TargetsShow;
         private System.Windows.Forms.Button Export;

@@ -31,6 +31,7 @@ namespace PGTA_P1
         bool SMR = false;
         bool MULT = false;
         bool ADSB = false;
+        bool CAT10 = false;
         string SourView = "All";
         string IdView = "All";
 
@@ -709,6 +710,7 @@ namespace PGTA_P1
             Cat010BTN.BorderStyle = BorderStyle.FixedSingle;
             Cat021BTN.BorderStyle = BorderStyle.None;
             AllCatBTN.BorderStyle = BorderStyle.None;
+            CAT10 = true;
 
             DataBlocksDGV_Act();
         }
@@ -729,6 +731,7 @@ namespace PGTA_P1
             Cat010BTN.BorderStyle = BorderStyle.None;
             Cat021BTN.BorderStyle = BorderStyle.FixedSingle;
             AllCatBTN.BorderStyle = BorderStyle.None;
+            CAT10 = false;
 
             DataBlocksDGV_Act();
         }
@@ -748,6 +751,7 @@ namespace PGTA_P1
             Cat010BTN.BorderStyle = BorderStyle.None;
             Cat021BTN.BorderStyle = BorderStyle.None;
             AllCatBTN.BorderStyle = BorderStyle.FixedSingle;
+            CAT10 = false;
 
             DataBlocksDGV_Act();
         }
@@ -832,13 +836,22 @@ namespace PGTA_P1
             }
             else if (MULT)
             {
-                if (SourceViewV[0] == "Multi.")
+                if (SMR)
                 {
-                    SourceViewV[0] = "-";
-                }
-                else if (SourceViewV[1] == "Multi.")
-                {
+                    SourceViewV[0] = "SMR";
                     SourceViewV[1] = "-";
+                    CatView = "All";
+                }
+                else
+                {
+                    if (SourceViewV[0] == "Multi.")
+                    {
+                        SourceViewV[0] = "-";
+                    }
+                    else if (SourceViewV[1] == "Multi.")
+                    {
+                        SourceViewV[1] = "-";
+                    }
                 }
                 MultiBTN.BorderStyle = BorderStyle.None;
                 MULT = false;
@@ -852,11 +865,28 @@ namespace PGTA_P1
             }
             else if ((!MULT) && (SMR))
             {
-                SourceViewV[0] = "All";
-                SourceViewV[1] = "-";
-                CatView = "10";
-                MultiBTN.BorderStyle = BorderStyle.None;
-                MULT = true;
+                if(CatView != "21")
+                {
+                    SourceViewV[0] = "All";
+                    SourceViewV[1] = "-";
+                    CatView = "10";
+                }
+                if (CAT10)
+                {
+                    MULT = false;
+                    SMR = false;
+                    ADSB = false;
+
+                    MultiBTN.BorderStyle = BorderStyle.None;
+                    PSRBTN.BorderStyle = BorderStyle.None;
+                    AdsBTN.BorderStyle = BorderStyle.None;
+                    AllSBTN.BorderStyle = BorderStyle.FixedSingle;
+                }
+                else
+                {
+                    MULT = true;
+                    MultiBTN.BorderStyle = BorderStyle.FixedSingle;
+                }
             }
 
             DataBlocksDGV_Act();
@@ -910,14 +940,24 @@ namespace PGTA_P1
             }
             else if(SMR)
             {
-                if (SourceViewV[0] == "SMR")
+                if (MULT)
                 {
-                    SourceViewV[0] = "-";
-                }
-                else if (SourceViewV[1] == "SMR")
-                {
+                    SourceViewV[0] = "Multi.";
                     SourceViewV[1] = "-";
+                    CatView = "All";
                 }
+                else
+                {
+                    if (SourceViewV[0] == "SMR")
+                    {
+                        SourceViewV[0] = "-";
+                    }
+                    else if (SourceViewV[1] == "SMR")
+                    {
+                        SourceViewV[1] = "-";
+                    }
+                }
+                
                 PSRBTN.BorderStyle = BorderStyle.None;
                 SMR = false;
 
@@ -926,15 +966,33 @@ namespace PGTA_P1
                     SourceViewV[0] = "All";
                     SourceViewV[1] = "-";
                     AllSBTN.BorderStyle = BorderStyle.FixedSingle;
-                    SMR = true;
+                    SMR = false;
                 }
             }
             else if ((MULT) && (!SMR))
             {
-                SourceViewV[0] = "All";
-                SourceViewV[1] = "-";
-                CatView = "10";
-                PSRBTN.BorderStyle = BorderStyle.FixedSingle;
+                if (CatView != "21")
+                {
+                    SourceViewV[0] = "All";
+                    SourceViewV[1] = "-";
+                    CatView = "10";
+                }
+                if (CAT10)
+                {
+                    MULT = false;
+                    SMR = false;
+                    ADSB = false;
+
+                    MultiBTN.BorderStyle = BorderStyle.None;
+                    PSRBTN.BorderStyle = BorderStyle.None;
+                    AdsBTN.BorderStyle = BorderStyle.None;
+                    AllSBTN.BorderStyle = BorderStyle.FixedSingle;
+                }
+                else
+                {
+                    SMR = true;
+                    PSRBTN.BorderStyle = BorderStyle.FixedSingle;
+                }
             }
 
             DataBlocksDGV_Act();
@@ -959,7 +1017,7 @@ namespace PGTA_P1
 
             if ((MULT) && (SMR) && (!ADSB))
             {
-                if ((MULT) && (SMR) && (CatView == "10"))
+                if ((MULT) && (SMR) && (CatView == "10") && (!CAT10))
                 {
                     CatView = "All";
                 }
@@ -1139,64 +1197,67 @@ namespace PGTA_P1
                 label13.Visible = true;
                 Max.Visible = true;
                 Current.Visible = true;
+
+                NamT.Text = "D.Blocks";
+
             }
         }
 
-        private void Export_Click(object sender, EventArgs e)
-        {
-            string ID = Buscar.Text;
-            System.IO.StreamWriter file = new System.IO.StreamWriter("" + ID + ".txt");
-            file.Close();
+        //private void Export_Click(object sender, EventArgs e)
+        //{
+        //    string ID = Buscar.Text;
+        //    System.IO.StreamWriter file = new System.IO.StreamWriter("" + ID + ".txt");
+        //    file.Close();
 
-            //Busquem target
-            List<Target> Encontrado = TargetList.Where(x => x.T_ID == ID).ToList();
-            if (Encontrado.Count() == 0)
-            {
-                Encontrado = TargetList.Where(x => x.T_Number == ID).ToList();
-            }
+        //    //Busquem target
+        //    List<Target> Encontrado = TargetList.Where(x => x.T_ID == ID).ToList();
+        //    if (Encontrado.Count() == 0)
+        //    {
+        //        Encontrado = TargetList.Where(x => x.T_Number == ID).ToList();
+        //    }
 
-            if (Encontrado.Count() != 0)
-            {
-                StreamWriter W = new StreamWriter("" + ID + ".txt");
-                int Max = Encontrado[0].CoordenadesADSB.Count();
-                if (Max != 0)
-                {
-                    W.WriteLine(Max);
-                    foreach (Coordenada C in Encontrado[0].CoordenadesADSB)
-                    {
-                        W.WriteLine(string.Join("_", C.Retrun()));
-                    }
-                    W.Close();
-                }
-                else
-                {
-                    Max = Encontrado[0].CoordenadesMULTI.Count();
-                    if (Max != 0)
-                    {
-                        W.WriteLine(Max);
-                        foreach (Coordenada C in Encontrado[0].CoordenadesMULTI)
-                        {
-                            W.WriteLine(string.Join("_", C.Retrun()));
-                        }
-                        W.Close();
-                    }
-                    else
-                    {
-                        Max = Encontrado[0].CoordenadesSMR.Count();
-                        if (Max != 0)
-                        {
-                            W.WriteLine(Max);
-                            foreach (Coordenada C in Encontrado[0].CoordenadesSMR)
-                            {
-                                W.WriteLine(string.Join("_", C.Retrun()));
-                            }
-                            W.Close();
-                        }
-                    }
-                }
-                MessageBox.Show("Exported");
-            }
-        }
+        //    if (Encontrado.Count() != 0)
+        //    {
+        //        StreamWriter W = new StreamWriter("" + ID + ".txt");
+        //        int Max = Encontrado[0].CoordenadesADSB.Count();
+        //        if (Max != 0)
+        //        {
+        //            W.WriteLine(Max);
+        //            foreach (Coordenada C in Encontrado[0].CoordenadesADSB)
+        //            {
+        //                W.WriteLine(string.Join("_", C.Retrun()));
+        //            }
+        //            W.Close();
+        //        }
+        //        else
+        //        {
+        //            Max = Encontrado[0].CoordenadesMULTI.Count();
+        //            if (Max != 0)
+        //            {
+        //                W.WriteLine(Max);
+        //                foreach (Coordenada C in Encontrado[0].CoordenadesMULTI)
+        //                {
+        //                    W.WriteLine(string.Join("_", C.Retrun()));
+        //                }
+        //                W.Close();
+        //            }
+        //            else
+        //            {
+        //                Max = Encontrado[0].CoordenadesSMR.Count();
+        //                if (Max != 0)
+        //                {
+        //                    W.WriteLine(Max);
+        //                    foreach (Coordenada C in Encontrado[0].CoordenadesSMR)
+        //                    {
+        //                        W.WriteLine(string.Join("_", C.Retrun()));
+        //                    }
+        //                    W.Close();
+        //                }
+        //            }
+        //        }
+        //        MessageBox.Show("Exported");
+        //    }
+        //}
 
         private void TargetsShow_CellClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -1250,8 +1311,6 @@ namespace PGTA_P1
         }
 
         //Control de temps
-        
-
         private void Timer_Tick(object sender, EventArgs e)
         {
             Temps = Temps.Add(interval);
