@@ -5,6 +5,10 @@ using System.Data;
 using System.IO;
 using System.Linq;
 using MultiCAT6.Utils;
+using GMap.NET;
+using GMap.NET.WindowsForms;
+using GMap.NET.WindowsForms.Markers;
+using System.Drawing;
 
 namespace PGTA_P1
 {
@@ -1712,11 +1716,7 @@ namespace PGTA_P1
 
                     double TART_Dec = (BitConverter.ToInt32(TART, 0)) / 128;
                     TimeSpan t = TimeSpan.FromSeconds(TART_Dec);
-                    string answer = string.Format("{0:D2}h:{1:D2}m:{2:D2}s:{3:D3}ms",
-                                    t.Hours,
-                                    t.Minutes,
-                                    t.Seconds,
-                                    t.Milliseconds);
+                    string answer = t.ToString("c");
                     DeCode.Add(answer);
 
                     this.Info.units.Add("UTC");
@@ -3033,20 +3033,40 @@ namespace PGTA_P1
         public List<Coordenada> CoordenadesMULTI = new List<Coordenada>();
         public List<Coordenada> CoordenadesSMR = new List<Coordenada>();
 
-        TimeSpan Inici; //Temps d'acció de la primera coordenada   
-        TimeSpan Final; //Temps d'acció de la última coordenada
+        public TimeSpan Inici = new TimeSpan(0); //Temps d'acció de la primera coordenada   
+        public TimeSpan Final = new TimeSpan(0); //Temps d'acció de la última coordenada
+
+        public GMapOverlay CapaADSB = new GMapOverlay();
+        public GMapOverlay CapaMULTI = new GMapOverlay();
+        public GMapOverlay CapaSMR = new GMapOverlay();
 
         public Target(List<DataBlock> DataBlocksList)
         {
             DataBlocks = DataBlocksList;
 
-            if(DataBlocksList.Count() != 0)
+            if (DataBlocksList.Count() != 0)
             {
                 Bucle_TID();
                 Bucle_TNum();
                 Bucle_Ve();
                 Bucle_From();
                 GetCoordenades();
+
+                if (CoordenadesADSB.Count != 0)
+                {
+                    Inici = CoordenadesADSB.First().Moment;
+                    Final = CoordenadesADSB.Last().Moment;
+                }
+                else if (CoordenadesMULTI.Count != 0)
+                {
+                    Inici = CoordenadesMULTI.First().Moment;
+                    Final = CoordenadesMULTI.Last().Moment;
+                }
+                else if (CoordenadesSMR.Count != 0)
+                {
+                    Inici = CoordenadesSMR.First().Moment;
+                    Final = CoordenadesSMR.Last().Moment;
+                }
             }
         }
 
@@ -3060,6 +3080,10 @@ namespace PGTA_P1
                 {
                     e = true;
                     T_ID = DataBlocks[i].T_ID;
+                    CapaADSB = new GMapOverlay("T_ID");
+                    CapaMULTI = new GMapOverlay("T_ID");
+                    CapaSMR = new GMapOverlay("T_ID");
+                    //Capa = new GMapOverlay("T_ID");
                 }
                 i++;
             }
@@ -3075,6 +3099,13 @@ namespace PGTA_P1
                 {
                     e = true;
                     T_Number = DataBlocks[i].T_Number;
+                    if (T_ID == "-")
+                    {
+                        CapaADSB = new GMapOverlay("T_Number");
+                        CapaMULTI = new GMapOverlay("T_Number");
+                        CapaSMR = new GMapOverlay("T_Number");
+                    }
+                        //Capa = new GMapOverlay("T_Number");
                 }
                 i++;
             }
@@ -3177,8 +3208,14 @@ namespace PGTA_P1
                     {
                         M = TimeSpan.Parse(Encontrado[0].DeCode[0]);
                     }
+                    else
+                    {
+                        Encontrado = DB.DataFields.Where(x => x.Info.DataItemID[1] == "071").ToList();
+                        if (Encontrado.Count() != 0)
+                            M = TimeSpan.Parse(Encontrado[0].DeCode[0]);
+                    }
                     if ((a != "") && (b != "") && (M != new TimeSpan(0)))
-                        CoordenadesADSB.Add(new Coordenada(a, b, h, "WGS", f, M));
+                        CoordenadesADSB.Add(new Coordenada(a, b, h, "WGS", f, Hertz_Hülsmeyer.Round(M)));
                 }
                 else if (DB.From == "Multi.")
                 {
@@ -3205,7 +3242,7 @@ namespace PGTA_P1
                         M = TimeSpan.Parse(Encontrado[0].DeCode[0]);
                     }
                     if((a!="")&&(b!="")&&(M!=new TimeSpan(0)))
-                        CoordenadesMULTI.Add(new Coordenada(a, b, h, "X-Y", f, M));
+                        CoordenadesMULTI.Add(new Coordenada(a, b, h, "X-Y", f, Hertz_Hülsmeyer.Round(M)));
                 }
                 else if (DB.From == "SMR")
                 {
@@ -3220,7 +3257,7 @@ namespace PGTA_P1
                     if (Encontrado.Count() != 0)
                     {
                         M = TimeSpan.Parse(Encontrado[0].DeCode[0]);
-                        A.Moment = M;
+                        A.Moment = Hertz_Hülsmeyer.Round(M);
                         CoordenadesSMR.Add(A);
                     }
                     else
@@ -3233,6 +3270,93 @@ namespace PGTA_P1
                     }
                 }
             }
+        }
+
+        public void CreateLine(Coordenada C, string Type)
+        {
+            //ADSB
+            Bitmap A = new Bitmap("PlaneADSB.png");
+            if (Type == "ADS-B")
+            {
+
+                if ((V == "light aircraft") || (V == "small aircraft") || (V == "medium aircraft") || (V == "heavy aircraft"))
+                {
+                    //A = (Bitmap)Image.FromFile("PlaneADSB.png");
+                    A = Hertz_Hülsmeyer.ConvertTextToImage(this.T_ID, "Consolas", 10, Color.Transparent, Color.Black, 80, 20);
+                }
+                else if (V == "surface service vehicle")
+                {
+                    A = Hertz_Hülsmeyer.ConvertTextToImage("S", "Consolas", 10, Color.Transparent, Color.Black, 40, 20);
+                }
+                else
+                {
+                    A = Hertz_Hülsmeyer.ConvertTextToImage("??", "Consolas", 10, Color.Transparent, Color.Black, 40, 20);
+                }
+
+                int Index = CoordenadesADSB.IndexOf(C);
+                if (Index != 0)
+                {
+                    //No es el primer punt, cal crear una linia
+                    Index--;
+                    List<PointLatLng> Lin = new List<PointLatLng>();
+                    Lin.Add(CoordenadesADSB[Index].PointMap);
+                    Lin.Add(C.PointMap);
+                    GMapPolygon polygon = new GMapPolygon(Lin, "Lin");
+                    polygon.Stroke = new Pen(Color.Red, 3);
+                    PointLatLng New = C.PointMap;
+                    PointLatLng New1 = C.PointMap;
+                    New.Lat = New.Lat + 0.0003;
+                    GMapMarker marker = new GMarkerGoogle(New, A);
+                    GMapMarker marker1 = new GMarkerGoogle(C.PointMap, GMarkerGoogleType.red_small);
+                    CapaADSB.Markers.Clear();
+                    CapaADSB.Markers.Add(marker1);
+                    CapaADSB.Markers.Add(marker);
+                    CapaADSB.Polygons.Add(polygon);
+                }
+                else 
+                {
+                    //Es el primer punt
+                    PointLatLng New = C.PointMap;
+                    PointLatLng New1 = C.PointMap;
+                    New.Lat = New.Lat + 0.0003;
+                    GMapMarker marker = new GMarkerGoogle(New, A);
+                    GMapMarker marker1 = new GMarkerGoogle(C.PointMap, GMarkerGoogleType.red_small);
+                    CapaADSB.Markers.Add(marker1);
+                    CapaADSB.Markers.Add(marker);
+                }    
+            }
+        }
+
+        public void DotDotDot(Coordenada C, string Type)
+        {
+            //ADSB
+            if (Type == "ADS-B")
+            {
+                
+                GMapMarker markerC = new GMarkerGoogle(C.PointMap, (Bitmap)Image.FromFile("PlaneTADSB.png"));
+                markerC.Size = new Size(15, 15);
+                if (CapaADSB.Markers.Count() != 0)
+                {
+                    PointLatLng antMark = CapaADSB.Markers.Last().Position;
+                    CapaADSB.Markers.Remove(CapaADSB.Markers.Last());
+                    GMapMarker markerD = new GMarkerGoogle(antMark, (Bitmap)Image.FromFile("dotADSBdot.png"));
+                    markerD.Size = new Size(5, 5);
+                    CapaADSB.Markers.Add(markerD);
+                }
+                CapaADSB.Markers.Add(markerC);
+
+            }
+            else if (Type == "Multi.") //Multi
+            { }
+            else //SMR
+            { }
+
+        }
+        public void ResetOverlays()
+        {
+            CapaADSB = new GMapOverlay();
+            CapaMULTI = new GMapOverlay();
+            CapaSMR = new GMapOverlay();
         }
     }
 
@@ -3254,6 +3378,9 @@ namespace PGTA_P1
 
         // Temps d'actuació
         public TimeSpan Moment;
+
+        //gMapPoint
+        public PointLatLng PointMap = new PointLatLng();
 
         string type;
         string from;
@@ -3282,6 +3409,8 @@ namespace PGTA_P1
             this.type = type;
             this.from = from;
             To_Geoodesic_and_SystCartesian();
+
+            PointMap = new PointLatLng(Convert.ToDouble(Lon), Convert.ToDouble(Lat));
         }
 
         public string[] RetrunGeo()
@@ -3415,6 +3544,37 @@ namespace PGTA_P1
             {
                 return null;
             }
+        }
+
+        public static TimeSpan Round(TimeSpan S)
+        {
+            if (S.Milliseconds >= 500)
+            {
+                int Segs = Convert.ToInt32(S.Seconds.ToString()) + 1;
+                S = new TimeSpan(0, Convert.ToInt32(S.Hours.ToString()), Convert.ToInt32(S.Minutes.ToString()), Segs,0);
+            }
+            else
+                S = new TimeSpan(0, Convert.ToInt32(S.Hours.ToString()), Convert.ToInt32(S.Minutes.ToString()), Convert.ToInt32(S.Seconds.ToString()), 0);
+
+            return S;
+        }
+
+        public static Bitmap ConvertTextToImage(string txt, string fontname, int fontsize, Color bgcolor, Color fcolor, int width, int Height)
+        {
+            Bitmap bmp = new Bitmap(width, Height);
+            using (Graphics graphics = Graphics.FromImage(bmp))
+            {
+
+                Font font = new Font(fontname, fontsize);
+                graphics.FillRectangle(new SolidBrush(bgcolor), 0, 0, bmp.Width, bmp.Height);
+                graphics.DrawString(txt, font, new SolidBrush(fcolor), 0, 0);
+                graphics.Flush();
+                font.Dispose();
+                graphics.Dispose();
+
+
+            }
+            return bmp;
         }
 
         public static void test()

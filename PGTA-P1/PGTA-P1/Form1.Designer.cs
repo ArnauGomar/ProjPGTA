@@ -51,7 +51,7 @@ namespace PGTA_P1
             this.TargetsShow = new System.Windows.Forms.DataGridView();
             this.TargetBTN = new System.Windows.Forms.Panel();
             this.NamT = new System.Windows.Forms.Label();
-            this.pictureBox10 = new System.Windows.Forms.PictureBox();
+            this.pb10 = new System.Windows.Forms.PictureBox();
             this.BuscarBTN = new System.Windows.Forms.Panel();
             this.label2 = new System.Windows.Forms.Label();
             this.pictureBox9 = new System.Windows.Forms.PictureBox();
@@ -110,7 +110,7 @@ namespace PGTA_P1
             this.TextVisorPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.TargetsShow)).BeginInit();
             this.TargetBTN.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox10)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pb10)).BeginInit();
             this.BuscarBTN.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox9)).BeginInit();
             this.nextBTN.SuspendLayout();
@@ -345,7 +345,7 @@ namespace PGTA_P1
             // 
             this.TargetBTN.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(209)))), ((int)(((byte)(222)))), ((int)(((byte)(230)))));
             this.TargetBTN.Controls.Add(this.NamT);
-            this.TargetBTN.Controls.Add(this.pictureBox10);
+            this.TargetBTN.Controls.Add(this.pb10);
             this.TargetBTN.Cursor = System.Windows.Forms.Cursors.Hand;
             this.TargetBTN.Location = new System.Drawing.Point(298, 508);
             this.TargetBTN.Name = "TargetBTN";
@@ -356,23 +356,23 @@ namespace PGTA_P1
             // NamT
             // 
             this.NamT.AutoSize = true;
-            this.NamT.Location = new System.Drawing.Point(8, 6);
+            this.NamT.Location = new System.Drawing.Point(3, 6);
             this.NamT.Name = "NamT";
             this.NamT.Size = new System.Drawing.Size(43, 13);
             this.NamT.TabIndex = 5;
             this.NamT.Text = "Targets";
             this.NamT.Click += new System.EventHandler(this.TargetBTN_Click);
             // 
-            // pictureBox10
+            // pb10
             // 
-            this.pictureBox10.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox10.Image")));
-            this.pictureBox10.Location = new System.Drawing.Point(54, 2);
-            this.pictureBox10.Name = "pictureBox10";
-            this.pictureBox10.Size = new System.Drawing.Size(21, 22);
-            this.pictureBox10.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox10.TabIndex = 4;
-            this.pictureBox10.TabStop = false;
-            this.pictureBox10.Click += new System.EventHandler(this.TargetBTN_Click);
+            this.pb10.Image = ((System.Drawing.Image)(resources.GetObject("pb10.Image")));
+            this.pb10.Location = new System.Drawing.Point(54, 2);
+            this.pb10.Name = "pb10";
+            this.pb10.Size = new System.Drawing.Size(21, 22);
+            this.pb10.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pb10.TabIndex = 4;
+            this.pb10.TabStop = false;
+            this.pb10.Click += new System.EventHandler(this.TargetBTN_Click);
             // 
             // BuscarBTN
             // 
@@ -834,7 +834,7 @@ namespace PGTA_P1
             this.Map.ScaleMode = GMap.NET.WindowsForms.ScaleModes.Integer;
             this.Map.SelectedAreaFillColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(65)))), ((int)(((byte)(105)))), ((int)(((byte)(225)))));
             this.Map.ShowTileGridLines = false;
-            this.Map.Size = new System.Drawing.Size(1070, 573);
+            this.Map.Size = new System.Drawing.Size(1070, 529);
             this.Map.TabIndex = 0;
             this.Map.Zoom = 0D;
             this.Map.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.Map_MouseDoubleClick);
@@ -865,7 +865,7 @@ namespace PGTA_P1
             this.CurrenTargets.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.CurrenTargets.Location = new System.Drawing.Point(3, 70);
             this.CurrenTargets.Name = "CurrenTargets";
-            this.CurrenTargets.Size = new System.Drawing.Size(178, 244);
+            this.CurrenTargets.Size = new System.Drawing.Size(178, 204);
             this.CurrenTargets.TabIndex = 1;
             // 
             // Timer
@@ -980,17 +980,17 @@ namespace PGTA_P1
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.ClientSize = new System.Drawing.Size(1284, 611);
-            this.Controls.Add(this.TextVisorPanel);
             this.Controls.Add(this.TempsPanel);
-            this.Controls.Add(this.MapVisorPanel);
             this.Controls.Add(this.DataInf);
             this.Controls.Add(this.PanelSources1);
             this.Controls.Add(this.PanelControlSuperior);
             this.Controls.Add(this.LoadBTN);
             this.Controls.Add(this.BarraSuperior);
             this.Controls.Add(this.button1);
-            this.Controls.Add(this.PGB1);
+            this.Controls.Add(this.MapVisorPanel);
+            this.Controls.Add(this.TextVisorPanel);
             this.Controls.Add(this.pictureBox5);
+            this.Controls.Add(this.PGB1);
             this.Cursor = System.Windows.Forms.Cursors.Default;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "Form1";
@@ -1011,7 +1011,7 @@ namespace PGTA_P1
             ((System.ComponentModel.ISupportInitialize)(this.TargetsShow)).EndInit();
             this.TargetBTN.ResumeLayout(false);
             this.TargetBTN.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox10)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pb10)).EndInit();
             this.BuscarBTN.ResumeLayout(false);
             this.BuscarBTN.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox9)).EndInit();
@@ -1110,7 +1110,7 @@ namespace PGTA_P1
         private System.Windows.Forms.PictureBox pictureBox9;
         private System.Windows.Forms.Panel TargetBTN;
         private System.Windows.Forms.Label NamT;
-        private System.Windows.Forms.PictureBox pictureBox10;
+        private System.Windows.Forms.PictureBox pb10;
         private System.Windows.Forms.DataGridView TargetsShow;
         private System.Windows.Forms.Button Export;
         private System.Windows.Forms.Label label15;

@@ -45,6 +45,11 @@ namespace PGTA_P1
         bool Play = false;
         TimeSpan Temps = new TimeSpan(8, 0, 0);
 
+        //Aparició de targets
+        List<Target> ViewTargetListADSB = new List<Target>();
+        List<Target> ViewTargetListMULTI = new List<Target>();
+        List<Target> ViewTargetListSMR = new List<Target>();
+
         //Moure ventana
         public const int WM_NCLBUTTONDOWN = 0xA1;
         public const int HT_CAPTION = 0x2;
@@ -428,6 +433,8 @@ namespace PGTA_P1
         //BTN sortida
         private void Exit_Click(object sender, EventArgs e)
         {
+            Timer.Enabled = false;
+            Timer.Stop();
             this.Close();
         }
         private void pictureBox1_MouseHover(object sender, EventArgs e)
@@ -1184,6 +1191,8 @@ namespace PGTA_P1
                 label13.Visible = false;
                 Max.Visible = false;
                 Current.Visible = false;
+
+                NamT.Text = "D.Blocks";
                 TargetShow_Act();
             }
             else
@@ -1198,8 +1207,7 @@ namespace PGTA_P1
                 Max.Visible = true;
                 Current.Visible = true;
 
-                NamT.Text = "D.Blocks";
-
+                NamT.Text = "Targets";
             }
         }
 
@@ -1313,11 +1321,52 @@ namespace PGTA_P1
         //Control de temps
         private void Timer_Tick(object sender, EventArgs e)
         {
+            Map.Overlays.Clear();
+
+            //Augmentem temps
             Temps = Temps.Add(interval);
             TempsLBL.Text = Temps.ToString("c");
             TempsLBL.Refresh();
 
+            //Aparició nous targets
+            foreach (Target T in TargetList)
+            {
+                if ((T.Inici == Temps) && (T.From == "ADS-B "))
+                    ViewTargetListADSB.Add(T);
+                else if ((T.Inici == Temps) && (T.From == "Multi. "))
+                    ViewTargetListMULTI.Add(T);
+                else if ((T.Inici == Temps) && (T.From == "SMR "))
+                    ViewTargetListSMR.Add(T);
+                else if ((T.Inici == Temps) && (T.From == "ADS-B Multi. "))
+                {
+                    ViewTargetListADSB.Add(T);
+                    ViewTargetListMULTI.Add(T);
+                }
+            }
 
+            //Mostrar targets al mapa
+            //ADSB
+            foreach (Target T in ViewTargetListADSB)
+            {
+                Coordenada Mostrar = new Coordenada();
+                bool enc = false;
+                int i = 0;
+                while ((i < T.CoordenadesADSB.Count()) && (enc == false))
+                {
+                    if (T.CoordenadesADSB[i].Moment == Temps)
+                    {
+                        enc = true;
+                        Mostrar = T.CoordenadesADSB[i];
+                    }
+                    i++;
+                }
+                if(enc == true)
+                {
+                    //T.DotDotDot(Mostrar, "ADS-B");
+                    T.CreateLine(Mostrar, "ADS-B");
+                }
+                Map.Overlays.Add(T.CapaADSB);
+            }
         }
 
         private void PlayPause_Click(object sender, EventArgs e)
@@ -1363,6 +1412,12 @@ namespace PGTA_P1
             Play = false;
             PlayPause.Image = Image.FromFile("Play(I).png");
             Timer.Stop();
+
+            Map.Overlays.Clear();
+            foreach (Target T in TargetList)
+            {
+                T.ResetOverlays();
+            }
         }
         private void Refresh_MouseHover(object sender, EventArgs e)
         {
