@@ -25,30 +25,33 @@ namespace PGTA_P1
         DataTable TargetTable = new DataTable();
         int numDTable = 0;
 
-        //Cats i sources
+        //Cats, sources y Ids
         string CatView = "All";
         string[] SourceViewV = new string[2];
         bool SMR = false;
         bool MULT = false;
         bool ADSB = false;
         bool CAT10 = false;
-        string SourView = "All";
         string IdView = "All";
 
         //GMaps
         double BCNLat = 41.2972361111;
         double BCNLon = 2.0783333333;
+        GMapOverlay All = new GMapOverlay();
+        int TrackTime = 0;
 
         //Timer sets
-        TimeSpan interval = new TimeSpan(0,0,1);
+        TimeSpan interval = new TimeSpan(0, 0, 1);
         string velocitat = "x 1";
         bool Play = false;
-        TimeSpan Temps = new TimeSpan(8, 0, 0);
+        TimeSpan Temps = new TimeSpan(8, 00, 00);
 
         //Aparició de targets
         List<Target> ViewTargetListADSB = new List<Target>();
         List<Target> ViewTargetListMULTI = new List<Target>();
         List<Target> ViewTargetListSMR = new List<Target>();
+        List<Target> ViewTargetListShow = new List<Target>();
+        int countNOACTU = 0;
 
         //Moure ventana
         public const int WM_NCLBUTTONDOWN = 0xA1;
@@ -219,17 +222,14 @@ namespace PGTA_P1
             Final.Columns.Add("Vehicle Fleet");
             Final.Columns.Add("DataBlock Id");
             numDTable = 0;
-            string Sort = "";
             while (numDTable < DataTable1000.Count())
             {
                 DataTable Input = FiltrarCatSour().ToTable();
                 DataRow[] F = new DataRow[999];
                 F = Input.Select("[Target ID] LIKE '" + IdView + "%'");
-                Sort = "[Target ID]";
                 if (F.Count() == 0)
                 {
                     F = Input.Select("[Track Number] LIKE '" + IdView + "%'");
-                    Sort = "[Track Number]";
                 }
                 int j = 0;
                 while (j < F.Count())
@@ -242,7 +242,6 @@ namespace PGTA_P1
             numDTable = 0;
 
             DataView ret = Final.DefaultView;
-            //ret.Sort = Sort;
 
             Max.Text = "1";
             previousBTT.Visible = false;
@@ -264,7 +263,7 @@ namespace PGTA_P1
             //Bucle ADS-B
             bool adsb_fin = false; int i = 0;
             List<DataBlock> ADSB = Copia.Where(x => x.From == "ADS-B").ToList();
-            while ((Copia.Count != 0)&&(adsb_fin == false)&& (ADSB.Count != 0))
+            while ((Copia.Count != 0) && (adsb_fin == false) && (ADSB.Count != 0))
             {
                 DataBlock Evaluat = ADSB.First();
 
@@ -297,7 +296,7 @@ namespace PGTA_P1
             //Bucle SMR
             List<DataBlock> SMR = Copia.Where(x => x.From == "SMR").ToList();
             bool smr = false;
-            while ((smr == false)&& (SMR.Count() != 0)) 
+            while ((smr == false) && (SMR.Count() != 0))
             {
                 DataBlock Evaluat = SMR.First();
 
@@ -318,7 +317,7 @@ namespace PGTA_P1
             //Bucle Multi
             bool multi_fin = false;
             List<DataBlock> Multi = Copia.Where(x => x.From == "Multi.").ToList();
-            while ((multi_fin == false) && (Multi.Count() != 0)) 
+            while ((multi_fin == false) && (Multi.Count() != 0))
             {
                 DataBlock Evaluat = Multi.First();
 
@@ -333,14 +332,14 @@ namespace PGTA_P1
                     Filtrados = Multi.Where(x => x.T_Number == Evaluat.T_Number).ToList();
                     Multi.RemoveAll(x => x.T_Number == Evaluat.T_Number);
                 }
-                        
+
                 TargetList.Add(new Target(Filtrados));
 
                 PGB1.Step = Filtrados.Count();
                 PGB1.PerformStep();
 
                 TargetTable.Rows.Add(TargetList.Last().StringLin());
-     
+
                 if (Multi.Count == 0)
                     multi_fin = true;
             }
@@ -360,6 +359,7 @@ namespace PGTA_P1
             this.Cursor = Cursors.WaitCursor;
             DataBlocksAll.DataSource = Filtrada.ToTable();
             DataBlocksAll.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+            DataBlocksAll.RowHeadersVisible = false;
             this.Cursor = Cursors.Default;
             DataInf.Text = "Data loaded";
             DataInf.ForeColor = Color.Green;
@@ -381,7 +381,7 @@ namespace PGTA_P1
             else
             {
                 DataRow[] F = new DataRow[999];
-                if(IdView != "-")
+                if (IdView != "-")
                     F = TargetTable.Select("[Target ID] LIKE '" + IdView + "%'");
                 if (F.Count() == 0)
                 {
@@ -394,7 +394,7 @@ namespace PGTA_P1
                     j++;
                 }
             }
-
+            TargetsShow.RowHeadersVisible = false;
             TargetsShow.DataSource = NewTargetTable;
         }
 
@@ -407,7 +407,7 @@ namespace PGTA_P1
             DataBlocViwer.Columns[0].Name = "Item name";
             DataBlocViwer.Columns[1].Name = "Message (DeCod)";
             DataBlocViwer.Columns[2].Name = "Units";
-
+            DataBlocViwer.RowHeadersVisible = false;
 
             //Obrim els datafields
             int i = 0;
@@ -428,6 +428,30 @@ namespace PGTA_P1
             }
 
             DataBlocViwer.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+        }
+
+        private void CurrentTargets_Act()
+        {
+            CurrenTargets.Columns.Clear();
+            CurrenTargets.Rows.Clear();
+            CurrenTargets.ColumnCount = 1;
+            CurrenTargets.Columns[0].Name = "ID";
+            CurrenTargets.RowHeadersVisible = false;
+
+            foreach (Target T in ViewTargetListShow)
+            {
+                if (T.T_ID != "-")
+                    CurrenTargets.Rows.Add(T.T_ID);
+                else
+                    CurrenTargets.Rows.Add(T.T_Number);
+
+                if (T.From == "ADS-B ")
+                    CurrenTargets.Rows[CurrenTargets.Rows.Count - 2].DefaultCellStyle.BackColor = Color.Red;
+                else if (T.From == "Multi. ")
+                    CurrenTargets.Rows[CurrenTargets.Rows.Count - 2].DefaultCellStyle.BackColor = Color.Green;
+                else
+                    CurrenTargets.Rows[CurrenTargets.Rows.Count - 2].DefaultCellStyle.BackColor = Color.Cyan;
+            }
         }
 
         //BTN sortida
@@ -457,6 +481,7 @@ namespace PGTA_P1
         }
         private void LoadBTN_Click(object sender, EventArgs e)
         {
+            this.DataBlockList = new List<DataBlock>();
             TargetList = new List<Target>();
             TargetTable = new DataTable();
             TargetTable.Columns.Add("Target ID");
@@ -540,7 +565,7 @@ namespace PGTA_P1
                             Multi = true;
                         else if (DataBlockList.Last().From == "SMR")
                             Psr = true;
-                            numDT++;
+                        numDT++;
                         if (numDT == 999)
                         {
                             this.DataTable1000.Add(DT);
@@ -677,9 +702,29 @@ namespace PGTA_P1
             TextVisorPanel.Visible = true;
             PanelSources1.Visible = true;
             MapVisorPanel.Visible = false;
+            CatPanels.Visible = true;
             TempsPanel.Visible = false;
             TextVisorBTN.BorderStyle = BorderStyle.FixedSingle;
             MapVisor.BorderStyle = BorderStyle.None;
+            Timer.Stop();
+            Play = false;
+            PlayPause.Image = Image.FromFile("Play(I).png");
+
+            if (IdView != "All")
+            {
+                Buscar.Text = IdView;
+                DataInf.Text = "Loading...";
+                DataInf.ForeColor = Color.DarkGray;
+                DataInf.Refresh();
+                this.Cursor = Cursors.WaitCursor;
+                if (IdView == "")
+                    this.IdView = "All";
+                DataBlocksDGV_Act();
+                TargetShow_Act();
+                this.Cursor = Cursors.Default;
+                DataInf.Text = "Data loaded";
+                DataInf.ForeColor = Color.Green;
+            }
         }
         private void TextVisorBTN_MouseHover(object sender, EventArgs e)
         {
@@ -697,9 +742,15 @@ namespace PGTA_P1
             MapVisor.BorderStyle = BorderStyle.FixedSingle;
             TextVisorPanel.Visible = false;
             PanelSources1.Visible = true;
+            CatPanels.Visible = false;
             TempsPanel.Visible = true;
             MapVisorPanel.Visible = true;
             MapVisorPanel.BringToFront();
+
+            if (IdView != "All")
+            {
+                SearchTxT2.Text = IdView;
+            }
         }
         private void MapVisor_MouseHover(object sender, EventArgs e)
         {
@@ -723,7 +774,7 @@ namespace PGTA_P1
         }
         private void Cat010BTN_MouseHover(object sender, EventArgs e)
         {
-            Cat010BTN.BackColor = Color.FromArgb(0,66, 108);
+            Cat010BTN.BackColor = Color.FromArgb(0, 66, 108);
 
         }
         private void Cat010BTN_MouseLeave(object sender, EventArgs e)
@@ -872,7 +923,7 @@ namespace PGTA_P1
             }
             else if ((!MULT) && (SMR))
             {
-                if(CatView != "21")
+                if (CatView != "21")
                 {
                     SourceViewV[0] = "All";
                     SourceViewV[1] = "-";
@@ -930,7 +981,7 @@ namespace PGTA_P1
                 AdsBTN.BorderStyle = BorderStyle.None;
                 AllSBTN.BorderStyle = BorderStyle.FixedSingle;
             }
-            
+
             else if ((!MULT) && (!SMR))
             {
                 if (SourceViewV[0] == "All")
@@ -945,7 +996,7 @@ namespace PGTA_P1
                 AllSBTN.BorderStyle = BorderStyle.None;
                 SMR = true;
             }
-            else if(SMR)
+            else if (SMR)
             {
                 if (MULT)
                 {
@@ -964,7 +1015,7 @@ namespace PGTA_P1
                         SourceViewV[1] = "-";
                     }
                 }
-                
+
                 PSRBTN.BorderStyle = BorderStyle.None;
                 SMR = false;
 
@@ -1121,7 +1172,7 @@ namespace PGTA_P1
         {
             DataBlocksAll.CurrentRow.Selected = true;
             this.Cursor = Cursors.WaitCursor;
-            if(e.RowIndex >= 0)
+            if (e.RowIndex >= 0)
             {
                 string ID_I = DataBlocksAll.Rows[e.RowIndex].Cells["DataBlock Id"].FormattedValue.ToString();
                 int i = 0; bool en = false;
@@ -1274,7 +1325,7 @@ namespace PGTA_P1
             DataInf.ForeColor = Color.DarkGray;
             DataInf.Refresh();
             string ID = DataBlocksAll.Rows[e.RowIndex].Cells["Target ID"].FormattedValue.ToString();
-            if(ID == "-")
+            if (ID == "-")
                 ID = DataBlocksAll.Rows[e.RowIndex].Cells["Track Number"].FormattedValue.ToString();
             this.IdView = ID;
             if (IdView == "")
@@ -1305,18 +1356,18 @@ namespace PGTA_P1
 
         //Mapa
         //Marcador de la coordenada (TESTE MAPA1)
-        private void Map_MouseDoubleClick(object sender, MouseEventArgs e)
-        {
-            double lat = Map.FromLocalToLatLng(e.X, e.Y).Lat;
-            double lon = Map.FromLocalToLatLng(e.X, e.Y).Lng;
-            GMapOverlay Overlay = new GMapOverlay();
-            GMarkerGoogle M = new GMarkerGoogle(new PointLatLng(0, 0), GMarkerGoogleType.green);
-            M.Position = new PointLatLng(lat, lon);
-            M.ToolTipMode = MarkerTooltipMode.Always;
-            M.ToolTipText = string.Format("LAT: " + lat + "; LNG: " + lon + "");
-            Overlay.Markers.Add(M);
-            Map.Overlays.Add(Overlay);
-        }
+        //private void Map_MouseDoubleClick(object sender, MouseEventArgs e)
+        //{
+        //    double lat = Map.FromLocalToLatLng(e.X, e.Y).Lat;
+        //    double lon = Map.FromLocalToLatLng(e.X, e.Y).Lng;
+        //    GMapOverlay Overlay = new GMapOverlay();
+        //    GMarkerGoogle M = new GMarkerGoogle(new PointLatLng(0, 0), GMarkerGoogleType.green);
+        //    M.Position = new PointLatLng(lat, lon);
+        //    M.ToolTipMode = MarkerTooltipMode.Always;
+        //    M.ToolTipText = string.Format("LAT: " + lat + "; LNG: " + lon + "");
+        //    Overlay.Markers.Add(M);
+        //    Map.Overlays.Add(Overlay);
+        //}
 
         //Control de temps
         private void Timer_Tick(object sender, EventArgs e)
@@ -1331,16 +1382,28 @@ namespace PGTA_P1
             //Aparició nous targets
             foreach (Target T in TargetList)
             {
-                if ((T.Inici == Temps) && (T.From == "ADS-B "))
-                    ViewTargetListADSB.Add(T);
-                else if ((T.Inici == Temps) && (T.From == "Multi. "))
-                    ViewTargetListMULTI.Add(T);
-                else if ((T.Inici == Temps) && (T.From == "SMR "))
-                    ViewTargetListSMR.Add(T);
-                else if ((T.Inici == Temps) && (T.From == "ADS-B Multi. "))
+                if ((T.Inici == Temps) && (T.From == "ADS-B ") && ((ADSB) || (SourceViewV[0] == "All")) && ((CatView == "All") || (CatView == "21")))
                 {
                     ViewTargetListADSB.Add(T);
+                    ViewTargetListShow.Add(T);
+                }
+                else if ((T.Inici == Temps) && (T.From == "Multi. ") && ((MULT) || (SourceViewV[0] == "All")))
+                {
                     ViewTargetListMULTI.Add(T);
+                    ViewTargetListShow.Add(T);
+                }
+                else if ((T.Inici == Temps) && (T.From == "SMR ") && ((SMR) || (SourceViewV[0] == "All")))
+                {
+                    ViewTargetListSMR.Add(T);
+                    ViewTargetListShow.Add(T);
+                }
+                else if ((T.Inici == Temps) && (T.From == "ADS-B Multi. "))
+                {
+                    if ((ADSB) || (SourceViewV[0] == "All"))
+                        ViewTargetListADSB.Add(T);
+                    if ((MULT) || (SourceViewV[0] == "All"))
+                        ViewTargetListMULTI.Add(T);
+                    ViewTargetListShow.Add(T);
                 }
             }
 
@@ -1348,6 +1411,13 @@ namespace PGTA_P1
             //ADSB
             foreach (Target T in ViewTargetListADSB)
             {
+
+                if ((IdView == "All") || (IdView == T.T_ID) || (IdView == T.T_Number))
+                {
+                    Map.Overlays.Add(T.CapaADSB);
+                }
+                    
+                    
                 Coordenada Mostrar = new Coordenada();
                 bool enc = false;
                 int i = 0;
@@ -1360,12 +1430,79 @@ namespace PGTA_P1
                     }
                     i++;
                 }
-                if(enc == true)
+                
+                if (enc == true)
                 {
-                    //T.DotDotDot(Mostrar, "ADS-B");
-                    T.CreateLine(Mostrar, "ADS-B");
+                    T.MapTravel(Mostrar, "ADS-B", TrackBox.Checked, TrackTime);
                 }
-                Map.Overlays.Add(T.CapaADSB);
+                else if (TrackBox.Checked == true)
+                    T.BorrarTraza(Temps, "ADS-B", TrackTime);
+                else
+                    T.CapaADSB.Routes.Clear();
+                if ((Center.Checked == true) && ((IdView == T.T_ID) || (IdView == T.T_Number)))
+                {
+                    Map.Position = Mostrar.PointMap;
+                }
+            }
+            //Multi.
+            foreach (Target T in ViewTargetListMULTI)
+            {
+
+                if ((IdView == "All") || (IdView == T.T_ID) || (IdView == T.T_Number))
+                {
+                    Map.Overlays.Add(T.CapaMULTI);
+                }
+
+
+                Coordenada Mostrar = new Coordenada();
+                bool enc = false;
+                int i = 0;
+                while ((i < T.CoordenadesMULTI.Count()) && (enc == false))
+                {
+                    if (T.CoordenadesMULTI[i].Moment == Temps)
+                    {
+                        enc = true;
+                        Mostrar = T.CoordenadesMULTI[i];
+                    }
+                    i++;
+                }
+
+                if (enc == true)
+                {
+                    T.MapTravel(Mostrar, "Multi.", TrackBox.Checked, TrackTime);
+                }
+                else if (TrackBox.Checked == true)
+                    T.BorrarTraza(Temps, "Multi.", TrackTime);
+                else
+                    T.CapaMULTI.Routes.Clear();
+                if ((Center.Checked == true) && ((IdView == T.T_ID) || (IdView == T.T_Number)))
+                {
+                    Map.Position = Mostrar.PointMap;
+                }
+            }
+
+            //Mostrem targets al DGV
+            if (countNOACTU != ViewTargetListShow.Count())
+            {
+                CurrentTargets_Act();
+                countNOACTU = ViewTargetListShow.Count();
+                Map.Refresh();
+            }
+
+            //Eliminar de les llistes en el moment+1 final
+            //ADSB
+            int j = 0;
+            while (j < ViewTargetListADSB.Count())
+            {
+                if (ViewTargetListADSB[j].Final < Temps)
+                {
+                    ViewTargetListADSB.Remove(ViewTargetListADSB[j]);
+                }
+                if (ViewTargetListShow[j].Final < Temps)
+                {
+                    ViewTargetListShow.Remove(ViewTargetListShow[j]);
+                }
+                j++;
             }
         }
 
@@ -1388,6 +1525,7 @@ namespace PGTA_P1
                 PlayPause.Image = Image.FromFile("Play(II).png");
                 Timer.Stop();
             }
+            Map.Refresh();
         }
         private void PlayPause_MouseHover(object sender, EventArgs e)
         {
@@ -1406,7 +1544,7 @@ namespace PGTA_P1
 
         private void Refresh_Click(object sender, EventArgs e)
         {
-            Temps = new TimeSpan(8, 0, 0);
+            Temps = new TimeSpan(8, 00, 00);
             TempsLBL.Text = Temps.ToString("c");
             TempsLBL.Refresh();
             Play = false;
@@ -1414,10 +1552,16 @@ namespace PGTA_P1
             Timer.Stop();
 
             Map.Overlays.Clear();
+            Map.Refresh();
             foreach (Target T in TargetList)
             {
                 T.ResetOverlays();
             }
+
+            ViewTargetListADSB = new List<Target>();
+            ViewTargetListMULTI = new List<Target>();
+            ViewTargetListSMR = new List<Target>();
+            ViewTargetListShow = new List<Target>();
         }
         private void Refresh_MouseHover(object sender, EventArgs e)
         {
@@ -1514,6 +1658,186 @@ namespace PGTA_P1
                 Timer.Interval = 100;
                 velocitat = "x 5";
                 Velo.Text = velocitat;
+            }
+        }
+
+        private void TrackBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (TrackBox.Checked == true)
+            {
+                Rad5min.Visible = true;
+                Rad15min.Visible = true;
+                Rad30min.Visible = true;
+                Rad1h.Visible = true;
+                RadTot.Visible = true;
+            }
+            else
+            {
+                Rad5min.Visible = false;
+                Rad15min.Visible = false;
+                Rad30min.Visible = false;
+                Rad1h.Visible = false;
+                RadTot.Visible = false;
+            }
+        }
+
+        private void Rad5min_CheckedChanged(object sender, EventArgs e)
+        {
+            if (Rad5min.Checked == true)
+                TrackTime = 1;
+        }
+        private void Rad15min_CheckedChanged(object sender, EventArgs e)
+        {
+            if (Rad15min.Checked == true)
+                TrackTime = 2;
+        }
+        private void Rad30min_CheckedChanged(object sender, EventArgs e)
+        {
+            if (Rad30min.Checked == true)
+                TrackTime = 5;
+        }
+        private void Rad1h_CheckedChanged(object sender, EventArgs e)
+        {
+            if (Rad1h.Checked == true)
+                TrackTime = 10;
+        }
+        private void RadTot_CheckedChanged(object sender, EventArgs e)
+        {
+            if (RadTot.Checked == true)
+                TrackTime = 0;
+        }
+
+        private void CurrenTargets_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            CurrenTargets.CurrentRow.Selected = true;
+            if (e.RowIndex >= 0)
+            {
+                string ID_I = CurrenTargets.Rows[e.RowIndex].Cells["ID"].FormattedValue.ToString();
+                List<Target> T = ViewTargetListShow.Where(x => x.T_ID == ID_I).ToList();
+                if (T.Count == 0)
+                    T = ViewTargetListShow.Where(x => x.T_Number == ID_I).ToList();
+                if (T.Count != 0)
+                {
+                    SearchTxT2.Text = ID_I;
+                    IdView = ID_I;
+
+                    CurrenTargets.Size = new Size(178, 256);
+                    ID_TXT.Text = ID_I; ID_TXT.Visible = true;
+                    ShowInfo.Visible = true;
+                    Center.Visible = true;
+                    Center.Checked = true;
+
+                    ShowInfo.Columns.Clear();
+                    ShowInfo.Rows.Clear();
+                    ShowInfo.ColumnCount = 1;
+                    ShowInfo.Columns[0].Name = "Info";
+                    ShowInfo.ColumnHeadersVisible = false;
+                    ShowInfo.RowHeadersVisible = false;
+
+                    ShowInfo.Rows.Add(T[0].From);
+                    ShowInfo.Rows.Add(T[0].Inici.ToString());
+                    ShowInfo.Rows.Add(T[0].Final.ToString());
+                    ShowInfo.Rows.Add(T[0].V);
+                }
+                else
+                {
+                    MessageBox.Show("Target not found");
+                }
+            }
+        }
+
+        private void SearchBTN2_Click(object sender, EventArgs e)
+        {
+            string Text = SearchTxT2.Text;
+            if (Text == "")
+            {
+                IdView = "All";
+            }
+            else
+            {
+                List<Target> T = ViewTargetListShow.Where(x => x.T_ID == Text).ToList();
+                if (T.Count == 0)
+                    T = ViewTargetListShow.Where(x => x.T_Number == Text).ToList();
+                if (T.Count != 0)
+                {
+                    IdView = Text;
+                    CurrenTargets.Size = new Size(178, 256);
+                    ID_TXT.Text = Text; ID_TXT.Visible = true;
+                    ShowInfo.Visible = true;
+                    Center.Visible = true;
+                    Center.Checked = true;
+
+                    ShowInfo.Columns.Clear();
+                    ShowInfo.Rows.Clear();
+                    ShowInfo.ColumnCount = 1;
+                    ShowInfo.Columns[0].Name = "Info";
+                    ShowInfo.ColumnHeadersVisible = false;
+                    ShowInfo.RowHeadersVisible = false;
+
+                    ShowInfo.Rows.Add(T[0].From);
+                    ShowInfo.Rows.Add(T[0].Inici.ToString());
+                    ShowInfo.Rows.Add(T[0].Final.ToString());
+                    ShowInfo.Rows.Add(T[0].V);
+                }
+                else
+                {
+                    MessageBox.Show("Target not found");
+                }
+            }
+        }
+        private void SearchBTN2_MouseHover(object sender, EventArgs e)
+        {
+            SearchBTN2.BackColor = Color.FromArgb(0, 66, 108);
+        }
+        private void SearchBTN2_MouseLeave(object sender, EventArgs e)
+        {
+            SearchBTN2.BackColor = Color.FromArgb(209, 222, 230);
+        }
+        private void SearchTxT2_TextChanged(object sender, EventArgs e)
+        {
+            if (SearchTxT2.Text == "")
+            {
+                this.IdView = "All";
+                CurrenTargets.Size = new Size(178, 434);
+                ID_TXT.Visible = false;
+                ShowInfo.Visible = false;
+                Center.Visible = false;
+                Center.Checked = false;
+            }
+        }
+
+        private void Map_OnMarkerClick(GMapMarker item, MouseEventArgs e)
+        {
+            string ID_I = item.Tag.ToString();
+            List<Target> T = ViewTargetListShow.Where(x => x.T_ID == ID_I).ToList();
+            if (T.Count == 0)
+                T = ViewTargetListShow.Where(x => x.T_Number == ID_I).ToList();
+            if (T.Count != 0)
+            {
+                SearchTxT2.Text = ID_I;
+                IdView = ID_I;
+
+                CurrenTargets.Size = new Size(178, 256);
+                ID_TXT.Text = ID_I; ID_TXT.Visible = true;
+                ShowInfo.Visible = true;
+                Center.Visible = true;
+                Center.Checked = true;
+
+                ShowInfo.Columns.Clear();
+                ShowInfo.Rows.Clear();
+                ShowInfo.ColumnCount = 1;
+                ShowInfo.Columns[0].Name = "Info";
+                ShowInfo.ColumnHeadersVisible = false;
+                ShowInfo.RowHeadersVisible = false;
+
+                ShowInfo.Rows.Add(T[0].From);
+                ShowInfo.Rows.Add(T[0].Inici.ToString());
+                ShowInfo.Rows.Add(T[0].Final.ToString());
+                ShowInfo.Rows.Add(T[0].V);
+            }
+            else
+            {
+                MessageBox.Show("Target not found");
             }
         }
     }

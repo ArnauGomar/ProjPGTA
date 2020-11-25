@@ -132,12 +132,15 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="ArxiusBin\DataItems.txt" />
-    <Content Include="ArxiusBin\Pause %28I%29.png" />
-    <Content Include="ArxiusBin\Pause%28II%29.png" />
-    <Content Include="ArxiusBin\Play%28I%29.png" />
-    <Content Include="ArxiusBin\Play%28II%29.png" />
-    <Content Include="ArxiusBin\Refresh2%281%29.png" />
-    <Content Include="ArxiusBin\Refresh2%28II%29.png" />
+    <Content Include="ArxiusBin\Menus%28I%29.png" />
+    <Content Include="ArxiusBin\Menus%28II%29.png" />
+    <Content Include="ArxiusBin\Mes%28I%29.png" />
+    <Content Include="ArxiusBin\Mes%28II%29.png" />
+    <Content Include="ArxiusBin\MULTI .png" />
+    <Content Include="ArxiusBin\SMR.png" />
+    <Content Include="ArxiusBin\Test.png" />
+    <Content Include="ArxiusBin\Test2.png" />
+    <Content Include="ArxiusBin\Test3.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Accord.3.8.0\build\Accord.targets" Condition="Exists('..\packages\Accord.3.8.0\build\Accord.targets')" />

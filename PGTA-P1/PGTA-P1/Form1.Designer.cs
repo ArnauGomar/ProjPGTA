@@ -90,6 +90,19 @@ namespace PGTA_P1
             this.PanelSources1 = new System.Windows.Forms.Panel();
             this.Map = new GMap.NET.WindowsForms.GMapControl();
             this.MapVisorPanel = new System.Windows.Forms.Panel();
+            this.Center = new System.Windows.Forms.CheckBox();
+            this.ID_TXT = new System.Windows.Forms.Label();
+            this.ShowInfo = new System.Windows.Forms.DataGridView();
+            this.SearchBTN2 = new System.Windows.Forms.Panel();
+            this.label14 = new System.Windows.Forms.Label();
+            this.pictureBox10 = new System.Windows.Forms.PictureBox();
+            this.SearchTxT2 = new System.Windows.Forms.TextBox();
+            this.RadTot = new System.Windows.Forms.RadioButton();
+            this.Rad1h = new System.Windows.Forms.RadioButton();
+            this.Rad30min = new System.Windows.Forms.RadioButton();
+            this.Rad15min = new System.Windows.Forms.RadioButton();
+            this.Rad5min = new System.Windows.Forms.RadioButton();
+            this.TrackBox = new System.Windows.Forms.CheckBox();
             this.label16 = new System.Windows.Forms.Label();
             this.CurrenTargets = new System.Windows.Forms.DataGridView();
             this.Timer = new System.Windows.Forms.Timer(this.components);
@@ -100,6 +113,7 @@ namespace PGTA_P1
             this.MesV = new System.Windows.Forms.PictureBox();
             this.MenysV = new System.Windows.Forms.PictureBox();
             this.Refresh = new System.Windows.Forms.PictureBox();
+            this.CatPanels = new System.Windows.Forms.Panel();
             this.BarraSuperior.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox8)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -132,12 +146,16 @@ namespace PGTA_P1
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).BeginInit();
             this.PanelSources1.SuspendLayout();
             this.MapVisorPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.ShowInfo)).BeginInit();
+            this.SearchBTN2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox10)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.CurrenTargets)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.PlayPause)).BeginInit();
             this.TempsPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.MesV)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.MenysV)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Refresh)).BeginInit();
+            this.CatPanels.SuspendLayout();
             this.SuspendLayout();
             // 
             // PGB1
@@ -587,7 +605,7 @@ namespace PGTA_P1
             this.Cat010BTN.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(209)))), ((int)(((byte)(222)))), ((int)(((byte)(230)))));
             this.Cat010BTN.Controls.Add(this.label5);
             this.Cat010BTN.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.Cat010BTN.Location = new System.Drawing.Point(4, 0);
+            this.Cat010BTN.Location = new System.Drawing.Point(2, 0);
             this.Cat010BTN.Name = "Cat010BTN";
             this.Cat010BTN.Size = new System.Drawing.Size(60, 25);
             this.Cat010BTN.TabIndex = 8;
@@ -613,7 +631,7 @@ namespace PGTA_P1
             this.Cat021BTN.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(209)))), ((int)(((byte)(222)))), ((int)(((byte)(230)))));
             this.Cat021BTN.Controls.Add(this.label6);
             this.Cat021BTN.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.Cat021BTN.Location = new System.Drawing.Point(70, 0);
+            this.Cat021BTN.Location = new System.Drawing.Point(69, 0);
             this.Cat021BTN.Name = "Cat021BTN";
             this.Cat021BTN.Size = new System.Drawing.Size(60, 25);
             this.Cat021BTN.TabIndex = 9;
@@ -676,7 +694,7 @@ namespace PGTA_P1
             this.MultiBTN.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(209)))), ((int)(((byte)(222)))), ((int)(((byte)(230)))));
             this.MultiBTN.Controls.Add(this.MultiBTNl);
             this.MultiBTN.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.MultiBTN.Location = new System.Drawing.Point(217, 0);
+            this.MultiBTN.Location = new System.Drawing.Point(4, 0);
             this.MultiBTN.Name = "MultiBTN";
             this.MultiBTN.Size = new System.Drawing.Size(60, 25);
             this.MultiBTN.TabIndex = 13;
@@ -702,7 +720,7 @@ namespace PGTA_P1
             this.PSRBTN.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(209)))), ((int)(((byte)(222)))), ((int)(((byte)(230)))));
             this.PSRBTN.Controls.Add(this.label8);
             this.PSRBTN.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.PSRBTN.Location = new System.Drawing.Point(283, 0);
+            this.PSRBTN.Location = new System.Drawing.Point(70, 0);
             this.PSRBTN.Name = "PSRBTN";
             this.PSRBTN.Size = new System.Drawing.Size(60, 25);
             this.PSRBTN.TabIndex = 14;
@@ -729,7 +747,7 @@ namespace PGTA_P1
             this.AllSBTN.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.AllSBTN.Controls.Add(this.label10);
             this.AllSBTN.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.AllSBTN.Location = new System.Drawing.Point(415, 0);
+            this.AllSBTN.Location = new System.Drawing.Point(202, 0);
             this.AllSBTN.Name = "AllSBTN";
             this.AllSBTN.Size = new System.Drawing.Size(60, 25);
             this.AllSBTN.TabIndex = 16;
@@ -755,7 +773,7 @@ namespace PGTA_P1
             this.AdsBTN.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(209)))), ((int)(((byte)(222)))), ((int)(((byte)(230)))));
             this.AdsBTN.Controls.Add(this.label9);
             this.AdsBTN.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.AdsBTN.Location = new System.Drawing.Point(349, 0);
+            this.AdsBTN.Location = new System.Drawing.Point(136, 0);
             this.AdsBTN.Name = "AdsBTN";
             this.AdsBTN.Size = new System.Drawing.Size(60, 25);
             this.AdsBTN.TabIndex = 15;
@@ -800,15 +818,12 @@ namespace PGTA_P1
             // PanelSources1
             // 
             this.PanelSources1.Controls.Add(this.PSRBTN);
-            this.PanelSources1.Controls.Add(this.AllCatBTN);
             this.PanelSources1.Controls.Add(this.AllSBTN);
-            this.PanelSources1.Controls.Add(this.Cat010BTN);
-            this.PanelSources1.Controls.Add(this.Cat021BTN);
             this.PanelSources1.Controls.Add(this.AdsBTN);
             this.PanelSources1.Controls.Add(this.MultiBTN);
-            this.PanelSources1.Location = new System.Drawing.Point(257, 31);
+            this.PanelSources1.Location = new System.Drawing.Point(515, 31);
             this.PanelSources1.Name = "PanelSources1";
-            this.PanelSources1.Size = new System.Drawing.Size(482, 25);
+            this.PanelSources1.Size = new System.Drawing.Size(267, 25);
             this.PanelSources1.TabIndex = 17;
             this.PanelSources1.Visible = false;
             // 
@@ -834,13 +849,24 @@ namespace PGTA_P1
             this.Map.ScaleMode = GMap.NET.WindowsForms.ScaleModes.Integer;
             this.Map.SelectedAreaFillColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(65)))), ((int)(((byte)(105)))), ((int)(((byte)(225)))));
             this.Map.ShowTileGridLines = false;
-            this.Map.Size = new System.Drawing.Size(1070, 529);
+            this.Map.Size = new System.Drawing.Size(1070, 502);
             this.Map.TabIndex = 0;
             this.Map.Zoom = 0D;
-            this.Map.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.Map_MouseDoubleClick);
+            this.Map.OnMarkerClick += new GMap.NET.WindowsForms.MarkerClick(this.Map_OnMarkerClick);
             // 
             // MapVisorPanel
             // 
+            this.MapVisorPanel.Controls.Add(this.Center);
+            this.MapVisorPanel.Controls.Add(this.ID_TXT);
+            this.MapVisorPanel.Controls.Add(this.ShowInfo);
+            this.MapVisorPanel.Controls.Add(this.SearchBTN2);
+            this.MapVisorPanel.Controls.Add(this.SearchTxT2);
+            this.MapVisorPanel.Controls.Add(this.RadTot);
+            this.MapVisorPanel.Controls.Add(this.Rad1h);
+            this.MapVisorPanel.Controls.Add(this.Rad30min);
+            this.MapVisorPanel.Controls.Add(this.Rad15min);
+            this.MapVisorPanel.Controls.Add(this.Rad5min);
+            this.MapVisorPanel.Controls.Add(this.TrackBox);
             this.MapVisorPanel.Controls.Add(this.label16);
             this.MapVisorPanel.Controls.Add(this.CurrenTargets);
             this.MapVisorPanel.Controls.Add(this.Map);
@@ -850,11 +876,163 @@ namespace PGTA_P1
             this.MapVisorPanel.TabIndex = 18;
             this.MapVisorPanel.Visible = false;
             // 
+            // Center
+            // 
+            this.Center.AutoSize = true;
+            this.Center.Location = new System.Drawing.Point(4, 512);
+            this.Center.Name = "Center";
+            this.Center.Size = new System.Drawing.Size(57, 17);
+            this.Center.TabIndex = 30;
+            this.Center.Text = "Center";
+            this.Center.UseVisualStyleBackColor = true;
+            this.Center.Visible = false;
+            // 
+            // ID_TXT
+            // 
+            this.ID_TXT.AutoSize = true;
+            this.ID_TXT.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ID_TXT.Location = new System.Drawing.Point(3, 349);
+            this.ID_TXT.Name = "ID_TXT";
+            this.ID_TXT.Size = new System.Drawing.Size(55, 13);
+            this.ID_TXT.TabIndex = 29;
+            this.ID_TXT.Text = "######";
+            this.ID_TXT.Visible = false;
+            // 
+            // ShowInfo
+            // 
+            this.ShowInfo.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.ShowInfo.Location = new System.Drawing.Point(3, 365);
+            this.ShowInfo.Name = "ShowInfo";
+            this.ShowInfo.ReadOnly = true;
+            this.ShowInfo.Size = new System.Drawing.Size(178, 140);
+            this.ShowInfo.TabIndex = 28;
+            this.ShowInfo.Visible = false;
+            // 
+            // SearchBTN2
+            // 
+            this.SearchBTN2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(209)))), ((int)(((byte)(222)))), ((int)(((byte)(230)))));
+            this.SearchBTN2.Controls.Add(this.label14);
+            this.SearchBTN2.Controls.Add(this.pictureBox10);
+            this.SearchBTN2.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.SearchBTN2.Location = new System.Drawing.Point(98, 53);
+            this.SearchBTN2.Name = "SearchBTN2";
+            this.SearchBTN2.Size = new System.Drawing.Size(80, 25);
+            this.SearchBTN2.TabIndex = 27;
+            this.SearchBTN2.Click += new System.EventHandler(this.SearchBTN2_Click);
+            this.SearchBTN2.MouseLeave += new System.EventHandler(this.SearchBTN2_MouseLeave);
+            this.SearchBTN2.MouseHover += new System.EventHandler(this.SearchBTN2_MouseHover);
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(8, 6);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(41, 13);
+            this.label14.TabIndex = 5;
+            this.label14.Text = "Search";
+            this.label14.Click += new System.EventHandler(this.SearchBTN2_Click);
+            this.label14.MouseLeave += new System.EventHandler(this.SearchBTN2_MouseLeave);
+            this.label14.MouseHover += new System.EventHandler(this.SearchBTN2_MouseHover);
+            // 
+            // pictureBox10
+            // 
+            this.pictureBox10.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox10.Image")));
+            this.pictureBox10.Location = new System.Drawing.Point(54, 2);
+            this.pictureBox10.Name = "pictureBox10";
+            this.pictureBox10.Size = new System.Drawing.Size(21, 22);
+            this.pictureBox10.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox10.TabIndex = 4;
+            this.pictureBox10.TabStop = false;
+            this.pictureBox10.Click += new System.EventHandler(this.SearchBTN2_Click);
+            this.pictureBox10.MouseLeave += new System.EventHandler(this.SearchBTN2_MouseLeave);
+            this.pictureBox10.MouseHover += new System.EventHandler(this.SearchBTN2_MouseHover);
+            // 
+            // SearchTxT2
+            // 
+            this.SearchTxT2.Location = new System.Drawing.Point(3, 55);
+            this.SearchTxT2.Name = "SearchTxT2";
+            this.SearchTxT2.Size = new System.Drawing.Size(87, 20);
+            this.SearchTxT2.TabIndex = 26;
+            this.SearchTxT2.TextChanged += new System.EventHandler(this.SearchTxT2_TextChanged);
+            // 
+            // RadTot
+            // 
+            this.RadTot.AutoSize = true;
+            this.RadTot.Checked = true;
+            this.RadTot.Location = new System.Drawing.Point(71, 33);
+            this.RadTot.Name = "RadTot";
+            this.RadTot.Size = new System.Drawing.Size(49, 17);
+            this.RadTot.TabIndex = 25;
+            this.RadTot.TabStop = true;
+            this.RadTot.Text = "Total";
+            this.RadTot.UseVisualStyleBackColor = true;
+            this.RadTot.Visible = false;
+            this.RadTot.CheckedChanged += new System.EventHandler(this.RadTot_CheckedChanged);
+            // 
+            // Rad1h
+            // 
+            this.Rad1h.AutoSize = true;
+            this.Rad1h.Location = new System.Drawing.Point(15, 33);
+            this.Rad1h.Name = "Rad1h";
+            this.Rad1h.Size = new System.Drawing.Size(56, 17);
+            this.Rad1h.TabIndex = 24;
+            this.Rad1h.Text = "10 min";
+            this.Rad1h.UseVisualStyleBackColor = true;
+            this.Rad1h.Visible = false;
+            this.Rad1h.CheckedChanged += new System.EventHandler(this.Rad1h_CheckedChanged);
+            // 
+            // Rad30min
+            // 
+            this.Rad30min.AutoSize = true;
+            this.Rad30min.Location = new System.Drawing.Point(122, 16);
+            this.Rad30min.Name = "Rad30min";
+            this.Rad30min.Size = new System.Drawing.Size(50, 17);
+            this.Rad30min.TabIndex = 23;
+            this.Rad30min.Text = "5 min";
+            this.Rad30min.UseVisualStyleBackColor = true;
+            this.Rad30min.Visible = false;
+            this.Rad30min.CheckedChanged += new System.EventHandler(this.Rad30min_CheckedChanged);
+            // 
+            // Rad15min
+            // 
+            this.Rad15min.AutoSize = true;
+            this.Rad15min.Location = new System.Drawing.Point(71, 16);
+            this.Rad15min.Name = "Rad15min";
+            this.Rad15min.Size = new System.Drawing.Size(50, 17);
+            this.Rad15min.TabIndex = 22;
+            this.Rad15min.Text = "2 min";
+            this.Rad15min.UseVisualStyleBackColor = true;
+            this.Rad15min.Visible = false;
+            this.Rad15min.CheckedChanged += new System.EventHandler(this.Rad15min_CheckedChanged);
+            // 
+            // Rad5min
+            // 
+            this.Rad5min.AutoSize = true;
+            this.Rad5min.Location = new System.Drawing.Point(15, 16);
+            this.Rad5min.Name = "Rad5min";
+            this.Rad5min.Size = new System.Drawing.Size(56, 17);
+            this.Rad5min.TabIndex = 21;
+            this.Rad5min.Text = " 1  min";
+            this.Rad5min.UseVisualStyleBackColor = true;
+            this.Rad5min.Visible = false;
+            this.Rad5min.CheckedChanged += new System.EventHandler(this.Rad5min_CheckedChanged);
+            // 
+            // TrackBox
+            // 
+            this.TrackBox.AutoSize = true;
+            this.TrackBox.Location = new System.Drawing.Point(4, 3);
+            this.TrackBox.Name = "TrackBox";
+            this.TrackBox.Size = new System.Drawing.Size(54, 17);
+            this.TrackBox.TabIndex = 20;
+            this.TrackBox.Text = "Track";
+            this.TrackBox.UseVisualStyleBackColor = true;
+            this.TrackBox.CheckedChanged += new System.EventHandler(this.TrackBox_CheckedChanged);
+            // 
             // label16
             // 
             this.label16.AutoSize = true;
             this.label16.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label16.Location = new System.Drawing.Point(4, 53);
+            this.label16.Location = new System.Drawing.Point(1, 77);
             this.label16.Name = "label16";
             this.label16.Size = new System.Drawing.Size(95, 13);
             this.label16.TabIndex = 6;
@@ -863,10 +1041,12 @@ namespace PGTA_P1
             // CurrenTargets
             // 
             this.CurrenTargets.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.CurrenTargets.Location = new System.Drawing.Point(3, 70);
+            this.CurrenTargets.Location = new System.Drawing.Point(3, 92);
             this.CurrenTargets.Name = "CurrenTargets";
-            this.CurrenTargets.Size = new System.Drawing.Size(178, 204);
+            this.CurrenTargets.ReadOnly = true;
+            this.CurrenTargets.Size = new System.Drawing.Size(178, 434);
             this.CurrenTargets.TabIndex = 1;
+            this.CurrenTargets.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.CurrenTargets_CellClick);
             // 
             // Timer
             // 
@@ -974,12 +1154,24 @@ namespace PGTA_P1
             this.Refresh.MouseLeave += new System.EventHandler(this.Refresh_MouseLeave);
             this.Refresh.MouseHover += new System.EventHandler(this.Refresh_MouseHover);
             // 
+            // CatPanels
+            // 
+            this.CatPanels.Controls.Add(this.Cat010BTN);
+            this.CatPanels.Controls.Add(this.AllCatBTN);
+            this.CatPanels.Controls.Add(this.Cat021BTN);
+            this.CatPanels.Location = new System.Drawing.Point(278, 31);
+            this.CatPanels.Name = "CatPanels";
+            this.CatPanels.Size = new System.Drawing.Size(200, 25);
+            this.CatPanels.TabIndex = 19;
+            this.CatPanels.Visible = false;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.ClientSize = new System.Drawing.Size(1284, 611);
+            this.Controls.Add(this.CatPanels);
             this.Controls.Add(this.TempsPanel);
             this.Controls.Add(this.DataInf);
             this.Controls.Add(this.PanelSources1);
@@ -988,9 +1180,9 @@ namespace PGTA_P1
             this.Controls.Add(this.BarraSuperior);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.MapVisorPanel);
-            this.Controls.Add(this.TextVisorPanel);
             this.Controls.Add(this.pictureBox5);
             this.Controls.Add(this.PGB1);
+            this.Controls.Add(this.TextVisorPanel);
             this.Cursor = System.Windows.Forms.Cursors.Default;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "Form1";
@@ -1045,6 +1237,10 @@ namespace PGTA_P1
             this.PanelSources1.ResumeLayout(false);
             this.MapVisorPanel.ResumeLayout(false);
             this.MapVisorPanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.ShowInfo)).EndInit();
+            this.SearchBTN2.ResumeLayout(false);
+            this.SearchBTN2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox10)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.CurrenTargets)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.PlayPause)).EndInit();
             this.TempsPanel.ResumeLayout(false);
@@ -1052,6 +1248,7 @@ namespace PGTA_P1
             ((System.ComponentModel.ISupportInitialize)(this.MesV)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.MenysV)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Refresh)).EndInit();
+            this.CatPanels.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1123,10 +1320,24 @@ namespace PGTA_P1
         private System.Windows.Forms.PictureBox PlayPause;
         private System.Windows.Forms.Label TempsLBL;
         private System.Windows.Forms.Panel TempsPanel;
-        private System.Windows.Forms.PictureBox Refresh;
+        new private System.Windows.Forms.PictureBox Refresh;
         private System.Windows.Forms.PictureBox MesV;
         private System.Windows.Forms.PictureBox MenysV;
         private System.Windows.Forms.Label Velo;
+        private System.Windows.Forms.Panel CatPanels;
+        private System.Windows.Forms.CheckBox TrackBox;
+        private System.Windows.Forms.RadioButton RadTot;
+        private System.Windows.Forms.RadioButton Rad1h;
+        private System.Windows.Forms.RadioButton Rad30min;
+        private System.Windows.Forms.RadioButton Rad15min;
+        private System.Windows.Forms.RadioButton Rad5min;
+        private System.Windows.Forms.CheckBox Center;
+        private System.Windows.Forms.Label ID_TXT;
+        private System.Windows.Forms.DataGridView ShowInfo;
+        private System.Windows.Forms.Panel SearchBTN2;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.PictureBox pictureBox10;
+        private System.Windows.Forms.TextBox SearchTxT2;
     }
 }
 
