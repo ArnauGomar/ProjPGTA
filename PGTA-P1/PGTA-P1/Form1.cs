@@ -31,6 +31,7 @@ namespace PGTA_P1
         bool SMR = false;
         bool MULT = false;
         bool ADSB = false;
+        bool ALL = false;
         bool CAT10 = false;
         string IdView = "All";
 
@@ -287,7 +288,7 @@ namespace PGTA_P1
                 PGB1.Step = Filtrados.Count();
                 PGB1.PerformStep();
 
-                TargetTable.Rows.Add(TargetList.Last().StringLin());
+               
                 i++;
                 if (ADSB.Count == 0)
                     adsb_fin = true;
@@ -308,7 +309,7 @@ namespace PGTA_P1
                 PGB1.Step = Filtrados.Count();
                 PGB1.PerformStep();
 
-                TargetTable.Rows.Add(TargetList.Last().StringLin());
+                
 
                 if (SMR.Count == 0)
                     smr = true;
@@ -338,13 +339,84 @@ namespace PGTA_P1
                 PGB1.Step = Filtrados.Count();
                 PGB1.PerformStep();
 
-                TargetTable.Rows.Add(TargetList.Last().StringLin());
+                //TargetTable.Rows.Add(TargetList.Last().StringLin());
 
                 if (Multi.Count == 0)
                     multi_fin = true;
             }
-            TargetShow_Act();
+            //TargetShow_Act();
         }
+
+        private void GroupSMR()
+        {
+            int h = 0;
+            while (h < TargetList.Count())
+            {
+                if ((TargetList[h].CoordenadesSMR.Count == 1) && (TargetList[h].From == "SMR"))
+                    TargetList.Remove(TargetList[h]);
+                h++;
+            }
+
+            List<Target> Copia = TargetList;
+        }
+
+        private void GroupTNumb()
+        {
+            List<Target> Copia = TargetList;
+            
+            PGB1.Refresh();
+            DataInf.Text = "(2)Grouping Targets...";
+            DataInf.Refresh();
+            PGB1.Maximum = Copia.Count();
+            PGB1.Value = 1;
+            PGB1.Step = 1;
+
+            int i = 0;
+            while(i<Copia.Count())
+            {
+                if (Copia[i].From != "SMR")
+                {
+                    int DT = Copia[i].DataBlocks.Count();
+                    //Estem en ADSB o MULTI, busquem semblances amb T_Number
+                    int j = 0;
+                    while (j < TargetList.Count())
+                    {
+                        if ((TargetList[j].From != "SMR") && (i != j))
+                        {
+                            int k = 0;
+                            bool enc = false;
+                            while ((k < TargetList[j].T_NumberMult.Count)&&(!enc))
+                            {
+                                string T_NumberTargetList = TargetList[j].T_NumberMult[k];
+                                List<string> Iguals = Copia[i].T_NumberMult.Where(x => x == T_NumberTargetList).ToList();
+
+                                if (Iguals.Count != 0) //Hem trobat una igualtat, podem ingresar dades al target de copia
+                                {
+                                    Copia[i].DataBlocks.AddRange(TargetList[j].DataBlocks);
+                                    TargetList.Remove(TargetList[j]);
+                                    Copia.Remove(TargetList[j]);
+                                    
+                                    enc = true;
+                                }
+                                k++;
+                            }
+                        }
+                        j++;
+                    }
+
+                    if (DT != Copia[i].DataBlocks.Count())
+                    {
+                        Copia[i].ReLoad();
+                    }
+                }
+                TargetTable.Rows.Add(Copia[i].StringLin());
+                PGB1.PerformStep();
+                i++;
+            }
+
+            TargetList = Copia;
+        }
+
 
         //Actualització de DGV DataBlocks
         private void DataBlocksDGV_Act()
@@ -490,6 +562,10 @@ namespace PGTA_P1
             TargetTable.Columns.Add("Source");
             TargetTable.Columns.Add("N. DataBlocks");
 
+            Timer.Stop();
+            Play = false;
+            PlayPause.Image = Image.FromFile("Play(I).png");
+
             DataInf.Text = "Loading Data...";
             DataInf.ForeColor = Color.DarkGray;
             pictureBox5.BringToFront();
@@ -512,6 +588,24 @@ namespace PGTA_P1
 
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
+                Temps = new TimeSpan(8, 00, 00);
+                TempsLBL.Text = Temps.ToString("c");
+                TempsLBL.Refresh();
+                Play = false;
+                PlayPause.Image = Image.FromFile("Play(I).png");
+
+                Map.Overlays.Clear();
+                Map.Refresh();
+                foreach (Target T in TargetList)
+                {
+                    T.ResetOverlays();
+                }
+
+                ViewTargetListADSB = new List<Target>();
+                ViewTargetListMULTI = new List<Target>();
+                ViewTargetListSMR = new List<Target>();
+                ViewTargetListShow = new List<Target>();
+
                 TextVisorBTN.BorderStyle = BorderStyle.None;
                 PanelControlSuperior.Visible = false;
                 TextVisorPanel.Visible = false;
@@ -593,7 +687,9 @@ namespace PGTA_P1
 
                 //Agrupar Targets
                 TargetGroup();
-
+                GroupSMR();
+                GroupTNumb();
+                
                 this.DataTable1000.Add(DT);
                 this.Cursor = Cursors.Default;
                 PGB1.Visible = false;
@@ -1262,62 +1358,6 @@ namespace PGTA_P1
             }
         }
 
-        //private void Export_Click(object sender, EventArgs e)
-        //{
-        //    string ID = Buscar.Text;
-        //    System.IO.StreamWriter file = new System.IO.StreamWriter("" + ID + ".txt");
-        //    file.Close();
-
-        //    //Busquem target
-        //    List<Target> Encontrado = TargetList.Where(x => x.T_ID == ID).ToList();
-        //    if (Encontrado.Count() == 0)
-        //    {
-        //        Encontrado = TargetList.Where(x => x.T_Number == ID).ToList();
-        //    }
-
-        //    if (Encontrado.Count() != 0)
-        //    {
-        //        StreamWriter W = new StreamWriter("" + ID + ".txt");
-        //        int Max = Encontrado[0].CoordenadesADSB.Count();
-        //        if (Max != 0)
-        //        {
-        //            W.WriteLine(Max);
-        //            foreach (Coordenada C in Encontrado[0].CoordenadesADSB)
-        //            {
-        //                W.WriteLine(string.Join("_", C.Retrun()));
-        //            }
-        //            W.Close();
-        //        }
-        //        else
-        //        {
-        //            Max = Encontrado[0].CoordenadesMULTI.Count();
-        //            if (Max != 0)
-        //            {
-        //                W.WriteLine(Max);
-        //                foreach (Coordenada C in Encontrado[0].CoordenadesMULTI)
-        //                {
-        //                    W.WriteLine(string.Join("_", C.Retrun()));
-        //                }
-        //                W.Close();
-        //            }
-        //            else
-        //            {
-        //                Max = Encontrado[0].CoordenadesSMR.Count();
-        //                if (Max != 0)
-        //                {
-        //                    W.WriteLine(Max);
-        //                    foreach (Coordenada C in Encontrado[0].CoordenadesSMR)
-        //                    {
-        //                        W.WriteLine(string.Join("_", C.Retrun()));
-        //                    }
-        //                    W.Close();
-        //                }
-        //            }
-        //        }
-        //        MessageBox.Show("Exported");
-        //    }
-        //}
-
         private void TargetsShow_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             this.Cursor = Cursors.WaitCursor;
@@ -1354,21 +1394,6 @@ namespace PGTA_P1
             nextBTN.Visible = false;
         }
 
-        //Mapa
-        //Marcador de la coordenada (TESTE MAPA1)
-        //private void Map_MouseDoubleClick(object sender, MouseEventArgs e)
-        //{
-        //    double lat = Map.FromLocalToLatLng(e.X, e.Y).Lat;
-        //    double lon = Map.FromLocalToLatLng(e.X, e.Y).Lng;
-        //    GMapOverlay Overlay = new GMapOverlay();
-        //    GMarkerGoogle M = new GMarkerGoogle(new PointLatLng(0, 0), GMarkerGoogleType.green);
-        //    M.Position = new PointLatLng(lat, lon);
-        //    M.ToolTipMode = MarkerTooltipMode.Always;
-        //    M.ToolTipText = string.Format("LAT: " + lat + "; LNG: " + lon + "");
-        //    Overlay.Markers.Add(M);
-        //    Map.Overlays.Add(Overlay);
-        //}
-
         //Control de temps
         private void Timer_Tick(object sender, EventArgs e)
         {
@@ -1382,104 +1407,149 @@ namespace PGTA_P1
             //Aparició nous targets
             foreach (Target T in TargetList)
             {
-                if ((T.Inici == Temps) && (T.From == "ADS-B ") && ((ADSB) || (SourceViewV[0] == "All")) && ((CatView == "All") || (CatView == "21")))
+                if ((T.Inici == Temps) && (T.From == "ADS-B "))
                 {
                     ViewTargetListADSB.Add(T);
                     ViewTargetListShow.Add(T);
                 }
-                else if ((T.Inici == Temps) && (T.From == "Multi. ") && ((MULT) || (SourceViewV[0] == "All")))
+                else if ((T.Inici == Temps) && (T.From == "Multi. "))
                 {
                     ViewTargetListMULTI.Add(T);
                     ViewTargetListShow.Add(T);
                 }
-                else if ((T.Inici == Temps) && (T.From == "SMR ") && ((SMR) || (SourceViewV[0] == "All")))
+                else if ((T.Inici == Temps) && (T.From == "SMR"))
                 {
                     ViewTargetListSMR.Add(T);
                     ViewTargetListShow.Add(T);
                 }
                 else if ((T.Inici == Temps) && (T.From == "ADS-B Multi. "))
                 {
-                    if ((ADSB) || (SourceViewV[0] == "All"))
-                        ViewTargetListADSB.Add(T);
-                    if ((MULT) || (SourceViewV[0] == "All"))
-                        ViewTargetListMULTI.Add(T);
+                    ViewTargetListADSB.Add(T);
+                    ViewTargetListMULTI.Add(T);
                     ViewTargetListShow.Add(T);
                 }
             }
 
             //Mostrar targets al mapa
             //ADSB
-            foreach (Target T in ViewTargetListADSB)
+            if ((ADSB) || ((!ADSB) && (!MULT) && (!SMR)))
             {
+                foreach (Target T in ViewTargetListADSB)
+                {
 
-                if ((IdView == "All") || (IdView == T.T_ID) || (IdView == T.T_Number))
-                {
-                    Map.Overlays.Add(T.CapaADSB);
-                }
-                    
-                    
-                Coordenada Mostrar = new Coordenada();
-                bool enc = false;
-                int i = 0;
-                while ((i < T.CoordenadesADSB.Count()) && (enc == false))
-                {
-                    if (T.CoordenadesADSB[i].Moment == Temps)
+                    if ((IdView == "All") || (IdView == T.T_ID) || (IdView == T.T_Number))
                     {
-                        enc = true;
-                        Mostrar = T.CoordenadesADSB[i];
+                        Map.Overlays.Add(T.CapaADSB);
                     }
-                    i++;
-                }
-                
-                if (enc == true)
-                {
-                    T.MapTravel(Mostrar, "ADS-B", TrackBox.Checked, TrackTime);
-                }
-                else if (TrackBox.Checked == true)
-                    T.BorrarTraza(Temps, "ADS-B", TrackTime);
-                else
-                    T.CapaADSB.Routes.Clear();
-                if ((Center.Checked == true) && ((IdView == T.T_ID) || (IdView == T.T_Number)))
-                {
-                    Map.Position = Mostrar.PointMap;
+
+
+                    Coordenada Mostrar = new Coordenada();
+                    bool enc = false;
+                    int i = 0;
+                    while ((i < T.CoordenadesADSB.Count()) && (enc == false))
+                    {
+                        if (T.CoordenadesADSB[i].Moment == Temps)
+                        {
+                            enc = true;
+                            Mostrar = T.CoordenadesADSB[i];
+                        }
+                        i++;
+                    }
+
+                    if (enc == true)
+                    {
+                        T.MapTravel(Mostrar, "ADS-B", TrackBox.Checked, TrackTime);
+                    }
+                    else if (TrackBox.Checked == true)
+                        T.BorrarTraza(Temps, "ADS-B", TrackTime);
+                    else
+                        T.CapaADSB.Routes.Clear();
+                    if ((Center.Checked == true) && ((IdView == T.T_ID) || (IdView == T.T_Number)) && (enc == true))
+                    {
+                        Map.Position = Mostrar.PointMap;
+                    }
                 }
             }
-            //Multi.
-            foreach (Target T in ViewTargetListMULTI)
+            if ((MULT) || ((!ADSB) && (!MULT) && (!SMR)))
             {
-
-                if ((IdView == "All") || (IdView == T.T_ID) || (IdView == T.T_Number))
+                //Multi.
+                foreach (Target T in ViewTargetListMULTI)
                 {
-                    Map.Overlays.Add(T.CapaMULTI);
-                }
 
-
-                Coordenada Mostrar = new Coordenada();
-                bool enc = false;
-                int i = 0;
-                while ((i < T.CoordenadesMULTI.Count()) && (enc == false))
-                {
-                    if (T.CoordenadesMULTI[i].Moment == Temps)
+                    if ((IdView == "All") || (IdView == T.T_ID) || (IdView == T.T_Number))
                     {
-                        enc = true;
-                        Mostrar = T.CoordenadesMULTI[i];
+                        Map.Overlays.Add(T.CapaMULTI);
                     }
-                    i++;
-                }
 
-                if (enc == true)
-                {
-                    T.MapTravel(Mostrar, "Multi.", TrackBox.Checked, TrackTime);
-                }
-                else if (TrackBox.Checked == true)
-                    T.BorrarTraza(Temps, "Multi.", TrackTime);
-                else
-                    T.CapaMULTI.Routes.Clear();
-                if ((Center.Checked == true) && ((IdView == T.T_ID) || (IdView == T.T_Number)))
-                {
-                    Map.Position = Mostrar.PointMap;
+
+                    Coordenada Mostrar = new Coordenada();
+                    bool enc = false;
+                    int i = 0;
+                    while ((i < T.CoordenadesMULTI.Count()) && (enc == false))
+                    {
+                        if (T.CoordenadesMULTI[i].Moment == Temps)
+                        {
+                            enc = true;
+                            Mostrar = T.CoordenadesMULTI[i];
+                        }
+                        i++;
+                    }
+
+                    if (enc == true)
+                    {
+                        T.MapTravel(Mostrar, "Multi.", TrackBox.Checked, TrackTime);
+                    }
+                    else if (TrackBox.Checked == true)
+                        T.BorrarTraza(Temps, "Multi.", TrackTime);
+                    else
+                        T.CapaMULTI.Routes.Clear();
+                    if ((Center.Checked == true) && ((IdView == T.T_ID) || (IdView == T.T_Number)) && (enc == true))
+                    {
+                        Map.Position = Mostrar.PointMap;
+                    }
                 }
             }
+            if ((SMR) || ((!ADSB) && (!MULT) && (!SMR)))
+            {
+                //SMR
+                foreach (Target T in ViewTargetListSMR)
+                {
+
+                    if ((IdView == "All") || (IdView == T.T_ID) || (IdView == T.T_Number))
+                    {
+                        Map.Overlays.Add(T.CapaSMR);
+                    }
+
+
+                    Coordenada Mostrar = new Coordenada();
+                    bool enc = false;
+                    int i = 0;
+                    while ((i < T.CoordenadesSMR.Count()) && (enc == false))
+                    {
+                        if (T.CoordenadesSMR[i].Moment == Temps)
+                        {
+                            enc = true;
+                            Mostrar = T.CoordenadesSMR[i];
+                        }
+                        i++;
+                    }
+
+                    if (enc == true)
+                    {
+                        T.MapTravel(Mostrar, "SMR", TrackBox.Checked, TrackTime);
+                    }
+                    else if (TrackBox.Checked == true)
+                        T.BorrarTraza(Temps, "SMR", TrackTime);
+                    else
+                        T.CapaSMR.Routes.Clear();
+                    if ((Center.Checked == true) && ((IdView == T.T_ID) || (IdView == T.T_Number)) && (enc == true))
+                    {
+                        Map.Position = Mostrar.PointMap;
+                    }
+                }
+            }
+
+            
 
             //Mostrem targets al DGV
             if (countNOACTU != ViewTargetListShow.Count())
@@ -1498,6 +1568,31 @@ namespace PGTA_P1
                 {
                     ViewTargetListADSB.Remove(ViewTargetListADSB[j]);
                 }
+                j++;
+            }
+            //Multi
+            j = 0;
+            while (j < ViewTargetListMULTI.Count())
+            {
+                if (ViewTargetListMULTI[j].Final < Temps)
+                {
+                    ViewTargetListMULTI.Remove(ViewTargetListMULTI[j]);
+                }
+                j++;
+            }
+            //SMR
+            while (j < ViewTargetListSMR.Count())
+            {
+                if (ViewTargetListSMR[j].Final < Temps)
+                {
+                    ViewTargetListSMR.Remove(ViewTargetListSMR[j]);
+                }
+                j++;
+            }
+            //Show
+            j = 0;
+            while (j < ViewTargetListShow.Count())
+            {
                 if (ViewTargetListShow[j].Final < Temps)
                 {
                     ViewTargetListShow.Remove(ViewTargetListShow[j]);
