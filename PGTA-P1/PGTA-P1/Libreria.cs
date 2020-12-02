@@ -28,7 +28,10 @@ namespace PGTA_P1
         public string T_ID = "-"; //ADS-B <--> Multi
         public string T_Number = "-"; //ADS-B <--> SMR, items de sistema
         public string Vehicle = "No Data";
-        
+
+        public string inTarget = "-";
+
+        public Coordenada CoordenadaInterna = new Coordenada();
 
         public DataBlock(Queue<byte> Bytes, CatLib[] Categories, int id)
         {
@@ -155,6 +158,7 @@ namespace PGTA_P1
             GetFrom();
             GetID();
             GetVehicle();
+            GetCoordenada2();
         }
 
         private void SetFSPEL(Queue<byte> Bytes)
@@ -311,6 +315,264 @@ namespace PGTA_P1
                     }
                 }
                 i++;
+            }
+        }
+
+        //private void GetCoordenada()
+        //{
+        //    string a = "";
+        //    string b = "";
+        //    string h = "";
+        //    TimeSpan M = new TimeSpan(0);
+        //    if (this.From == "ADS-B")
+        //    {
+        //        string f = "ADS-B";
+        //        List<DataField> Encontrado = this.DataFields.Where(x => x.Info.DataItemID[1] == "131").ToList();
+        //        if (Encontrado.Count() != 0)
+        //        {
+        //            a = Encontrado[0].DeCode[0];
+        //            b = Encontrado[0].DeCode[2];
+        //        }
+        //        Encontrado = this.DataFields.Where(x => x.Info.DataItemID[1] == "140").ToList();
+        //        if (Encontrado.Count() != 0)
+        //        {
+        //            double New = Convert.ToDouble(Encontrado[0].DeCode[0]) / 3.281;
+        //            h = New.ToString();
+        //        }
+        //        else
+        //        {
+        //            Encontrado = this.DataFields.Where(x => x.Info.DataItemID[1] == "145").ToList();
+        //            if (Encontrado.Count() != 0)
+        //            {
+        //                double New = Convert.ToDouble(Encontrado[0].DeCode[0]) * 100 / 3.281;
+        //                h = New.ToString();
+        //            }
+        //            else
+        //            {
+        //                h = "4";
+        //            }
+        //        }
+        //        Encontrado = this.DataFields.Where(x => x.Info.DataItemID[1] == "073").ToList();
+        //        if (Encontrado.Count() != 0)
+        //        {
+        //            M = TimeSpan.Parse(Encontrado[0].DeCode[0]);
+        //        }
+        //        else
+        //        {
+        //            Encontrado = this.DataFields.Where(x => x.Info.DataItemID[1] == "071").ToList();
+        //            if (Encontrado.Count() != 0)
+        //                M = TimeSpan.Parse(Encontrado[0].DeCode[0]);
+        //        }
+        //        if ((a != "") && (b != "") && (M != new TimeSpan(0)))
+        //            CoordenadaInterna = new Coordenada(a, b, h, "WGS", f, M);
+        //    }
+        //    else if (this.From == "Multi.")
+        //    {
+        //        string f = "Multi.";
+        //        List<DataField> Encontrado = this.DataFields.Where(x => x.Info.DataItemID[1] == "042").ToList();
+        //        if (Encontrado.Count() != 0)
+        //        {
+        //            a = Encontrado[0].DeCode[0];
+        //            b = Encontrado[0].DeCode[1];
+        //        }
+        //        Encontrado = this.DataFields.Where(x => x.Info.DataItemID[1] == "090").ToList();
+        //        if (Encontrado.Count() != 0)
+        //        {
+        //            double New = Convert.ToDouble(Encontrado[0].DeCode[2]) * 100 / 3.281;
+        //            h = New.ToString();
+        //        }
+        //        else
+        //        {
+        //            h = "4";
+        //        }
+        //        Encontrado = this.DataFields.Where(x => x.Info.DataItemID[1] == "140").ToList();
+        //        if (Encontrado.Count() != 0)
+        //        {
+        //            M = TimeSpan.Parse(Encontrado[0].DeCode[0]);
+        //        }
+        //        if ((a != "") && (b != "") && (M != new TimeSpan(0)))
+        //            CoordenadaInterna = new Coordenada(a, b, h, "X-Y", f, M);
+        //    }
+        //    else if (this.From == "SMR")
+        //    {
+        //        string f = "SMR";
+        //        List<DataField> Encontrado = this.DataFields.Where(x => x.Info.DataItemID[1] == "042").ToList();
+        //        Coordenada A = new Coordenada();
+        //        if (Encontrado.Count() != 0)
+        //        {
+        //            A = new Coordenada(Encontrado[0].DeCode[0], Encontrado[0].DeCode[1], "4", "X-Y", f, M);
+        //        }
+        //        Encontrado = this.DataFields.Where(x => x.Info.DataItemID[1] == "140").ToList();
+        //        if (Encontrado.Count() != 0)
+        //        {
+        //            M = TimeSpan.Parse(Encontrado[0].DeCode[0]);
+        //            A.Moment = M;
+        //            CoordenadaInterna = A;
+        //        }
+        //        else
+        //        {
+        //            //Encontrado = DB.DataFields.Where(x => x.Info.DataItemID[1] == "040").ToList();
+        //            //if (Encontrado.Count() != 0)
+        //            //{
+        //            //    CoordenadesSMR.Add(new Coordenada(Encontrado[0].DeCode[0], Encontrado[0].DeCode[1], "4", "POL", f));
+        //            //}
+        //        }
+        //    }
+        //}
+
+        private void GetCoordenada2()
+        {
+            string a = "";
+            string b = "";
+            string h = "";
+            TimeSpan M = new TimeSpan(0);
+            if (this.From == "ADS-B")
+            {
+                //Bucle latlong (a i b)
+                int i = 0;
+                bool enc = false;
+                while ((i < this.DataFields.Count()) && (!enc))
+                {
+                    if (DataFields[i].Info.DataItemID[1] == "131")
+                    {
+                        enc = true;
+                        a = DataFields[i].DeCode[0];
+                        b = DataFields[i].DeCode[2];
+                    }
+                    i++;
+                }
+
+                //Bucle altura
+                i = 0;
+                enc = false;
+                while ((i < this.DataFields.Count()) && (!enc))
+                {
+                    if (DataFields[i].Info.DataItemID[1] == "145")
+                    {
+                        enc = true;
+                        double New = Convert.ToDouble(DataFields[i].DeCode[0]) / 3.281;
+                        h = New.ToString();
+                    }
+                    i++;
+                }
+                if (!enc)
+                    h = "4";
+
+                //Bucle moment
+                i = 0;
+                enc = false;
+                while ((i < this.DataFields.Count()) && (!enc))
+                {
+                    if (DataFields[i].Info.DataItemID[1] == "073")
+                    {
+                        enc = true;
+                        M = TimeSpan.Parse(DataFields[i].DeCode[0]);
+                    }
+                    i++;
+                }
+                if (!enc)
+                {
+                    i = 0;
+                    enc = false;
+                    while ((i < this.DataFields.Count()) && (!enc))
+                    {
+                        if (DataFields[i].Info.DataItemID[1] == "071")
+                        {
+                            enc = true;
+                            M = TimeSpan.Parse(DataFields[i].DeCode[0]);
+                        }
+                        i++;
+                    }
+                }
+
+                //Creem cordenada asociada
+                if ((a != "") && (b != "") && (M != new TimeSpan(0)))
+                    CoordenadaInterna = new Coordenada(a, b, h, "WGS", this.From, M);
+            }
+            else if (this.From == "Multi.")
+            {
+                //Bucle latlong (a i b)
+                int i = 0;
+                bool enc = false;
+                while ((i < this.DataFields.Count()) && (!enc))
+                {
+                    if (DataFields[i].Info.DataItemID[1] == "042")
+                    {
+                        enc = true;
+                        a = DataFields[i].DeCode[0];
+                        b = DataFields[i].DeCode[1];
+                    }
+                    i++;
+                }
+
+                //Bucle altura 
+                i = 0;
+                enc = false;
+                while ((i < this.DataFields.Count()) && (!enc))
+                {
+                    if (DataFields[i].Info.DataItemID[1] == "090")
+                    {
+                        enc = true;
+                        double New = Convert.ToDouble(DataFields[i].DeCode[2]) * 100 / 3.281;
+                        h = New.ToString();
+                    }
+                    i++;
+                }
+                if (!enc)
+                    h = "4";
+
+                //Bucle moment
+                i = 0;
+                enc = false;
+                while ((i < this.DataFields.Count()) && (!enc))
+                {
+                    if (DataFields[i].Info.DataItemID[1] == "140")
+                    {
+                        enc = true;
+                        M = TimeSpan.Parse(DataFields[i].DeCode[0]);
+                    }
+                    i++;
+                }
+
+                //Creem cordenada asociada
+                if ((a != "") && (b != "") && (M != new TimeSpan(0)))
+                    CoordenadaInterna = new Coordenada(a, b, h, "X-Y", this.From, M);
+            }
+            else
+            {
+                //Bucle latlong (a i b)
+                int i = 0;
+                bool enc = false;
+                while ((i < this.DataFields.Count()) && (!enc))
+                {
+                    if (DataFields[i].Info.DataItemID[1] == "042")
+                    {
+                        enc = true;
+                        a = DataFields[i].DeCode[0];
+                        b = DataFields[i].DeCode[1];
+                    }
+                    i++;
+                }
+
+                //Bucle altura 
+                h = "4";
+
+                //Bucle moment
+                i = 0;
+                enc = false;
+                while ((i < this.DataFields.Count()) && (!enc))
+                {
+                    if (DataFields[i].Info.DataItemID[1] == "140")
+                    {
+                        enc = true;
+                        M = TimeSpan.Parse(DataFields[i].DeCode[0]);
+                    }
+                    i++;
+                }
+
+                //Creem cordenada asociada
+                if ((a != "") && (b != "") && (M != new TimeSpan(0)))
+                    CoordenadaInterna = new Coordenada(a, b, h, "X-Y", this.From, M);
             }
         }
 
@@ -3056,25 +3318,25 @@ namespace PGTA_P1
                 Bucle_TNum();
                 Bucle_Ve();
                 Bucle_From();
-                GetCoordenades();
-                if (From == "SMR")
-                    RemoveZeros();
+                //GetCoordenades();
+                //if (From == "SMR")
+                //    RemoveZeros();
 
-                if (CoordenadesADSB.Count != 0)
-                {
-                    Inici = CoordenadesADSB.First().Moment;
-                    Final = CoordenadesADSB.Last().Moment;
-                }
-                else if (CoordenadesMULTI.Count != 0)
-                {
-                    Inici = CoordenadesMULTI.First().Moment;
-                    Final = CoordenadesMULTI.Last().Moment;
-                }
-                else if (CoordenadesSMR.Count != 0)
-                {
-                    Inici = CoordenadesSMR.First().Moment;
-                    Final = CoordenadesSMR.Last().Moment;
-                }
+                //if (CoordenadesADSB.Count != 0)
+                //{
+                //    Inici = CoordenadesADSB.First().Moment;
+                //    Final = CoordenadesADSB.Last().Moment;
+                //}
+                //else if (CoordenadesMULTI.Count != 0)
+                //{
+                //    Inici = CoordenadesMULTI.First().Moment;
+                //    Final = CoordenadesMULTI.Last().Moment;
+                //}
+                //else if (CoordenadesSMR.Count != 0)
+                //{
+                //    Inici = CoordenadesSMR.First().Moment;
+                //    Final = CoordenadesSMR.Last().Moment;
+                //}
             }
         }
 
@@ -3093,7 +3355,7 @@ namespace PGTA_P1
             }
         }
 
-        private void Bucle_TNum()
+        public void Bucle_TNum()
         {
             bool e = false;
             int i = 0;
@@ -3101,6 +3363,8 @@ namespace PGTA_P1
             {
                 if ((T_NumberMult.Count == 0) || (T_NumberMult.Contains(DataBlocks[i].T_Number) == false))
                     T_NumberMult.Add(DataBlocks[i].T_Number);
+                if ((T_ID != "-") && (DataBlocks[i].T_ID == "-"))
+                    DataBlocks[i].T_ID = T_ID;
                 i++;
             }
             if (T_NumberMult.Count > 1)
@@ -3124,7 +3388,7 @@ namespace PGTA_P1
             }
         }
 
-        private void Bucle_From()
+        public void Bucle_From()
         {
             bool ADSB = false;
             bool Multi = false;
@@ -3160,7 +3424,8 @@ namespace PGTA_P1
             Bucle_TID();
             Bucle_TNum();
             Bucle_From();
-            GetCoordenades();
+            Bucle_Ve();
+            GetCoordenades2();
             CoordenadesADSB = CoordenadesADSB.OrderBy(x => x.Moment).ToList();
             CoordenadesMULTI = CoordenadesMULTI.OrderBy(x => x.Moment).ToList();
             CoordenadesSMR = CoordenadesSMR.OrderBy(x => x.Moment).ToList();
@@ -3202,108 +3467,123 @@ namespace PGTA_P1
             return Ret;
         }
 
-        public void GetCoordenades()
+        //public void GetCoordenades()
+        //{
+        //    string a = "";
+        //    string b = "";
+        //    string h = "";
+        //    TimeSpan M = new TimeSpan(0);
+        //    foreach (DataBlock DB in DataBlocks)
+        //    {
+        //        if (DB.From == "ADS-B")
+        //        {
+        //            string f = "ADS-B";
+        //            List<DataField> Encontrado = DB.DataFields.Where(x => x.Info.DataItemID[1] == "131").ToList();
+        //            if (Encontrado.Count() != 0)
+        //            {
+        //                a = Encontrado[0].DeCode[0];
+        //                b = Encontrado[0].DeCode[2];
+        //            }
+        //            Encontrado = DB.DataFields.Where(x => x.Info.DataItemID[1] == "140").ToList();
+        //            if (Encontrado.Count() != 0)
+        //            {
+        //                double New = Convert.ToDouble(Encontrado[0].DeCode[0]) / 3.281;
+        //                h = New.ToString();
+        //            }
+        //            else
+        //            {
+        //                Encontrado = DB.DataFields.Where(x => x.Info.DataItemID[1] == "145").ToList();
+        //                if (Encontrado.Count() != 0)
+        //                {
+        //                    double New = Convert.ToDouble(Encontrado[0].DeCode[0]) * 100 / 3.281;
+        //                    h = New.ToString();
+        //                }
+        //                else
+        //                {
+        //                    h = "4";
+        //                }
+        //            }
+        //            Encontrado = DB.DataFields.Where(x => x.Info.DataItemID[1] == "073").ToList();
+        //            if (Encontrado.Count() != 0)
+        //            {
+        //                M = TimeSpan.Parse(Encontrado[0].DeCode[0]);
+        //            }
+        //            else
+        //            {
+        //                Encontrado = DB.DataFields.Where(x => x.Info.DataItemID[1] == "071").ToList();
+        //                if (Encontrado.Count() != 0)
+        //                    M = TimeSpan.Parse(Encontrado[0].DeCode[0]);
+        //            }
+        //            if ((a != "") && (b != "") && (M != new TimeSpan(0)))
+        //                CoordenadesADSB.Add(new Coordenada(a, b, h, "WGS", f, Hertz_Hülsmeyer.Round(M)));
+        //        }
+        //        else if (DB.From == "Multi.")
+        //        {
+        //            string f = "Multi.";
+        //            List<DataField> Encontrado = DB.DataFields.Where(x => x.Info.DataItemID[1] == "042").ToList();
+        //            if (Encontrado.Count() != 0)
+        //            {
+        //                a = Encontrado[0].DeCode[0];
+        //                b = Encontrado[0].DeCode[1];
+        //            }
+        //            Encontrado = DB.DataFields.Where(x => x.Info.DataItemID[1] == "090").ToList();
+        //            if (Encontrado.Count() != 0)
+        //            {
+        //                double New = Convert.ToDouble(Encontrado[0].DeCode[2]) * 100 / 3.281;
+        //                h = New.ToString();
+        //            }
+        //            else
+        //            {
+        //                h = "4";
+        //            }
+        //            Encontrado = DB.DataFields.Where(x => x.Info.DataItemID[1] == "140").ToList();
+        //            if (Encontrado.Count() != 0)
+        //            {
+        //                M = TimeSpan.Parse(Encontrado[0].DeCode[0]);
+        //            }
+        //            if ((a != "") && (b != "") && (M != new TimeSpan(0)))
+        //                CoordenadesMULTI.Add(new Coordenada(a, b, h, "X-Y", f, Hertz_Hülsmeyer.Round(M)));
+        //        }
+        //        else if (DB.From == "SMR")
+        //        {
+        //            string f = "SMR";
+        //            List<DataField> Encontrado = DB.DataFields.Where(x => x.Info.DataItemID[1] == "042").ToList();
+        //            Coordenada A = new Coordenada();
+        //            if (Encontrado.Count() != 0)
+        //            {
+        //                A = new Coordenada(Encontrado[0].DeCode[0], Encontrado[0].DeCode[1], "4", "X-Y", f, M);
+        //            }
+        //            Encontrado = DB.DataFields.Where(x => x.Info.DataItemID[1] == "140").ToList();
+        //            if (Encontrado.Count() != 0)
+        //            {
+        //                M = TimeSpan.Parse(Encontrado[0].DeCode[0]);
+        //                A.Moment = Hertz_Hülsmeyer.Round(M);
+        //                CoordenadesSMR.Add(A);
+        //            }
+        //            else
+        //            {
+        //                //Encontrado = DB.DataFields.Where(x => x.Info.DataItemID[1] == "040").ToList();
+        //                //if (Encontrado.Count() != 0)
+        //                //{
+        //                //    CoordenadesSMR.Add(new Coordenada(Encontrado[0].DeCode[0], Encontrado[0].DeCode[1], "4", "POL", f));
+        //                //}
+        //            }
+        //        }
+        //    }
+        //}
+
+        public void GetCoordenades2()
         {
-            string a = "";
-            string b = "";
-            string h = "";
-            TimeSpan M = new TimeSpan(0);
-            foreach (DataBlock DB in DataBlocks)
+            int i = 0;
+            while(i<DataBlocks.Count())
             {
-                if (DB.From == "ADS-B")
-                {
-                    string f = "ADS-B";
-                    List<DataField> Encontrado = DB.DataFields.Where(x => x.Info.DataItemID[1] == "131").ToList();
-                    if (Encontrado.Count() != 0)
-                    {
-                        a = Encontrado[0].DeCode[0];
-                        b = Encontrado[0].DeCode[2];
-                    }
-                    Encontrado = DB.DataFields.Where(x => x.Info.DataItemID[1] == "140").ToList();
-                    if (Encontrado.Count() != 0)
-                    {
-                        double New = Convert.ToDouble(Encontrado[0].DeCode[0]) / 3.281;
-                        h = New.ToString();
-                    }
-                    else
-                    {
-                        Encontrado = DB.DataFields.Where(x => x.Info.DataItemID[1] == "145").ToList();
-                        if (Encontrado.Count() != 0)
-                        {
-                            double New = Convert.ToDouble(Encontrado[0].DeCode[0]) * 100 / 3.281;
-                            h = New.ToString();
-                        }
-                        else
-                        {
-                            h = "4";
-                        }
-                    }
-                    Encontrado = DB.DataFields.Where(x => x.Info.DataItemID[1] == "073").ToList();
-                    if (Encontrado.Count() != 0)
-                    {
-                        M = TimeSpan.Parse(Encontrado[0].DeCode[0]);
-                    }
-                    else
-                    {
-                        Encontrado = DB.DataFields.Where(x => x.Info.DataItemID[1] == "071").ToList();
-                        if (Encontrado.Count() != 0)
-                            M = TimeSpan.Parse(Encontrado[0].DeCode[0]);
-                    }
-                    if ((a != "") && (b != "") && (M != new TimeSpan(0)))
-                        CoordenadesADSB.Add(new Coordenada(a, b, h, "WGS", f, Hertz_Hülsmeyer.Round(M)));
-                }
-                else if (DB.From == "Multi.")
-                {
-                    string f = "Multi.";
-                    List<DataField> Encontrado = DB.DataFields.Where(x => x.Info.DataItemID[1] == "042").ToList();
-                    if (Encontrado.Count() != 0)
-                    {
-                        a = Encontrado[0].DeCode[0];
-                        b = Encontrado[0].DeCode[1];
-                    }
-                    Encontrado = DB.DataFields.Where(x => x.Info.DataItemID[1] == "090").ToList();
-                    if (Encontrado.Count() != 0)
-                    {
-                        double New = Convert.ToDouble(Encontrado[0].DeCode[2]) * 100 / 3.281;
-                        h = New.ToString();
-                    }
-                    else
-                    {
-                        h = "4";
-                    }
-                    Encontrado = DB.DataFields.Where(x => x.Info.DataItemID[1] == "140").ToList();
-                    if (Encontrado.Count() != 0)
-                    {
-                        M = TimeSpan.Parse(Encontrado[0].DeCode[0]);
-                    }
-                    if ((a != "") && (b != "") && (M != new TimeSpan(0)))
-                        CoordenadesMULTI.Add(new Coordenada(a, b, h, "X-Y", f, Hertz_Hülsmeyer.Round(M)));
-                }
-                else if (DB.From == "SMR")
-                {
-                    string f = "SMR";
-                    List<DataField> Encontrado = DB.DataFields.Where(x => x.Info.DataItemID[1] == "042").ToList();
-                    Coordenada A = new Coordenada();
-                    if (Encontrado.Count() != 0)
-                    {
-                        A = new Coordenada(Encontrado[0].DeCode[0], Encontrado[0].DeCode[1], "4", "X-Y", f, M);
-                    }
-                    Encontrado = DB.DataFields.Where(x => x.Info.DataItemID[1] == "140").ToList();
-                    if (Encontrado.Count() != 0)
-                    {
-                        M = TimeSpan.Parse(Encontrado[0].DeCode[0]);
-                        A.Moment = Hertz_Hülsmeyer.Round(M);
-                        CoordenadesSMR.Add(A);
-                    }
-                    else
-                    {
-                        //Encontrado = DB.DataFields.Where(x => x.Info.DataItemID[1] == "040").ToList();
-                        //if (Encontrado.Count() != 0)
-                        //{
-                        //    CoordenadesSMR.Add(new Coordenada(Encontrado[0].DeCode[0], Encontrado[0].DeCode[1], "4", "POL", f));
-                        //}
-                    }
-                }
+                if (DataBlocks[i].From == "ADS-B")
+                    CoordenadesADSB.Add(DataBlocks[i].CoordenadaInterna);
+                else if (DataBlocks[i].From == "Multi.")
+                    CoordenadesMULTI.Add(DataBlocks[i].CoordenadaInterna);
+                else
+                    CoordenadesSMR.Add(DataBlocks[i].CoordenadaInterna);
+                i++;
             }
         }
 
@@ -3318,28 +3598,28 @@ namespace PGTA_P1
             }
         }
 
-        public void MapTravel(Coordenada C, string Type, bool Track, int minTrack)
+        public void MapTravel(Coordenada C, string Type, bool Track, int minTrack, Bitmap[] Img)
         {
             //ADSB
-            Bitmap A = new Bitmap("Test.png");
-            if (Type == "ADS-B")
+            Bitmap A;
+            if ((Type == "ADS-B") && (C != CoordenadesADSB.Last()))
             {
                 if ((V == "light aircraft") || (V == "small aircraft") || (V == "medium aircraft") || (V == "heavy aircraft"))
                 {
-                    A = (Bitmap)Image.FromFile("Test.png");
+                    A = Img[0];
                 }
                 else if (V == "surface service vehicle")
                 {
-                    A = (Bitmap)Image.FromFile("Test2.png");
+                    A = Img[1];
                 }
                 else
                 {
-                    A = (Bitmap)Image.FromFile("Test3.png");
+                    A = Img[2];
                 }
 
                 //Generem Marker
                 GMapMarker marker = new GMarkerGoogle(C.PointMap, A);
-                marker.Tag = this.T_ID;
+                marker.Tag = "" + this.T_ID + "_ADS-B";
                 marker.ToolTipMode = MarkerTooltipMode.OnMouseOver;
                 marker.ToolTipText = string.Format("" + this.T_ID + " ; " + Math.Round(Convert.ToDouble(C.h), 2) + " m");
                 CapaADSB.Markers.Clear();
@@ -3421,22 +3701,51 @@ namespace PGTA_P1
                     Ruta.Stroke = new Pen(Color.Red);
                     CapaADSB.Routes.Add(Ruta);
                 }
+
+                //zona capta SMR
+                List<PointLatLng> Zona = new List<PointLatLng>();
+                PointLatLng a = C.PointMap;
+                a.Lat = a.Lat - 0.0003;
+                a.Lng = a.Lng - 0.0003;
+                Zona.Add(a);
+                PointLatLng b = C.PointMap;
+                b.Lat = b.Lat + 0.0003;
+                b.Lng = b.Lng - 0.0003;
+                Zona.Add(b);
+                PointLatLng c = C.PointMap;
+                c.Lat = c.Lat + 0.0003;
+                c.Lng = c.Lng + 0.0003;
+                Zona.Add(c);
+                PointLatLng d = C.PointMap;
+                d.Lat = d.Lat - 0.0003;
+                d.Lng = d.Lng + 0.0003;
+                Zona.Add(d);
+
+                GMapPolygon Area = new GMapPolygon(Zona, T_ID);
+                Area.IsVisible = false;
+                CapaADSB.Polygons.Clear();
+                CapaADSB.Polygons.Add(Area);
             }
-            else if (Type == "Multi.")
+            else if ((Type == "Multi.") && (C != CoordenadesMULTI.Last()))
             {
 
-                A = (Bitmap)Image.FromFile("MULTI .png");
+                A = Img[3];
 
                 //Generem Marker
                 GMapMarker marker = new GMarkerGoogle(C.PointMap, A);
-                marker.Tag = this.T_ID;
+                
                 marker.ToolTipMode = MarkerTooltipMode.OnMouseOver;
-                if (T_ID == "-")
+                if (T_ID != "-")
                 {
                     marker.ToolTipText = string.Format("" + this.T_ID + " ; " + Math.Round(Convert.ToDouble(C.h), 2) + " m");
+                    marker.Tag = "" + this.T_ID + "_MULTI";
                 }
                 else
+                {
                     marker.ToolTipText = string.Format("" + this.T_Number + " ; " + Math.Round(Convert.ToDouble(C.h), 2) + " m");
+                    marker.Tag = "" + this.T_Number + "_MULTI";
+                }
+
                 CapaMULTI.Markers.Clear();
                 CapaMULTI.Markers.Add(marker);
 
@@ -3513,25 +3822,52 @@ namespace PGTA_P1
                     else
                         Ruta = new GMapRoute(MULTI_Track, "TrackMULTI");
 
-                    Ruta.Stroke = new Pen(Color.Lime);
+                    Ruta.Stroke = new Pen(Color.LimeGreen);
                     CapaMULTI.Routes.Add(Ruta);
                 }
 
+                //zona capta SMR
+                List<PointLatLng> Zona = new List<PointLatLng>();
+                PointLatLng a = C.PointMap;
+                a.Lat = a.Lat - 0.0003;
+                a.Lng = a.Lng - 0.0003;
+                Zona.Add(a);
+                PointLatLng b = C.PointMap;
+                b.Lat = b.Lat + 0.0003;
+                b.Lng = b.Lng - 0.0003;
+                Zona.Add(b);
+                PointLatLng c = C.PointMap;
+                c.Lat = c.Lat + 0.0003;
+                c.Lng = c.Lng + 0.0003;
+                Zona.Add(c);
+                PointLatLng d = C.PointMap;
+                d.Lat = d.Lat - 0.0003;
+                d.Lng = d.Lng + 0.0003;
+                Zona.Add(d);
+
+                GMapPolygon Area = new GMapPolygon(Zona, T_ID);
+                Area.IsVisible = false;
+                CapaMULTI.Polygons.Clear();
+                CapaMULTI.Polygons.Add(Area);
             }
-            else
+            else if ((Type == "SMR") && (C != CoordenadesSMR.Last()))
             {
-                A = (Bitmap)Image.FromFile("SMR.png");
+                A = Img[4];
 
                 //Generem Marker
                 GMapMarker marker = new GMarkerGoogle(C.PointMap, A);
-                marker.Tag = this.T_ID;
+                
                 marker.ToolTipMode = MarkerTooltipMode.OnMouseOver;
-                if(T_ID != "-")
+                if (T_ID != "-")
                 {
                     marker.ToolTipText = string.Format("" + this.T_ID + " ; " + Math.Round(Convert.ToDouble(C.h), 2) + " m");
+                    marker.Tag = "" + this.T_ID + "_SMR";
                 }
                 else
+                {
                     marker.ToolTipText = string.Format("" + this.T_Number + " ; " + Math.Round(Convert.ToDouble(C.h), 2) + " m");
+                    marker.Tag = "" + this.T_Number + "_SMR";
+                }
 
                 CapaSMR.Markers.Clear();
                 CapaSMR.Markers.Add(marker);
@@ -3613,6 +3949,12 @@ namespace PGTA_P1
                     CapaSMR.Routes.Add(Ruta);
                 }
 
+            }
+            else
+            {
+                CapaADSB.Markers.Clear();
+                CapaMULTI.Markers.Clear();
+                CapaSMR.Markers.Clear();
             }
 
         }
@@ -3764,7 +4106,7 @@ namespace PGTA_P1
                 else
                     Ruta = new GMapRoute(MULTI_Track, "TrackMULTI");
 
-                Ruta.Stroke = new Pen(Color.Red);
+                Ruta.Stroke = new Pen(Color.LimeGreen);
                 CapaMULTI.Routes.Add(Ruta);
             }
             else
@@ -3838,12 +4180,11 @@ namespace PGTA_P1
                 else
                     Ruta = new GMapRoute(MULTI_Track, "TrackSMR");
 
-                Ruta.Stroke = new Pen(Color.Red);
+                Ruta.Stroke = new Pen(Color.Blue);
                 CapaSMR.Routes.Add(Ruta);
             }
         }
     
-
         public void ResetOverlays()
         {
             if (T_ID == "-")
@@ -3922,32 +4263,35 @@ namespace PGTA_P1
 
         public string[] RetrunGeo()
         {
-            string[] v = new string[5];
+            string[] v = new string[6];
             v[0] = Lon;
             v[1] = Lat;
             v[2] = h;
             v[3] = type;
             v[4] = from;
+            v[5] = Moment.ToString();
             return v;
         }
         public string[] RetrunSysCart()
         {
-            string[] v = new string[5];
+            string[] v = new string[6];
             v[0] = x;
             v[1] = y;
             v[2] = h;
             v[3] = type;
             v[4] = from;
+            v[5] = Moment.ToString();
             return v;
         }
         public string[] RetrunRadarCart()
         {
-            string[] v = new string[5];
+            string[] v = new string[6];
             v[0] = x_r;
             v[1] = y_r;
             v[2] = z_r;
             v[3] = type;
             v[4] = from;
+            v[5] = Moment.ToString();
             return v;
         }
 

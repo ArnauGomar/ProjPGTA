@@ -47,7 +47,6 @@ namespace PGTA_P1
             this.pictureBox3 = new System.Windows.Forms.PictureBox();
             this.TextVisorPanel = new System.Windows.Forms.Panel();
             this.label15 = new System.Windows.Forms.Label();
-            this.Export = new System.Windows.Forms.Button();
             this.TargetsShow = new System.Windows.Forms.DataGridView();
             this.TargetBTN = new System.Windows.Forms.Panel();
             this.NamT = new System.Windows.Forms.Label();
@@ -70,26 +69,28 @@ namespace PGTA_P1
             this.MapVisor = new System.Windows.Forms.Panel();
             this.label4 = new System.Windows.Forms.Label();
             this.pictureBox4 = new System.Windows.Forms.PictureBox();
-            this.Cat010BTN = new System.Windows.Forms.Panel();
-            this.label5 = new System.Windows.Forms.Label();
-            this.Cat021BTN = new System.Windows.Forms.Panel();
-            this.label6 = new System.Windows.Forms.Label();
-            this.AllCatBTN = new System.Windows.Forms.Panel();
-            this.label7 = new System.Windows.Forms.Label();
             this.PanelControlSuperior = new System.Windows.Forms.Panel();
-            this.MultiBTN = new System.Windows.Forms.Panel();
-            this.MultiBTNl = new System.Windows.Forms.Label();
-            this.PSRBTN = new System.Windows.Forms.Panel();
-            this.label8 = new System.Windows.Forms.Label();
-            this.AllSBTN = new System.Windows.Forms.Panel();
-            this.label10 = new System.Windows.Forms.Label();
-            this.AdsBTN = new System.Windows.Forms.Panel();
-            this.label9 = new System.Windows.Forms.Label();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.label6 = new System.Windows.Forms.Label();
+            this.pictureBox12 = new System.Windows.Forms.PictureBox();
+            this.AboutUsBTT = new System.Windows.Forms.Panel();
+            this.label5 = new System.Windows.Forms.Label();
+            this.pictureBox11 = new System.Windows.Forms.PictureBox();
             this.pictureBox5 = new System.Windows.Forms.PictureBox();
             this.DataInf = new System.Windows.Forms.Label();
-            this.PanelSources1 = new System.Windows.Forms.Panel();
             this.Map = new GMap.NET.WindowsForms.GMapControl();
             this.MapVisorPanel = new System.Windows.Forms.Panel();
+            this.label17 = new System.Windows.Forms.Label();
+            this.pictureBox17 = new System.Windows.Forms.PictureBox();
+            this.label10 = new System.Windows.Forms.Label();
+            this.pictureBox16 = new System.Windows.Forms.PictureBox();
+            this.label9 = new System.Windows.Forms.Label();
+            this.pictureBox15 = new System.Windows.Forms.PictureBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.pictureBox14 = new System.Windows.Forms.PictureBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.pictureBox13 = new System.Windows.Forms.PictureBox();
+            this.button2 = new System.Windows.Forms.Button();
             this.Center = new System.Windows.Forms.CheckBox();
             this.ID_TXT = new System.Windows.Forms.Label();
             this.ShowInfo = new System.Windows.Forms.DataGridView();
@@ -113,7 +114,15 @@ namespace PGTA_P1
             this.MesV = new System.Windows.Forms.PictureBox();
             this.MenysV = new System.Windows.Forms.PictureBox();
             this.Refresh = new System.Windows.Forms.PictureBox();
-            this.CatPanels = new System.Windows.Forms.Panel();
+            this.CatPanel = new System.Windows.Forms.Panel();
+            this.R_But_CatAll = new System.Windows.Forms.RadioButton();
+            this.R_But_Cat21 = new System.Windows.Forms.RadioButton();
+            this.R_But_Cat10 = new System.Windows.Forms.RadioButton();
+            this.SouPanel = new System.Windows.Forms.Panel();
+            this.R_But_ADSB = new System.Windows.Forms.RadioButton();
+            this.R_But_SouAll = new System.Windows.Forms.RadioButton();
+            this.R_But_Multi = new System.Windows.Forms.RadioButton();
+            this.R_But_SMR = new System.Windows.Forms.RadioButton();
             this.BarraSuperior.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox8)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -135,17 +144,18 @@ namespace PGTA_P1
             ((System.ComponentModel.ISupportInitialize)(this.DataBlocksAll)).BeginInit();
             this.MapVisor.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).BeginInit();
-            this.Cat010BTN.SuspendLayout();
-            this.Cat021BTN.SuspendLayout();
-            this.AllCatBTN.SuspendLayout();
             this.PanelControlSuperior.SuspendLayout();
-            this.MultiBTN.SuspendLayout();
-            this.PSRBTN.SuspendLayout();
-            this.AllSBTN.SuspendLayout();
-            this.AdsBTN.SuspendLayout();
+            this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox12)).BeginInit();
+            this.AboutUsBTT.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox11)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).BeginInit();
-            this.PanelSources1.SuspendLayout();
             this.MapVisorPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox17)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox16)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox15)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox14)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox13)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ShowInfo)).BeginInit();
             this.SearchBTN2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox10)).BeginInit();
@@ -155,7 +165,8 @@ namespace PGTA_P1
             ((System.ComponentModel.ISupportInitialize)(this.MesV)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.MenysV)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Refresh)).BeginInit();
-            this.CatPanels.SuspendLayout();
+            this.CatPanel.SuspendLayout();
+            this.SouPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // PGB1
@@ -310,7 +321,6 @@ namespace PGTA_P1
             // TextVisorPanel
             // 
             this.TextVisorPanel.Controls.Add(this.label15);
-            this.TextVisorPanel.Controls.Add(this.Export);
             this.TextVisorPanel.Controls.Add(this.TargetsShow);
             this.TextVisorPanel.Controls.Add(this.TargetBTN);
             this.TextVisorPanel.Controls.Add(this.BuscarBTN);
@@ -337,15 +347,6 @@ namespace PGTA_P1
             this.label15.Size = new System.Drawing.Size(110, 13);
             this.label15.TabIndex = 16;
             this.label15.Text = "Search DataBlock";
-            // 
-            // Export
-            // 
-            this.Export.Location = new System.Drawing.Point(1162, 509);
-            this.Export.Name = "Export";
-            this.Export.Size = new System.Drawing.Size(94, 23);
-            this.Export.TabIndex = 15;
-            this.Export.Text = "Export Target";
-            this.Export.UseVisualStyleBackColor = true;
             // 
             // TargetsShow
             // 
@@ -460,6 +461,7 @@ namespace PGTA_P1
             // Current
             // 
             this.Current.AutoSize = true;
+            this.Current.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.Current.Location = new System.Drawing.Point(384, 515);
             this.Current.Name = "Current";
             this.Current.Size = new System.Drawing.Size(28, 13);
@@ -547,7 +549,7 @@ namespace PGTA_P1
             this.DataBlocViwer.Location = new System.Drawing.Point(636, 3);
             this.DataBlocViwer.Name = "DataBlocViwer";
             this.DataBlocViwer.ReadOnly = true;
-            this.DataBlocViwer.Size = new System.Drawing.Size(620, 502);
+            this.DataBlocViwer.Size = new System.Drawing.Size(620, 529);
             this.DataBlocViwer.TabIndex = 1;
             // 
             // DataBlocksAll
@@ -567,7 +569,7 @@ namespace PGTA_P1
             this.MapVisor.Controls.Add(this.label4);
             this.MapVisor.Controls.Add(this.pictureBox4);
             this.MapVisor.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.MapVisor.Location = new System.Drawing.Point(89, 0);
+            this.MapVisor.Location = new System.Drawing.Point(86, 0);
             this.MapVisor.Name = "MapVisor";
             this.MapVisor.Size = new System.Drawing.Size(80, 25);
             this.MapVisor.TabIndex = 7;
@@ -600,199 +602,77 @@ namespace PGTA_P1
             this.pictureBox4.MouseLeave += new System.EventHandler(this.MapVisor_MouseLeave);
             this.pictureBox4.MouseHover += new System.EventHandler(this.MapVisor_MouseHover);
             // 
-            // Cat010BTN
-            // 
-            this.Cat010BTN.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(209)))), ((int)(((byte)(222)))), ((int)(((byte)(230)))));
-            this.Cat010BTN.Controls.Add(this.label5);
-            this.Cat010BTN.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.Cat010BTN.Location = new System.Drawing.Point(2, 0);
-            this.Cat010BTN.Name = "Cat010BTN";
-            this.Cat010BTN.Size = new System.Drawing.Size(60, 25);
-            this.Cat010BTN.TabIndex = 8;
-            this.Cat010BTN.Click += new System.EventHandler(this.Cat010BTN_Click);
-            this.Cat010BTN.MouseLeave += new System.EventHandler(this.Cat010BTN_MouseLeave);
-            this.Cat010BTN.MouseHover += new System.EventHandler(this.Cat010BTN_MouseHover);
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(6, 6);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(46, 13);
-            this.label5.TabIndex = 5;
-            this.label5.Text = "CAT010";
-            this.label5.Click += new System.EventHandler(this.Cat010BTN_Click);
-            this.label5.MouseLeave += new System.EventHandler(this.Cat010BTN_MouseLeave);
-            this.label5.MouseHover += new System.EventHandler(this.Cat010BTN_MouseHover);
-            // 
-            // Cat021BTN
-            // 
-            this.Cat021BTN.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(209)))), ((int)(((byte)(222)))), ((int)(((byte)(230)))));
-            this.Cat021BTN.Controls.Add(this.label6);
-            this.Cat021BTN.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.Cat021BTN.Location = new System.Drawing.Point(69, 0);
-            this.Cat021BTN.Name = "Cat021BTN";
-            this.Cat021BTN.Size = new System.Drawing.Size(60, 25);
-            this.Cat021BTN.TabIndex = 9;
-            this.Cat021BTN.Click += new System.EventHandler(this.Cat021BTN_Click);
-            this.Cat021BTN.MouseLeave += new System.EventHandler(this.Cat021BTN_MouseLeave);
-            this.Cat021BTN.MouseHover += new System.EventHandler(this.Cat021BTN_MouseHover);
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(5, 6);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(46, 13);
-            this.label6.TabIndex = 5;
-            this.label6.Text = "CAT021";
-            this.label6.Click += new System.EventHandler(this.Cat021BTN_Click);
-            this.label6.MouseLeave += new System.EventHandler(this.Cat021BTN_MouseLeave);
-            this.label6.MouseHover += new System.EventHandler(this.Cat021BTN_MouseHover);
-            // 
-            // AllCatBTN
-            // 
-            this.AllCatBTN.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(209)))), ((int)(((byte)(222)))), ((int)(((byte)(230)))));
-            this.AllCatBTN.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.AllCatBTN.Controls.Add(this.label7);
-            this.AllCatBTN.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.AllCatBTN.Location = new System.Drawing.Point(136, 0);
-            this.AllCatBTN.Name = "AllCatBTN";
-            this.AllCatBTN.Size = new System.Drawing.Size(60, 25);
-            this.AllCatBTN.TabIndex = 10;
-            this.AllCatBTN.Click += new System.EventHandler(this.AllCatBTN_Click);
-            this.AllCatBTN.MouseLeave += new System.EventHandler(this.AllCatBTN_MouseLeave);
-            this.AllCatBTN.MouseHover += new System.EventHandler(this.AllCatBTN_MouseHover);
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.Location = new System.Drawing.Point(3, 5);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(50, 13);
-            this.label7.TabIndex = 5;
-            this.label7.Text = "ALL CAT";
-            this.label7.Click += new System.EventHandler(this.AllCatBTN_Click);
-            this.label7.MouseLeave += new System.EventHandler(this.AllCatBTN_MouseLeave);
-            this.label7.MouseHover += new System.EventHandler(this.AllCatBTN_MouseHover);
-            // 
             // PanelControlSuperior
             // 
+            this.PanelControlSuperior.Controls.Add(this.panel1);
+            this.PanelControlSuperior.Controls.Add(this.AboutUsBTT);
             this.PanelControlSuperior.Controls.Add(this.MapVisor);
             this.PanelControlSuperior.Controls.Add(this.TextVisorBTN);
             this.PanelControlSuperior.Location = new System.Drawing.Point(78, 31);
             this.PanelControlSuperior.Name = "PanelControlSuperior";
-            this.PanelControlSuperior.Size = new System.Drawing.Size(173, 25);
+            this.PanelControlSuperior.Size = new System.Drawing.Size(346, 25);
             this.PanelControlSuperior.TabIndex = 0;
             this.PanelControlSuperior.Visible = false;
             // 
-            // MultiBTN
+            // panel1
             // 
-            this.MultiBTN.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(209)))), ((int)(((byte)(222)))), ((int)(((byte)(230)))));
-            this.MultiBTN.Controls.Add(this.MultiBTNl);
-            this.MultiBTN.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.MultiBTN.Location = new System.Drawing.Point(4, 0);
-            this.MultiBTN.Name = "MultiBTN";
-            this.MultiBTN.Size = new System.Drawing.Size(60, 25);
-            this.MultiBTN.TabIndex = 13;
-            this.MultiBTN.Click += new System.EventHandler(this.MultiBTN_Click);
-            this.MultiBTN.MouseLeave += new System.EventHandler(this.MultiBTN_MouseLeave);
-            this.MultiBTN.MouseHover += new System.EventHandler(this.MultiBTN_MouseHover);
+            this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(209)))), ((int)(((byte)(222)))), ((int)(((byte)(230)))));
+            this.panel1.Controls.Add(this.label6);
+            this.panel1.Controls.Add(this.pictureBox12);
+            this.panel1.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.panel1.Location = new System.Drawing.Point(254, 0);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(80, 25);
+            this.panel1.TabIndex = 9;
             // 
-            // MultiBTNl
+            // label6
             // 
-            this.MultiBTNl.AutoSize = true;
-            this.MultiBTNl.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.MultiBTNl.Location = new System.Drawing.Point(6, 6);
-            this.MultiBTNl.Name = "MultiBTNl";
-            this.MultiBTNl.Size = new System.Drawing.Size(43, 13);
-            this.MultiBTNl.TabIndex = 5;
-            this.MultiBTNl.Text = "MULTI.";
-            this.MultiBTNl.Click += new System.EventHandler(this.MultiBTN_Click);
-            this.MultiBTNl.MouseLeave += new System.EventHandler(this.MultiBTN_MouseLeave);
-            this.MultiBTNl.MouseHover += new System.EventHandler(this.MultiBTN_MouseHover);
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(30, 6);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(42, 13);
+            this.label6.TabIndex = 5;
+            this.label6.Text = "Manual";
             // 
-            // PSRBTN
+            // pictureBox12
             // 
-            this.PSRBTN.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(209)))), ((int)(((byte)(222)))), ((int)(((byte)(230)))));
-            this.PSRBTN.Controls.Add(this.label8);
-            this.PSRBTN.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.PSRBTN.Location = new System.Drawing.Point(70, 0);
-            this.PSRBTN.Name = "PSRBTN";
-            this.PSRBTN.Size = new System.Drawing.Size(60, 25);
-            this.PSRBTN.TabIndex = 14;
-            this.PSRBTN.Click += new System.EventHandler(this.PSRBTN_Click);
-            this.PSRBTN.MouseLeave += new System.EventHandler(this.PSRBTN_MouseLeave);
-            this.PSRBTN.MouseHover += new System.EventHandler(this.PSRBTN_MouseHover);
+            this.pictureBox12.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox12.Image")));
+            this.pictureBox12.Location = new System.Drawing.Point(0, 2);
+            this.pictureBox12.Name = "pictureBox12";
+            this.pictureBox12.Size = new System.Drawing.Size(25, 20);
+            this.pictureBox12.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox12.TabIndex = 4;
+            this.pictureBox12.TabStop = false;
             // 
-            // label8
+            // AboutUsBTT
             // 
-            this.label8.AutoSize = true;
-            this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label8.Location = new System.Drawing.Point(15, 6);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(31, 13);
-            this.label8.TabIndex = 5;
-            this.label8.Text = "SMR";
-            this.label8.Click += new System.EventHandler(this.PSRBTN_Click);
-            this.label8.MouseLeave += new System.EventHandler(this.PSRBTN_MouseLeave);
-            this.label8.MouseHover += new System.EventHandler(this.PSRBTN_MouseHover);
+            this.AboutUsBTT.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(209)))), ((int)(((byte)(222)))), ((int)(((byte)(230)))));
+            this.AboutUsBTT.Controls.Add(this.label5);
+            this.AboutUsBTT.Controls.Add(this.pictureBox11);
+            this.AboutUsBTT.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.AboutUsBTT.Location = new System.Drawing.Point(170, 0);
+            this.AboutUsBTT.Name = "AboutUsBTT";
+            this.AboutUsBTT.Size = new System.Drawing.Size(80, 25);
+            this.AboutUsBTT.TabIndex = 8;
             // 
-            // AllSBTN
+            // label5
             // 
-            this.AllSBTN.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(209)))), ((int)(((byte)(222)))), ((int)(((byte)(230)))));
-            this.AllSBTN.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.AllSBTN.Controls.Add(this.label10);
-            this.AllSBTN.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.AllSBTN.Location = new System.Drawing.Point(202, 0);
-            this.AllSBTN.Name = "AllSBTN";
-            this.AllSBTN.Size = new System.Drawing.Size(60, 25);
-            this.AllSBTN.TabIndex = 16;
-            this.AllSBTN.Click += new System.EventHandler(this.AllSBTN_Click);
-            this.AllSBTN.MouseLeave += new System.EventHandler(this.AllSBTN_MouseLeave);
-            this.AllSBTN.MouseHover += new System.EventHandler(this.AllSBTN_MouseHover);
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(25, 6);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(51, 13);
+            this.label5.TabIndex = 5;
+            this.label5.Text = "About Us";
             // 
-            // label10
+            // pictureBox11
             // 
-            this.label10.AutoSize = true;
-            this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label10.Location = new System.Drawing.Point(8, 5);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(39, 13);
-            this.label10.TabIndex = 5;
-            this.label10.Text = "ALL S.";
-            this.label10.Click += new System.EventHandler(this.AllSBTN_Click);
-            this.label10.MouseLeave += new System.EventHandler(this.AllSBTN_MouseLeave);
-            this.label10.MouseHover += new System.EventHandler(this.AllSBTN_MouseHover);
-            // 
-            // AdsBTN
-            // 
-            this.AdsBTN.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(209)))), ((int)(((byte)(222)))), ((int)(((byte)(230)))));
-            this.AdsBTN.Controls.Add(this.label9);
-            this.AdsBTN.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.AdsBTN.Location = new System.Drawing.Point(136, 0);
-            this.AdsBTN.Name = "AdsBTN";
-            this.AdsBTN.Size = new System.Drawing.Size(60, 25);
-            this.AdsBTN.TabIndex = 15;
-            this.AdsBTN.Click += new System.EventHandler(this.AdsBTN_Click);
-            this.AdsBTN.MouseLeave += new System.EventHandler(this.AdsBTN_MouseLeave);
-            this.AdsBTN.MouseHover += new System.EventHandler(this.AdsBTN_MouseHover);
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label9.Location = new System.Drawing.Point(11, 6);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(39, 13);
-            this.label9.TabIndex = 5;
-            this.label9.Text = "ADS-B";
-            this.label9.Click += new System.EventHandler(this.AdsBTN_Click);
-            this.label9.MouseLeave += new System.EventHandler(this.AdsBTN_MouseLeave);
-            this.label9.MouseHover += new System.EventHandler(this.AdsBTN_MouseHover);
+            this.pictureBox11.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox11.Image")));
+            this.pictureBox11.Location = new System.Drawing.Point(0, 3);
+            this.pictureBox11.Name = "pictureBox11";
+            this.pictureBox11.Size = new System.Drawing.Size(25, 20);
+            this.pictureBox11.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox11.TabIndex = 4;
+            this.pictureBox11.TabStop = false;
             // 
             // pictureBox5
             // 
@@ -809,28 +689,17 @@ namespace PGTA_P1
             this.DataInf.AutoSize = true;
             this.DataInf.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.DataInf.ForeColor = System.Drawing.Color.Red;
-            this.DataInf.Location = new System.Drawing.Point(1136, 34);
+            this.DataInf.Location = new System.Drawing.Point(1121, 34);
             this.DataInf.Name = "DataInf";
             this.DataInf.Size = new System.Drawing.Size(131, 20);
             this.DataInf.TabIndex = 8;
             this.DataInf.Text = "No data loaded";
             // 
-            // PanelSources1
-            // 
-            this.PanelSources1.Controls.Add(this.PSRBTN);
-            this.PanelSources1.Controls.Add(this.AllSBTN);
-            this.PanelSources1.Controls.Add(this.AdsBTN);
-            this.PanelSources1.Controls.Add(this.MultiBTN);
-            this.PanelSources1.Location = new System.Drawing.Point(515, 31);
-            this.PanelSources1.Name = "PanelSources1";
-            this.PanelSources1.Size = new System.Drawing.Size(267, 25);
-            this.PanelSources1.TabIndex = 17;
-            this.PanelSources1.Visible = false;
-            // 
             // Map
             // 
             this.Map.Bearing = 0F;
             this.Map.CanDragMap = true;
+            this.Map.Cursor = System.Windows.Forms.Cursors.Cross;
             this.Map.EmptyTileColor = System.Drawing.Color.Navy;
             this.Map.GrayScaleMode = false;
             this.Map.HelperLineOption = GMap.NET.WindowsForms.HelperLineOptions.DontShow;
@@ -849,13 +718,24 @@ namespace PGTA_P1
             this.Map.ScaleMode = GMap.NET.WindowsForms.ScaleModes.Integer;
             this.Map.SelectedAreaFillColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(65)))), ((int)(((byte)(105)))), ((int)(((byte)(225)))));
             this.Map.ShowTileGridLines = false;
-            this.Map.Size = new System.Drawing.Size(1070, 502);
+            this.Map.Size = new System.Drawing.Size(1070, 507);
             this.Map.TabIndex = 0;
             this.Map.Zoom = 0D;
             this.Map.OnMarkerClick += new GMap.NET.WindowsForms.MarkerClick(this.Map_OnMarkerClick);
             // 
             // MapVisorPanel
             // 
+            this.MapVisorPanel.Controls.Add(this.label17);
+            this.MapVisorPanel.Controls.Add(this.pictureBox17);
+            this.MapVisorPanel.Controls.Add(this.label10);
+            this.MapVisorPanel.Controls.Add(this.pictureBox16);
+            this.MapVisorPanel.Controls.Add(this.label9);
+            this.MapVisorPanel.Controls.Add(this.pictureBox15);
+            this.MapVisorPanel.Controls.Add(this.label8);
+            this.MapVisorPanel.Controls.Add(this.pictureBox14);
+            this.MapVisorPanel.Controls.Add(this.label7);
+            this.MapVisorPanel.Controls.Add(this.pictureBox13);
+            this.MapVisorPanel.Controls.Add(this.button2);
             this.MapVisorPanel.Controls.Add(this.Center);
             this.MapVisorPanel.Controls.Add(this.ID_TXT);
             this.MapVisorPanel.Controls.Add(this.ShowInfo);
@@ -872,14 +752,119 @@ namespace PGTA_P1
             this.MapVisorPanel.Controls.Add(this.Map);
             this.MapVisorPanel.Location = new System.Drawing.Point(11, 63);
             this.MapVisorPanel.Name = "MapVisorPanel";
-            this.MapVisorPanel.Size = new System.Drawing.Size(1259, 536);
+            this.MapVisorPanel.Size = new System.Drawing.Size(1259, 546);
             this.MapVisorPanel.TabIndex = 18;
             this.MapVisorPanel.Visible = false;
+            // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Location = new System.Drawing.Point(851, 522);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(65, 13);
+            this.label17.TabIndex = 40;
+            this.label17.Text = "SMR Target";
+            // 
+            // pictureBox17
+            // 
+            this.pictureBox17.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox17.Image")));
+            this.pictureBox17.Location = new System.Drawing.Point(821, 517);
+            this.pictureBox17.Name = "pictureBox17";
+            this.pictureBox17.Size = new System.Drawing.Size(25, 23);
+            this.pictureBox17.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox17.TabIndex = 39;
+            this.pictureBox17.TabStop = false;
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(741, 522);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(74, 13);
+            this.label10.TabIndex = 38;
+            this.label10.Text = "MULTI Target";
+            // 
+            // pictureBox16
+            // 
+            this.pictureBox16.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox16.Image")));
+            this.pictureBox16.Location = new System.Drawing.Point(711, 517);
+            this.pictureBox16.Name = "pictureBox16";
+            this.pictureBox16.Size = new System.Drawing.Size(25, 23);
+            this.pictureBox16.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox16.TabIndex = 37;
+            this.pictureBox16.TabStop = false;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(630, 522);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(75, 13);
+            this.label9.TabIndex = 36;
+            this.label9.Text = "ADS-B no Info";
+            // 
+            // pictureBox15
+            // 
+            this.pictureBox15.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox15.Image")));
+            this.pictureBox15.Location = new System.Drawing.Point(600, 517);
+            this.pictureBox15.Name = "pictureBox15";
+            this.pictureBox15.Size = new System.Drawing.Size(25, 23);
+            this.pictureBox15.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox15.TabIndex = 35;
+            this.pictureBox15.TabStop = false;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(512, 522);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(90, 13);
+            this.label8.TabIndex = 34;
+            this.label8.Text = "ADS-B surface V.";
+            // 
+            // pictureBox14
+            // 
+            this.pictureBox14.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox14.Image")));
+            this.pictureBox14.Location = new System.Drawing.Point(482, 517);
+            this.pictureBox14.Name = "pictureBox14";
+            this.pictureBox14.Size = new System.Drawing.Size(25, 23);
+            this.pictureBox14.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox14.TabIndex = 33;
+            this.pictureBox14.TabStop = false;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(412, 522);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(68, 13);
+            this.label7.TabIndex = 32;
+            this.label7.Text = "ADS-B plane";
+            // 
+            // pictureBox13
+            // 
+            this.pictureBox13.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox13.Image")));
+            this.pictureBox13.Location = new System.Drawing.Point(382, 517);
+            this.pictureBox13.Name = "pictureBox13";
+            this.pictureBox13.Size = new System.Drawing.Size(25, 23);
+            this.pictureBox13.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox13.TabIndex = 31;
+            this.pictureBox13.TabStop = false;
+            // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(1143, 516);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(102, 23);
+            this.button2.TabIndex = 17;
+            this.button2.Text = "button2";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // Center
             // 
             this.Center.AutoSize = true;
-            this.Center.Location = new System.Drawing.Point(4, 512);
+            this.Center.Location = new System.Drawing.Point(4, 525);
             this.Center.Name = "Center";
             this.Center.Size = new System.Drawing.Size(57, 17);
             this.Center.TabIndex = 30;
@@ -904,7 +889,7 @@ namespace PGTA_P1
             this.ShowInfo.Location = new System.Drawing.Point(3, 365);
             this.ShowInfo.Name = "ShowInfo";
             this.ShowInfo.ReadOnly = true;
-            this.ShowInfo.Size = new System.Drawing.Size(178, 140);
+            this.ShowInfo.Size = new System.Drawing.Size(178, 158);
             this.ShowInfo.TabIndex = 28;
             this.ShowInfo.Visible = false;
             // 
@@ -1079,7 +1064,6 @@ namespace PGTA_P1
             this.TempsLBL.Size = new System.Drawing.Size(72, 18);
             this.TempsLBL.TabIndex = 20;
             this.TempsLBL.Text = "00:00:00";
-            this.TempsLBL.Click += new System.EventHandler(this.TempsLBL_Click);
             // 
             // TempsPanel
             // 
@@ -1089,7 +1073,7 @@ namespace PGTA_P1
             this.TempsPanel.Controls.Add(this.Refresh);
             this.TempsPanel.Controls.Add(this.TempsLBL);
             this.TempsPanel.Controls.Add(this.PlayPause);
-            this.TempsPanel.Location = new System.Drawing.Point(828, 31);
+            this.TempsPanel.Location = new System.Drawing.Point(872, 31);
             this.TempsPanel.Name = "TempsPanel";
             this.TempsPanel.Size = new System.Drawing.Size(248, 25);
             this.TempsPanel.TabIndex = 7;
@@ -1154,16 +1138,109 @@ namespace PGTA_P1
             this.Refresh.MouseLeave += new System.EventHandler(this.Refresh_MouseLeave);
             this.Refresh.MouseHover += new System.EventHandler(this.Refresh_MouseHover);
             // 
-            // CatPanels
+            // CatPanel
             // 
-            this.CatPanels.Controls.Add(this.Cat010BTN);
-            this.CatPanels.Controls.Add(this.AllCatBTN);
-            this.CatPanels.Controls.Add(this.Cat021BTN);
-            this.CatPanels.Location = new System.Drawing.Point(278, 31);
-            this.CatPanels.Name = "CatPanels";
-            this.CatPanels.Size = new System.Drawing.Size(200, 25);
-            this.CatPanels.TabIndex = 19;
-            this.CatPanels.Visible = false;
+            this.CatPanel.Controls.Add(this.R_But_CatAll);
+            this.CatPanel.Controls.Add(this.R_But_Cat21);
+            this.CatPanel.Controls.Add(this.R_But_Cat10);
+            this.CatPanel.Location = new System.Drawing.Point(417, 31);
+            this.CatPanel.Name = "CatPanel";
+            this.CatPanel.Size = new System.Drawing.Size(197, 25);
+            this.CatPanel.TabIndex = 19;
+            this.CatPanel.Visible = false;
+            // 
+            // R_But_CatAll
+            // 
+            this.R_But_CatAll.AutoSize = true;
+            this.R_But_CatAll.Checked = true;
+            this.R_But_CatAll.Location = new System.Drawing.Point(126, 4);
+            this.R_But_CatAll.Name = "R_But_CatAll";
+            this.R_But_CatAll.Size = new System.Drawing.Size(68, 17);
+            this.R_But_CatAll.TabIndex = 2;
+            this.R_But_CatAll.TabStop = true;
+            this.R_But_CatAll.Text = "ALL CAT";
+            this.R_But_CatAll.UseVisualStyleBackColor = true;
+            this.R_But_CatAll.CheckedChanged += new System.EventHandler(this.R_But_CatAll_CheckedChanged);
+            // 
+            // R_But_Cat21
+            // 
+            this.R_But_Cat21.AutoSize = true;
+            this.R_But_Cat21.Location = new System.Drawing.Point(65, 4);
+            this.R_But_Cat21.Name = "R_But_Cat21";
+            this.R_But_Cat21.Size = new System.Drawing.Size(58, 17);
+            this.R_But_Cat21.TabIndex = 1;
+            this.R_But_Cat21.Text = "CAT21";
+            this.R_But_Cat21.UseVisualStyleBackColor = true;
+            this.R_But_Cat21.CheckedChanged += new System.EventHandler(this.R_But_Cat21_CheckedChanged);
+            // 
+            // R_But_Cat10
+            // 
+            this.R_But_Cat10.AutoSize = true;
+            this.R_But_Cat10.Location = new System.Drawing.Point(4, 4);
+            this.R_But_Cat10.Name = "R_But_Cat10";
+            this.R_But_Cat10.Size = new System.Drawing.Size(58, 17);
+            this.R_But_Cat10.TabIndex = 0;
+            this.R_But_Cat10.Text = "CAT10";
+            this.R_But_Cat10.UseVisualStyleBackColor = true;
+            this.R_But_Cat10.CheckedChanged += new System.EventHandler(this.R_But_Cat10_CheckedChanged);
+            // 
+            // SouPanel
+            // 
+            this.SouPanel.Controls.Add(this.R_But_ADSB);
+            this.SouPanel.Controls.Add(this.R_But_SouAll);
+            this.SouPanel.Controls.Add(this.R_But_Multi);
+            this.SouPanel.Controls.Add(this.R_But_SMR);
+            this.SouPanel.Location = new System.Drawing.Point(616, 31);
+            this.SouPanel.Name = "SouPanel";
+            this.SouPanel.Size = new System.Drawing.Size(252, 25);
+            this.SouPanel.TabIndex = 20;
+            this.SouPanel.Visible = false;
+            // 
+            // R_But_ADSB
+            // 
+            this.R_But_ADSB.AutoSize = true;
+            this.R_But_ADSB.Location = new System.Drawing.Point(122, 4);
+            this.R_But_ADSB.Name = "R_But_ADSB";
+            this.R_But_ADSB.Size = new System.Drawing.Size(57, 17);
+            this.R_But_ADSB.TabIndex = 3;
+            this.R_But_ADSB.Text = "ADS-B";
+            this.R_But_ADSB.UseVisualStyleBackColor = true;
+            this.R_But_ADSB.CheckedChanged += new System.EventHandler(this.R_But_ADSB_CheckedChanged);
+            // 
+            // R_But_SouAll
+            // 
+            this.R_But_SouAll.AutoSize = true;
+            this.R_But_SouAll.Checked = true;
+            this.R_But_SouAll.Location = new System.Drawing.Point(181, 4);
+            this.R_But_SouAll.Name = "R_But_SouAll";
+            this.R_But_SouAll.Size = new System.Drawing.Size(68, 17);
+            this.R_But_SouAll.TabIndex = 2;
+            this.R_But_SouAll.TabStop = true;
+            this.R_But_SouAll.Text = "ALL CAT";
+            this.R_But_SouAll.UseVisualStyleBackColor = true;
+            this.R_But_SouAll.CheckedChanged += new System.EventHandler(this.R_But_SouAll_CheckedChanged);
+            // 
+            // R_But_Multi
+            // 
+            this.R_But_Multi.AutoSize = true;
+            this.R_But_Multi.Location = new System.Drawing.Point(57, 4);
+            this.R_But_Multi.Name = "R_But_Multi";
+            this.R_But_Multi.Size = new System.Drawing.Size(61, 17);
+            this.R_But_Multi.TabIndex = 1;
+            this.R_But_Multi.Text = "MULTI.";
+            this.R_But_Multi.UseVisualStyleBackColor = true;
+            this.R_But_Multi.CheckedChanged += new System.EventHandler(this.R_But_Multi_CheckedChanged);
+            // 
+            // R_But_SMR
+            // 
+            this.R_But_SMR.AutoSize = true;
+            this.R_But_SMR.Location = new System.Drawing.Point(4, 4);
+            this.R_But_SMR.Name = "R_But_SMR";
+            this.R_But_SMR.Size = new System.Drawing.Size(49, 17);
+            this.R_But_SMR.TabIndex = 0;
+            this.R_But_SMR.Text = "SMR";
+            this.R_But_SMR.UseVisualStyleBackColor = true;
+            this.R_But_SMR.CheckedChanged += new System.EventHandler(this.R_But_SMR_CheckedChanged);
             // 
             // Form1
             // 
@@ -1171,10 +1248,11 @@ namespace PGTA_P1
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.ClientSize = new System.Drawing.Size(1284, 611);
-            this.Controls.Add(this.CatPanels);
+            this.Controls.Add(this.TextVisorPanel);
+            this.Controls.Add(this.SouPanel);
+            this.Controls.Add(this.CatPanel);
             this.Controls.Add(this.TempsPanel);
             this.Controls.Add(this.DataInf);
-            this.Controls.Add(this.PanelSources1);
             this.Controls.Add(this.PanelControlSuperior);
             this.Controls.Add(this.LoadBTN);
             this.Controls.Add(this.BarraSuperior);
@@ -1182,12 +1260,12 @@ namespace PGTA_P1
             this.Controls.Add(this.MapVisorPanel);
             this.Controls.Add(this.pictureBox5);
             this.Controls.Add(this.PGB1);
-            this.Controls.Add(this.TextVisorPanel);
             this.Cursor = System.Windows.Forms.Cursors.Default;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Form1";
+            this.Text = "Asterix Visor";
             this.BarraSuperior.ResumeLayout(false);
             this.BarraSuperior.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox8)).EndInit();
@@ -1218,25 +1296,21 @@ namespace PGTA_P1
             this.MapVisor.ResumeLayout(false);
             this.MapVisor.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).EndInit();
-            this.Cat010BTN.ResumeLayout(false);
-            this.Cat010BTN.PerformLayout();
-            this.Cat021BTN.ResumeLayout(false);
-            this.Cat021BTN.PerformLayout();
-            this.AllCatBTN.ResumeLayout(false);
-            this.AllCatBTN.PerformLayout();
             this.PanelControlSuperior.ResumeLayout(false);
-            this.MultiBTN.ResumeLayout(false);
-            this.MultiBTN.PerformLayout();
-            this.PSRBTN.ResumeLayout(false);
-            this.PSRBTN.PerformLayout();
-            this.AllSBTN.ResumeLayout(false);
-            this.AllSBTN.PerformLayout();
-            this.AdsBTN.ResumeLayout(false);
-            this.AdsBTN.PerformLayout();
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox12)).EndInit();
+            this.AboutUsBTT.ResumeLayout(false);
+            this.AboutUsBTT.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox11)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).EndInit();
-            this.PanelSources1.ResumeLayout(false);
             this.MapVisorPanel.ResumeLayout(false);
             this.MapVisorPanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox17)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox16)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox15)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox14)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox13)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ShowInfo)).EndInit();
             this.SearchBTN2.ResumeLayout(false);
             this.SearchBTN2.PerformLayout();
@@ -1248,7 +1322,10 @@ namespace PGTA_P1
             ((System.ComponentModel.ISupportInitialize)(this.MesV)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.MenysV)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Refresh)).EndInit();
-            this.CatPanels.ResumeLayout(false);
+            this.CatPanel.ResumeLayout(false);
+            this.CatPanel.PerformLayout();
+            this.SouPanel.ResumeLayout(false);
+            this.SouPanel.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1271,26 +1348,12 @@ namespace PGTA_P1
         private System.Windows.Forms.Panel MapVisor;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.PictureBox pictureBox4;
-        private System.Windows.Forms.Panel Cat010BTN;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Panel Cat021BTN;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Panel AllCatBTN;
-        private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Panel PanelControlSuperior;
         private System.Windows.Forms.PictureBox pictureBox5;
         private System.Windows.Forms.Label FileName;
         private System.Windows.Forms.Label DataInf;
         private System.Windows.Forms.DataGridView DataBlocViwer;
         private System.Windows.Forms.DataGridView DataBlocksAll;
-        private System.Windows.Forms.Panel MultiBTN;
-        private System.Windows.Forms.Label MultiBTNl;
-        private System.Windows.Forms.Panel PSRBTN;
-        private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.Panel AllSBTN;
-        private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.Panel AdsBTN;
-        private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Panel previousBTT;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.PictureBox pictureBox6;
@@ -1309,9 +1372,7 @@ namespace PGTA_P1
         private System.Windows.Forms.Label NamT;
         private System.Windows.Forms.PictureBox pb10;
         private System.Windows.Forms.DataGridView TargetsShow;
-        private System.Windows.Forms.Button Export;
         private System.Windows.Forms.Label label15;
-        private System.Windows.Forms.Panel PanelSources1;
         private GMap.NET.WindowsForms.GMapControl Map;
         private System.Windows.Forms.Panel MapVisorPanel;
         private System.Windows.Forms.Label label16;
@@ -1324,7 +1385,6 @@ namespace PGTA_P1
         private System.Windows.Forms.PictureBox MesV;
         private System.Windows.Forms.PictureBox MenysV;
         private System.Windows.Forms.Label Velo;
-        private System.Windows.Forms.Panel CatPanels;
         private System.Windows.Forms.CheckBox TrackBox;
         private System.Windows.Forms.RadioButton RadTot;
         private System.Windows.Forms.RadioButton Rad1h;
@@ -1338,6 +1398,32 @@ namespace PGTA_P1
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.PictureBox pictureBox10;
         private System.Windows.Forms.TextBox SearchTxT2;
+        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Panel CatPanel;
+        private System.Windows.Forms.RadioButton R_But_CatAll;
+        private System.Windows.Forms.RadioButton R_But_Cat21;
+        private System.Windows.Forms.RadioButton R_But_Cat10;
+        private System.Windows.Forms.Panel SouPanel;
+        private System.Windows.Forms.RadioButton R_But_ADSB;
+        private System.Windows.Forms.RadioButton R_But_SouAll;
+        private System.Windows.Forms.RadioButton R_But_Multi;
+        private System.Windows.Forms.RadioButton R_But_SMR;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.PictureBox pictureBox12;
+        private System.Windows.Forms.Panel AboutUsBTT;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.PictureBox pictureBox11;
+        private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.PictureBox pictureBox17;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.PictureBox pictureBox16;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.PictureBox pictureBox15;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.PictureBox pictureBox14;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.PictureBox pictureBox13;
     }
 }
 
