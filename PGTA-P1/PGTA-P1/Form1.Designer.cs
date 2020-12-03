@@ -35,6 +35,7 @@ namespace PGTA_P1
             this.PGB1 = new System.Windows.Forms.ProgressBar();
             this.button1 = new System.Windows.Forms.Button();
             this.BarraSuperior = new System.Windows.Forms.Panel();
+            this.TestM = new System.Windows.Forms.CheckBox();
             this.pictureBox8 = new System.Windows.Forms.PictureBox();
             this.FileName = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
@@ -70,7 +71,7 @@ namespace PGTA_P1
             this.label4 = new System.Windows.Forms.Label();
             this.pictureBox4 = new System.Windows.Forms.PictureBox();
             this.PanelControlSuperior = new System.Windows.Forms.Panel();
-            this.panel1 = new System.Windows.Forms.Panel();
+            this.ManualBTN = new System.Windows.Forms.Panel();
             this.label6 = new System.Windows.Forms.Label();
             this.pictureBox12 = new System.Windows.Forms.PictureBox();
             this.AboutUsBTT = new System.Windows.Forms.Panel();
@@ -145,7 +146,7 @@ namespace PGTA_P1
             this.MapVisor.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).BeginInit();
             this.PanelControlSuperior.SuspendLayout();
-            this.panel1.SuspendLayout();
+            this.ManualBTN.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox12)).BeginInit();
             this.AboutUsBTT.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox11)).BeginInit();
@@ -188,6 +189,7 @@ namespace PGTA_P1
             // BarraSuperior
             // 
             this.BarraSuperior.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(66)))), ((int)(((byte)(108)))));
+            this.BarraSuperior.Controls.Add(this.TestM);
             this.BarraSuperior.Controls.Add(this.pictureBox8);
             this.BarraSuperior.Controls.Add(this.FileName);
             this.BarraSuperior.Controls.Add(this.pictureBox1);
@@ -197,6 +199,17 @@ namespace PGTA_P1
             this.BarraSuperior.Size = new System.Drawing.Size(1284, 25);
             this.BarraSuperior.TabIndex = 2;
             this.BarraSuperior.MouseDown += new System.Windows.Forms.MouseEventHandler(this.BarraSuperior_MouseDown);
+            // 
+            // TestM
+            // 
+            this.TestM.AutoSize = true;
+            this.TestM.ForeColor = System.Drawing.SystemColors.Control;
+            this.TestM.Location = new System.Drawing.Point(1154, 5);
+            this.TestM.Name = "TestM";
+            this.TestM.Size = new System.Drawing.Size(76, 17);
+            this.TestM.TabIndex = 21;
+            this.TestM.Text = "Test mode";
+            this.TestM.UseVisualStyleBackColor = true;
             // 
             // pictureBox8
             // 
@@ -604,7 +617,7 @@ namespace PGTA_P1
             // 
             // PanelControlSuperior
             // 
-            this.PanelControlSuperior.Controls.Add(this.panel1);
+            this.PanelControlSuperior.Controls.Add(this.ManualBTN);
             this.PanelControlSuperior.Controls.Add(this.AboutUsBTT);
             this.PanelControlSuperior.Controls.Add(this.MapVisor);
             this.PanelControlSuperior.Controls.Add(this.TextVisorBTN);
@@ -614,16 +627,19 @@ namespace PGTA_P1
             this.PanelControlSuperior.TabIndex = 0;
             this.PanelControlSuperior.Visible = false;
             // 
-            // panel1
+            // ManualBTN
             // 
-            this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(209)))), ((int)(((byte)(222)))), ((int)(((byte)(230)))));
-            this.panel1.Controls.Add(this.label6);
-            this.panel1.Controls.Add(this.pictureBox12);
-            this.panel1.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.panel1.Location = new System.Drawing.Point(254, 0);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(80, 25);
-            this.panel1.TabIndex = 9;
+            this.ManualBTN.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(209)))), ((int)(((byte)(222)))), ((int)(((byte)(230)))));
+            this.ManualBTN.Controls.Add(this.label6);
+            this.ManualBTN.Controls.Add(this.pictureBox12);
+            this.ManualBTN.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.ManualBTN.Location = new System.Drawing.Point(254, 0);
+            this.ManualBTN.Name = "ManualBTN";
+            this.ManualBTN.Size = new System.Drawing.Size(80, 25);
+            this.ManualBTN.TabIndex = 9;
+            this.ManualBTN.Click += new System.EventHandler(this.ManualBTN_Click);
+            this.ManualBTN.MouseLeave += new System.EventHandler(this.ManualBTN_MouseLeave);
+            this.ManualBTN.MouseHover += new System.EventHandler(this.ManualBTN_MouseHover);
             // 
             // label6
             // 
@@ -633,6 +649,9 @@ namespace PGTA_P1
             this.label6.Size = new System.Drawing.Size(42, 13);
             this.label6.TabIndex = 5;
             this.label6.Text = "Manual";
+            this.label6.Click += new System.EventHandler(this.ManualBTN_Click);
+            this.label6.MouseLeave += new System.EventHandler(this.ManualBTN_MouseLeave);
+            this.label6.MouseHover += new System.EventHandler(this.ManualBTN_MouseHover);
             // 
             // pictureBox12
             // 
@@ -643,6 +662,9 @@ namespace PGTA_P1
             this.pictureBox12.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox12.TabIndex = 4;
             this.pictureBox12.TabStop = false;
+            this.pictureBox12.Click += new System.EventHandler(this.ManualBTN_Click);
+            this.pictureBox12.MouseLeave += new System.EventHandler(this.ManualBTN_MouseLeave);
+            this.pictureBox12.MouseHover += new System.EventHandler(this.ManualBTN_MouseHover);
             // 
             // AboutUsBTT
             // 
@@ -654,6 +676,9 @@ namespace PGTA_P1
             this.AboutUsBTT.Name = "AboutUsBTT";
             this.AboutUsBTT.Size = new System.Drawing.Size(80, 25);
             this.AboutUsBTT.TabIndex = 8;
+            this.AboutUsBTT.Click += new System.EventHandler(this.AboutUsBTT_Click);
+            this.AboutUsBTT.MouseLeave += new System.EventHandler(this.AboutUsBTT_MouseLeave);
+            this.AboutUsBTT.MouseHover += new System.EventHandler(this.AboutUsBTT_MouseHover);
             // 
             // label5
             // 
@@ -663,6 +688,9 @@ namespace PGTA_P1
             this.label5.Size = new System.Drawing.Size(51, 13);
             this.label5.TabIndex = 5;
             this.label5.Text = "About Us";
+            this.label5.Click += new System.EventHandler(this.AboutUsBTT_Click);
+            this.label5.MouseLeave += new System.EventHandler(this.AboutUsBTT_MouseLeave);
+            this.label5.MouseHover += new System.EventHandler(this.AboutUsBTT_MouseHover);
             // 
             // pictureBox11
             // 
@@ -673,6 +701,9 @@ namespace PGTA_P1
             this.pictureBox11.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox11.TabIndex = 4;
             this.pictureBox11.TabStop = false;
+            this.pictureBox11.Click += new System.EventHandler(this.AboutUsBTT_Click);
+            this.pictureBox11.MouseLeave += new System.EventHandler(this.AboutUsBTT_MouseLeave);
+            this.pictureBox11.MouseHover += new System.EventHandler(this.AboutUsBTT_MouseHover);
             // 
             // pictureBox5
             // 
@@ -1297,8 +1328,8 @@ namespace PGTA_P1
             this.MapVisor.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).EndInit();
             this.PanelControlSuperior.ResumeLayout(false);
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
+            this.ManualBTN.ResumeLayout(false);
+            this.ManualBTN.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox12)).EndInit();
             this.AboutUsBTT.ResumeLayout(false);
             this.AboutUsBTT.PerformLayout();
@@ -1408,7 +1439,7 @@ namespace PGTA_P1
         private System.Windows.Forms.RadioButton R_But_SouAll;
         private System.Windows.Forms.RadioButton R_But_Multi;
         private System.Windows.Forms.RadioButton R_But_SMR;
-        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Panel ManualBTN;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.PictureBox pictureBox12;
         private System.Windows.Forms.Panel AboutUsBTT;
@@ -1424,6 +1455,7 @@ namespace PGTA_P1
         private System.Windows.Forms.PictureBox pictureBox14;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.PictureBox pictureBox13;
+        private System.Windows.Forms.CheckBox TestM;
     }
 }
 

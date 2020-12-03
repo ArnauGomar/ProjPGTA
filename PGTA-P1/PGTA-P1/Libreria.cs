@@ -725,9 +725,9 @@ namespace PGTA_P1
 
                         //LOP
                         string LOP = "" + bitsOctet[3] + "" + bitsOctet[4] + "";
-                        if (RAB == "00")
+                        if (LOP == "00")
                             DeCode.Add("LOP: Undetermined");
-                        else if (RAB == "01")
+                        else if (LOP == "01")
                             DeCode.Add("LOP: Loop start");
                         else
                             DeCode.Add("LOP: Loop finish");
@@ -3431,7 +3431,10 @@ namespace PGTA_P1
             CoordenadesSMR = CoordenadesSMR.OrderBy(x => x.Moment).ToList();
             if (From == "SMR")
                 RemoveZeros();
+            
 
+            CapaSMR = new GMapOverlay();
+            SMR_Track = new List<PointLatLng>();
             if (CoordenadesADSB.Count != 0)
             {
                 Inici = CoordenadesADSB.First().Moment;
@@ -3441,6 +3444,12 @@ namespace PGTA_P1
             {
                 Inici = CoordenadesMULTI.First().Moment;
                 Final = CoordenadesMULTI.Last().Moment;
+
+                if(T_ID != "-")
+                {
+                    CapaMULTI = new GMapOverlay("" + T_ID + "");
+                }
+                
             }
             else if (CoordenadesSMR.Count != 0)
             {
@@ -3861,7 +3870,8 @@ namespace PGTA_P1
                 if (T_ID != "-")
                 {
                     marker.ToolTipText = string.Format("" + this.T_ID + " ; " + Math.Round(Convert.ToDouble(C.h), 2) + " m");
-                    marker.Tag = "" + this.T_ID + "_SMR";
+                    marker.Tag = "" + this.T_ID + "_SMR"; if (T_ID != "-")
+                    CapaMULTI = new GMapOverlay("" + T_ID + "");
                 }
                 else
                 {

@@ -58,6 +58,9 @@ namespace PGTA_P1
         Bitmap[] Mark_Images = new Bitmap[5];
         Image[] But_Images = new Image[10];
 
+        //Form2
+        
+
         //Moure ventana
         public const int WM_NCLBUTTONDOWN = 0xA1;
         public const int HT_CAPTION = 0x2;
@@ -323,6 +326,11 @@ namespace PGTA_P1
             DataInf.Text = "Loading...";
             DataInf.ForeColor = Color.DarkGray;
             DataInf.Refresh();
+            if (numDTable >= this.DataTable1000.Count())
+            {
+                numDTable = 0;
+                Current.Text = Convert.ToString(numDTable + 1);
+            }
             DataView Filtrada = FiltrarCatSour();
             if (Filtrada.Count == 0)
             {
@@ -341,6 +349,10 @@ namespace PGTA_P1
             DataBlocksAll.DataSource = Filtrada.ToTable();
             DataBlocksAll.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
             DataBlocksAll.RowHeadersVisible = false;
+            DataBlocksAll.AllowUserToResizeColumns = false;
+            DataBlocksAll.AllowUserToResizeRows = false;
+            DataBlocksAll.AllowUserToDeleteRows = false;
+            DataBlocksAll.AllowUserToAddRows = false;
             this.Cursor = Cursors.Default;
             DataInf.Text = "Data loaded";
             DataInf.ForeColor = Color.Green;
@@ -377,6 +389,10 @@ namespace PGTA_P1
                 }
             }
             TargetsShow.RowHeadersVisible = false;
+            TargetsShow.AllowUserToResizeColumns = false;
+            TargetsShow.AllowUserToResizeRows = false;
+            TargetsShow.AllowUserToDeleteRows = false;
+            TargetsShow.AllowUserToAddRows = false;
             TargetsShow.DataSource = NewTargetTable;
         }
 
@@ -391,6 +407,10 @@ namespace PGTA_P1
             DataBlocViwer.Columns[2].Name = "Units";
             DataBlocViwer.RowHeadersVisible = false;
             DataBlocViwer.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+            DataBlocViwer.AllowUserToResizeColumns = false;
+            DataBlocViwer.AllowUserToResizeRows = false;
+            DataBlocViwer.AllowUserToDeleteRows = false;
+            DataBlocViwer.AllowUserToAddRows = false;
 
             //Obrim els datafields
             int i = 0;
@@ -418,6 +438,11 @@ namespace PGTA_P1
             CurrenTargets.ColumnCount = 1;
             CurrenTargets.Columns[0].Name = "ID";
             CurrenTargets.RowHeadersVisible = false;
+            CurrenTargets.AllowUserToResizeColumns = false;
+            CurrenTargets.AllowUserToResizeRows = false;
+            CurrenTargets.AllowUserToDeleteRows = false;
+            CurrenTargets.AllowUserToAddRows = false;
+
 
             foreach (Target T in ViewTargetListShow)
             {
@@ -427,16 +452,16 @@ namespace PGTA_P1
                     CurrenTargets.Rows.Add(T.T_Number);
 
                 if (T.From == "ADS-B ")
-                    CurrenTargets.Rows[CurrenTargets.Rows.Count - 2].DefaultCellStyle.BackColor = Color.Red;
+                    CurrenTargets.Rows[CurrenTargets.Rows.Count - 1].DefaultCellStyle.BackColor = Color.Red;
                 else if (T.From == "Multi. ")
-                    CurrenTargets.Rows[CurrenTargets.Rows.Count - 2].DefaultCellStyle.BackColor = Color.Green;
+                    CurrenTargets.Rows[CurrenTargets.Rows.Count - 1].DefaultCellStyle.BackColor = Color.Green;
                 else if (T.From == "SMR")
                 {
-                    CurrenTargets.Rows[CurrenTargets.Rows.Count - 2].DefaultCellStyle.BackColor = Color.Blue;
-                    CurrenTargets.Rows[CurrenTargets.Rows.Count - 2].DefaultCellStyle.ForeColor = Color.White;
+                    CurrenTargets.Rows[CurrenTargets.Rows.Count - 1].DefaultCellStyle.BackColor = Color.Blue;
+                    CurrenTargets.Rows[CurrenTargets.Rows.Count - 1].DefaultCellStyle.ForeColor = Color.White;
                 }
                 else
-                    CurrenTargets.Rows[CurrenTargets.Rows.Count - 2].DefaultCellStyle.BackColor = Color.White;
+                    CurrenTargets.Rows[CurrenTargets.Rows.Count - 1].DefaultCellStyle.BackColor = Color.White;
             }
         }
 
@@ -463,6 +488,10 @@ namespace PGTA_P1
                 ShowInfo.ColumnHeadersVisible = false;
                 ShowInfo.RowHeadersVisible = false;
                 ShowInfo.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+                ShowInfo.AllowUserToResizeColumns = false;
+                ShowInfo.AllowUserToResizeRows = false;
+                ShowInfo.AllowUserToDeleteRows = false;
+                ShowInfo.AllowUserToAddRows = false;
 
                 foreach (Target L in T)
                 {
@@ -585,8 +614,15 @@ namespace PGTA_P1
                 this.DataTable1000 = new List<DataTable>();
                 this.Cursor = Cursors.WaitCursor;
                 PGB1.Visible = true;
-                //byte[] Bytes = File.ReadAllBytes(openFileDialog.FileName); //vector bytes todos juntos, sin separar ni nada
-                byte[] Bytes = Load3AST();
+                byte[] Bytes = new byte[1000];
+                if (TestM.Checked == true)
+                {
+                    Bytes = Load3AST();
+                    MessageBox.Show("Test data will be load");
+                }
+                else
+                    Bytes = File.ReadAllBytes(openFileDialog.FileName); //vector bytes todos juntos, sin separar ni nada
+                
                 CatLib[] Cat = Hertz_Hülsmeyer.CarregarCategories();
                 PGB1.Maximum = Bytes.Count();
                 int H = 0; //Contador delements no inscrits a CAT10 i CAT21
@@ -1062,7 +1098,7 @@ namespace PGTA_P1
                 {
                     if (FromMarker == "MULTI")
                         Map.Position = Mostrar.PointMap;
-                    Area = T.CapaMULTI.Polygons.First();
+                    Area = T.CapaMULTI.Polygons.Last();
                 }
             }
             //SMR
@@ -1581,6 +1617,37 @@ namespace PGTA_P1
                 ADSB = false;
                 DataBlocksDGV_Act();
             }
+        }
+
+        private void AboutUsBTT_Click(object sender, EventArgs e)
+        {
+            Form2 F = new Form2();
+            F.ShowDialog();
+        }
+        private void AboutUsBTT_MouseHover(object sender, EventArgs e)
+        {
+            AboutUsBTT.BackColor = Color.FromArgb(0, 66, 108);
+        }
+        private void AboutUsBTT_MouseLeave(object sender, EventArgs e)
+        {
+            AboutUsBTT.BackColor = Color.FromArgb(209, 222, 230);
+        }
+
+        private void ManualBTN_Click(object sender, EventArgs e)
+        {
+            Form2 F = new Form2();
+            F.CargarManual();
+            F.ShowDialog();
+        }
+
+        private void ManualBTN_MouseHover(object sender, EventArgs e)
+        {
+            ManualBTN.BackColor = Color.FromArgb(0, 66, 108);
+        }
+
+        private void ManualBTN_MouseLeave(object sender, EventArgs e)
+        {
+            ManualBTN.BackColor = Color.FromArgb(209, 222, 230);
         }
     }
 }
