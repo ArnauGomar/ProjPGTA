@@ -3607,7 +3607,7 @@ namespace PGTA_P1
             }
         }
 
-        public void MapTravel(Coordenada C, string Type, bool Track, int minTrack, Bitmap[] Img)
+        public void MapTravel(Coordenada C, string Type, bool Track, int minTrack, Bitmap[] Img, bool ADSB, bool MLAT, bool SMR)
         {
             //ADSB
             Bitmap A;
@@ -3709,31 +3709,80 @@ namespace PGTA_P1
 
                     Ruta.Stroke = new Pen(Color.Red);
                     CapaADSB.Routes.Add(Ruta);
+
+                    if ((SMR_Track.Count != 0) && ((SMR) || ((!ADSB) && (!MLAT) && (!SMR))))
+                    {
+                        if ((minTrack == 1) && (C.Moment - new TimeSpan(0, 1, 0) >= new TimeSpan(8, 0, 0)))
+                        {
+                            TimeSpan TempsIniciRuta = C.Moment - new TimeSpan(0, 1, 0);
+                            List<PointLatLng> NovaRuta = new List<PointLatLng>();
+                            int i = 0;
+                            bool Temps = false;
+                            while ((i < CoordenadesSMR.Count) && (!Temps))
+                            {
+                                if ((C.Moment >= CoordenadesSMR[i].Moment) && (CoordenadesSMR[i].Moment > TempsIniciRuta))
+                                    NovaRuta.Add(CoordenadesSMR[i].PointMap);
+                                if (C.Moment == CoordenadesSMR[i].Moment)
+                                    Temps = true;
+                                i++;
+                            }
+                            Ruta = new GMapRoute(NovaRuta, "TrackSMR_1");
+                        }
+                        else if ((minTrack == 2) && (C.Moment - new TimeSpan(0, 2, 0) >= new TimeSpan(8, 0, 0)))
+                        {
+                            TimeSpan TempsIniciRuta = C.Moment - new TimeSpan(0, 2, 0);
+                            List<PointLatLng> NovaRuta = new List<PointLatLng>();
+                            int i = 0;
+                            bool Temps = false;
+                            while ((i < CoordenadesSMR.Count) && (!Temps))
+                            {
+                                if ((C.Moment >= CoordenadesSMR[i].Moment) && (CoordenadesSMR[i].Moment > TempsIniciRuta))
+                                    NovaRuta.Add(CoordenadesSMR[i].PointMap);
+                                if (C.Moment == CoordenadesSMR[i].Moment)
+                                    Temps = true;
+                                i++;
+                            }
+                            Ruta = new GMapRoute(NovaRuta, "TrackSMR_1");
+                        }
+                        else if ((minTrack == 5) && (C.Moment - new TimeSpan(0, 5, 0) >= new TimeSpan(8, 0, 0)))
+                        {
+                            TimeSpan TempsIniciRuta = C.Moment - new TimeSpan(0, 5, 0);
+                            List<PointLatLng> NovaRuta = new List<PointLatLng>();
+                            int i = 0;
+                            bool Temps = false;
+                            while ((i < CoordenadesSMR.Count) && (!Temps))
+                            {
+                                if ((C.Moment >= CoordenadesSMR[i].Moment) && (CoordenadesSMR[i].Moment > TempsIniciRuta))
+                                    NovaRuta.Add(CoordenadesSMR[i].PointMap);
+                                if (C.Moment == CoordenadesSMR[i].Moment)
+                                    Temps = true;
+                                i++;
+                            }
+                            Ruta = new GMapRoute(NovaRuta, "TrackSMR_1");
+                        }
+                        else if ((minTrack == 10) && (C.Moment - new TimeSpan(0, 10, 0) >= new TimeSpan(8, 0, 0)))
+                        {
+                            TimeSpan TempsIniciRuta = C.Moment - new TimeSpan(0, 10, 0);
+                            List<PointLatLng> NovaRuta = new List<PointLatLng>();
+                            int i = 0;
+                            bool Temps = false;
+                            while ((i < CoordenadesSMR.Count) && (!Temps))
+                            {
+                                if ((C.Moment >= CoordenadesSMR[i].Moment) && (CoordenadesSMR[i].Moment > TempsIniciRuta))
+                                    NovaRuta.Add(CoordenadesSMR[i].PointMap);
+                                if (C.Moment == CoordenadesSMR[i].Moment)
+                                    Temps = true;
+                                i++;
+                            }
+                            Ruta = new GMapRoute(NovaRuta, "TrackSMR_1");
+                        }
+                        else
+                            Ruta = new GMapRoute(SMR_Track, "TrackSMR");
+
+                        Ruta.Stroke = new Pen(Color.Blue);
+                        CapaADSB.Routes.Add(Ruta);
+                    }
                 }
-
-                //zona capta SMR
-                List<PointLatLng> Zona = new List<PointLatLng>();
-                PointLatLng a = C.PointMap;
-                a.Lat = a.Lat - 0.0003;
-                a.Lng = a.Lng - 0.0003;
-                Zona.Add(a);
-                PointLatLng b = C.PointMap;
-                b.Lat = b.Lat + 0.0003;
-                b.Lng = b.Lng - 0.0003;
-                Zona.Add(b);
-                PointLatLng c = C.PointMap;
-                c.Lat = c.Lat + 0.0003;
-                c.Lng = c.Lng + 0.0003;
-                Zona.Add(c);
-                PointLatLng d = C.PointMap;
-                d.Lat = d.Lat - 0.0003;
-                d.Lng = d.Lng + 0.0003;
-                Zona.Add(d);
-
-                GMapPolygon Area = new GMapPolygon(Zona, T_ID);
-                Area.IsVisible = false;
-                CapaADSB.Polygons.Clear();
-                CapaADSB.Polygons.Add(Area);
             }
             else if ((Type == "Multi.") && (C != CoordenadesMULTI.Last()))
             {
@@ -3959,6 +4008,7 @@ namespace PGTA_P1
                     CapaSMR.Routes.Add(Ruta);
                 }
 
+                
             }
             else
             {

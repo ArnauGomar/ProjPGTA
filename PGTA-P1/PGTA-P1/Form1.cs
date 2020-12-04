@@ -1028,7 +1028,7 @@ namespace PGTA_P1
         private void Timer_Tick(object sender, EventArgs e)
         {
             Map.Overlays.Clear();
-            GMapPolygon Area = null;
+            List<GMapPolygon> Area = new List<GMapPolygon>();
 
             //Augmentem temps
             Temps = Temps.Add(interval);
@@ -1086,9 +1086,9 @@ namespace PGTA_P1
 
                 if (enc == true)
                 {
-                    T.MapTravel(Mostrar, "Multi.", TrackBox.Checked, TrackTime, Mark_Images);
+                    T.MapTravel(Mostrar, "Multi.", TrackBox.Checked, TrackTime, Mark_Images, ADSB, MULT, SMR);
                     T.CapaMULTI.Polygons.Last().IsVisible = false;
-                    
+                    Area.Add(T.CapaMULTI.Polygons.Last());
                 }
                 else if (TrackBox.Checked == true)
                     T.BorrarTraza(Temps, "Multi.", TrackTime);
@@ -1098,7 +1098,7 @@ namespace PGTA_P1
                 {
                     if (FromMarker == "MULTI")
                         Map.Position = Mostrar.PointMap;
-                    Area = T.CapaMULTI.Polygons.Last();
+                    
                 }
             }
             //SMR
@@ -1121,21 +1121,23 @@ namespace PGTA_P1
                     }
                     i++;
                 }
-                if (Area != null)
+                foreach(GMapPolygon A in Area)
                 {
-                    if(Area.IsInside(Mostrar.PointMap) == true)
+                    if(A.IsInside(Mostrar.PointMap) == true)
                     {
                         //Map.Overlays.Add(T.CapaSMR);
-                        if(T.T_ID!= Area.Name)
+                        if(T.T_ID!= A.Name)
                         {
-                            T.T_ID = Area.Name;
-                            BusquedaMetode(T.T_ID);
+                            T.T_ID = A.Name;
+                            //string Save = IdView;
+                            //BusquedaMetode(T.T_ID);
+                            //IdView = Save;
                         }
                     }
                 }
                 if (enc == true)
                 {
-                    T.MapTravel(Mostrar, "SMR", TrackBox.Checked, TrackTime, Mark_Images);
+                    T.MapTravel(Mostrar, "SMR", TrackBox.Checked, TrackTime, Mark_Images, ADSB, MULT, SMR);
                 }
                 else if (TrackBox.Checked == true)
                     T.BorrarTraza(Temps, "SMR", TrackTime);
@@ -1169,7 +1171,7 @@ namespace PGTA_P1
 
                 if (enc == true)
                 {
-                    T.MapTravel(Mostrar, "ADS-B", TrackBox.Checked, TrackTime, Mark_Images);
+                    T.MapTravel(Mostrar, "ADS-B", TrackBox.Checked, TrackTime, Mark_Images, ADSB, MULT, SMR);
                 }
                 else if (TrackBox.Checked == true)
                     T.BorrarTraza(Temps, "ADS-B", TrackTime);
@@ -1212,10 +1214,27 @@ namespace PGTA_P1
                 j++;
             }
             //SMR
+            j = 0;
             while (j < ViewTargetListSMR.Count())
             {
                 if (Hertz_Hülsmeyer.Round(ViewTargetListSMR[j].Final) < Temps)
                 {
+                    if(ViewTargetListSMR[j].T_ID !="-")
+                    {
+                        //Afegim track al tarjet ADSB besso per tal de conservarloç
+                        int k = 0;
+                        bool enc = false;
+                        while((k<ViewTargetListADSB.Count)&&(!enc))
+                        {
+                            if(ViewTargetListADSB[k].T_ID == ViewTargetListSMR[j].T_ID)
+                            {
+                                enc = true;
+                                ViewTargetListADSB[k].CoordenadesSMR.AddRange(ViewTargetListSMR[j].CoordenadesSMR);
+                                ViewTargetListADSB[k].SMR_Track.AddRange(ViewTargetListSMR[j].SMR_Track);
+                            }
+                            k++;
+                        }
+                    }
                     ViewTargetListSMR.Remove(ViewTargetListSMR[j]);
                 }
                 j++;
